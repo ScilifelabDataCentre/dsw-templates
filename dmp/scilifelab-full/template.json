@@ -1,0 +1,147 @@
+{
+  "uuid": "70c09f78-85d7-11e9-8241-00163eba999d",
+  "name": "SciLifeLab Full",
+  "allowedKMs": [
+    {
+      "orgId": null,
+      "kmId": null,
+      "minVersion": null,
+      "maxVersion": null
+    }
+  ],
+  "formats": [
+    {
+      "uuid": "278a615b-cb5e-4ca0-bd85-f58f446a07c9",
+      "name": "JSON Data",
+      "icon": "far fa-file",
+      "steps": [
+        {
+          "name": "json",
+          "options": {}
+        }
+      ]
+    },
+    {
+      "uuid": "1b3174fb-9882-4bdb-9cd5-55ae3a3f5296",
+      "name": "HTML Document",
+      "icon": "far fa-file-code",
+      "steps": [
+        {
+          "name": "jinja",
+          "options": {
+            "template": "scilifelab_full.html.j2",
+            "content-type": "text/html",
+            "extension": "html"
+          }
+        }
+      ]
+    },
+    {
+      "uuid": "85c65917-504c-4b6f-8456-63dbd262af02",
+      "name": "PDF Document",
+      "icon": "far fa-file-pdf",
+      "steps": [
+        {
+          "name": "jinja",
+          "options": {
+            "template": "scilifelab_full.html.j2",
+            "content-type": "text/html",
+            "extension": "html"
+          }
+        },
+        {
+          "name": "wkhtmltopdf",
+          "options": {}
+        }
+      ]
+    },
+    {
+      "uuid": "85d85a5d-4804-48a4-afe6-34afab1e2d98",
+      "name": "LaTeX Document",
+      "icon": "far fa-file-alt",
+      "steps": [
+        {
+          "name": "jinja",
+          "options": {
+            "template": "scilifelab_full.html.j2",
+            "content-type": "text/html",
+            "extension": "html"
+          }
+        },
+        {
+          "name": "pandoc",
+          "options": {
+            "from": "html",
+            "to": "latex"
+          }
+        }
+      ]
+    },
+    {
+      "uuid": "4703535e-f9e0-458f-9465-dbaac7d8638b",
+      "name": "MS Word Document",
+      "icon": "far fa-file-word",
+      "steps": [
+        {
+          "name": "jinja",
+          "options": {
+            "template": "scilifelab_full.html.j2",
+            "content-type": "text/html",
+            "extension": "html"
+          }
+        },
+        {
+          "name": "pandoc",
+          "options": {
+            "from": "html",
+            "to": "docx"
+          }
+        }
+      ]
+    },
+    {
+      "uuid": "0a94046b-2391-47b5-a7d7-ba364cfffbd4",
+      "name": "OpenDocument Text",
+      "icon": "far fa-file-alt",
+      "steps": [
+        {
+          "name": "jinja",
+          "options": {
+            "template": "scilifelab_full.html.j2",
+            "content-type": "text/html",
+            "extension": "html"
+          }
+        },
+        {
+          "name": "pandoc",
+          "options": {
+            "from": "html",
+            "to": "odt"
+          }
+        }
+      ]
+    },
+    {
+      "uuid": "2882931f-7c8f-4bef-b4f2-556017573745",
+      "name": "Markdown Document",
+      "icon": "far fa-file-alt",
+      "steps": [
+        {
+          "name": "jinja",
+          "options": {
+            "template": "scilifelab_full.html.j2",
+            "content-type": "text/html",
+            "extension": "html"
+          }
+        },
+        {
+          "name": "pandoc",
+          "options": {
+            "from": "html",
+            "to": "markdown"
+          }
+        }
+      ]
+    }
+  ]
+}

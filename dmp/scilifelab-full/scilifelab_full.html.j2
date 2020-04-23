@@ -247,18 +247,6 @@
         <th>Based on</th>
         <td>{{ctx.package.name}}, {{ctx.package.version}} (<span class="package-id"><span class="organization-id">{{ctx.package.organizationId}}</span>:<span class="km-id">{{ctx.package.kmId}}</span>:<span class="version">{{ctx.package.version}}</span></span>)</td>
       </tr>
-      {% if ctx.config.levelsEnabled %}
-      <tr>
-        <th>Project Phase</th>
-        <td>
-          {% for levelDefinition in levelDefinitions %}
-            {% if levelDefinition.level == ctx.level %}
-              {{levelDefinition.title}}
-            {% endif %}
-          {% endfor %}
-        </td>
-      </tr>
-      {% endif %}
       <tr>
         <th>Created at</th>
         <td>{{ ctx.createdAt|datetime_format("%d %b %Y") }}</td>

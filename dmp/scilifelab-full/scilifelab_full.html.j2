@@ -202,59 +202,6 @@
 {# ------------------------------------------------------------------------------------ #}
 
 {%- macro renderChapterReport(chapter) -%}
-  <section class="report">
-    <h3 class="title">Report</h3>
-
-    <h4>Indications</h4>
-    <div class="indications">
-      <table>
-        <tbody>
-          {% for chapterReport in report.chapterReports %}
-            {% if chapterReport.chapterUuid == chapter.uuid %}
-              {% for indication in chapterReport.indications %}
-                <tr>
-                  <td>Answered {% if indication.indicationType == "LevelsAnsweredIndication" %}(current phase){% endif %}</td>
-                  <td>{{indication.answeredQuestions}} / {{indication.answeredQuestions + indication.unansweredQuestions}} </td>
-                </tr>
-              {% endfor %}
-            {% endif %}
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-
-    <h4>Metrics</h4>
-    <div class="metrics">
-      {% set chapterReports = report.chapterReports|selectattr("chapterUuid", "equalto", chapter.uuid)|selectattr("metrics", "not_empty")|list %}
-      {% if chapterReports|length > 0 %}
-        <table>
-          <thead><tr><th>Metric</th><th>Score</th></tr></thead>
-          <tbody>
-            {% for chapterReport in chapterReports %}
-              {% if chapterReport.chapterUuid == chapter.uuid %}
-                {% for metric in chapterReport.metrics %}
-                  <tr>
-                    <td>
-                      {% for metricDefinition in metricDefinitions %}
-                        {% if metric.metricUuid == metricDefinition.uuid %}
-                          {{metricDefinition.title}}
-                        {% endif %}
-                      {% endfor %}
-                    </td>
-                    <td>{{ metric.measure|round(2) }}</td>
-                  </tr>
-                {% endfor %}
-              {% endif %}
-            {% else %}
-              No indications
-            {% endfor %}
-          </tbody>
-        </table>
-      {% else %}
-        <p class="text-light">No metrics for this chapter.</p>
-      {% endif %}
-    </div>
-  </section>
 {%- endmacro -%}
 {%- macro renderChapter(chapter, humanIdentifier) -%}
       <section class="chapter" id="{{chapter.uuid}}" data-uuid="{{chapter.uuid}}" data-type="chapter">

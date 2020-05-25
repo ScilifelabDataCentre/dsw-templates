@@ -186,7 +186,9 @@
       <strong class="human-identifier">{{humanIdentifier}}</strong>
       {{question.title}}
     </h4>
-    <p class="text text-light">{{question.text|markdown}}</p>
+    <p class="text text-light">
+      {{question.text|markdown}}
+    </p>
 
     {{ renderQuestionExtras(question) }}
     
@@ -197,15 +199,13 @@
 {#  CHAPTER MACROS                                                                      #}
 {# ------------------------------------------------------------------------------------ #}
 
-{%- macro renderChapterReport(chapter) -%}
-{%- endmacro -%}
 {%- macro renderChapter(chapter, humanIdentifier) -%}
       <section class="chapter" id="{{chapter.uuid}}" data-uuid="{{chapter.uuid}}" data-type="chapter">
         <h2 class="title">{{humanIdentifier|roman}}. {{chapter.title}}</h2>
-        <p class="text-light">{{chapter.text|markdown}}</p>
+        <p class="text-light">
+	  {{chapter.text|markdown}}
+	</p>
         
-        {{ renderChapterReport(chapter) }}
-
         <section class="questions">
           <h3 class="title">Questions</h3>
           {% for questionUuid in chapter.questionUuids %}
@@ -258,7 +258,9 @@
 {%- macro renderContent() -%}
   <main>
     {% for chapterUuid in km.chapterUuids %}
-      {{ renderChapter(km.entities.chapters[chapterUuid], loop.index) }}
+      {% if chapter.title !== "Support from Data Centre"  %}
+        {{ renderChapter(km.entities.chapters[chapterUuid], loop.index) }}
+      {% endif %}
     {% else %}
       <p class="text-light">No chapters</p>
     {% endfor %}

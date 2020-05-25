@@ -35,6 +35,7 @@ a {
 header {
   padding-bottom: 1rem;
   border-bottom: solid 3px #aaaaaa;
+  page-break-inside: avoid;
 }
 
 header > h1 {

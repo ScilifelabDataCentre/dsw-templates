@@ -244,7 +244,9 @@
 {%- macro renderContent() -%}
   <main>
     {% for chapterUuid in km.chapterUuids %}
-      {{ renderChapter(km.entities.chapters[chapterUuid], loop.index) }}
+      {% if km.entities.chapters[chapterUuid].title !== "Support from Data Centre"  %}
+        {{ renderChapter(km.entities.chapters[chapterUuid], loop.index) }}
+      {% endif %}
     {% else %}
       <p class="text-light">No chapters</p>
     {% endfor %}

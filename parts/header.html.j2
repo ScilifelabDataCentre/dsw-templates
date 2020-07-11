@@ -56,12 +56,34 @@
                   {%- endif -%}
                   {%- if contributorAffiliation and contributorAffiliation.value.value %}
                     <br>{{ contributorAffiliation.value.value }}
+                  {%- if contributorAffiliation and contributorAffiliationKIAUuid %}
+                    <span class="affiliation">Karolinska institutet</span>
+                  {%- elif contributorAffiliation and contributorAffiliationUUAUuid %}
+                    <span class="affiliation">Uppsala universitet</span>
+                  {%- elif contributorAffiliation and contributorAffiliationLUAUuid %}
+                    <span class="affiliation">Lunds universitet</span>
+                  {%- elif contributorAffiliation and contributorAffiliationGUAUuid %}
+                    <span class="affiliation">Göteborgs universitet</span>
+                  {%- elif contributorAffiliation and contributorAffiliationUmUAUuid %}
+                    <span class="affiliation">Umeå universitet</span>
+                  {%- elif contributorAffiliation and contributorAffiliationSLUAUuid %}
+                    <span class="affiliation">Sveriges lantbruksuniversitet</span>
+                  {%- elif contributorAffiliation and contributorAffiliationSUAUuid %}
+                    <span class="affiliation">Stockholms universitet</span>
+                  {%- elif contributorAffiliation and contributorAffiliationKTHAUuid %}
+                    <span class="affiliation">Kungliga tekniska högskolan</span>
+                  {%- elif contributorAffiliation and contributorAffiliationLiUAUuid %}
+                    <span class="affiliation">Linköpings universitet</span>
+                  {%- elif contributorAffiliation and contributorAffiliationChaAUuid %}
+                    <span class="affiliation">Chalmers</span>
+                  {%- elif contributorAffiliation and contributorAffiliationOtherAUuid and contributorAffiliationOtherWich.value.value %}
+                    <br>{{ contributorAffiliationOtherWich.value.value }}
                   {%- endif -%}
                 </li>
               {%- endfor -%}
             </ul>
           {%- else -%}
-            <span class="empty-value">There are no contact people define</span>
+            <span class="empty-value">There are no contact people defined</span>
           {%- endif -%}
         </dd>
       {%- endif -%}
@@ -83,7 +105,7 @@
       <dd>{{ ctx.createdAt|datetime_format("%d %b %Y") }}</dd>
     </dl>
     <p class="dsw">
-      Data Management Plan created in Data Stewardship Wizard <<a href="https://ds-wizard.org" target="_blank">https://ds-wizard.org</a>>
+      Data Management Plan created in Data Stewardship Wizard <<a href="https://dsw.scilifelab.se" target="_blank">https://dsw.scilifelab.se</a>>
     </p>
   </div>
 </header>

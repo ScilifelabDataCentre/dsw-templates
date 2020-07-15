@@ -40,8 +40,9 @@
                   {%- set contributorName = repliesMap[pathPrefix ~ uuids.contributorNameQUuid] -%}
                   {%- set contributorEmail = repliesMap[pathPrefix ~ uuids.contributorEmailQUuid] -%}
                   {%- set contributorOrcid = repliesMap[pathPrefix ~ uuids.contributorOrcidQUuid] -%}
-                  {%- set contributorAffiliation = repliesMap[pathPrefix ~ uuids.contributorAffiliationQUuid] -%}
-
+                  {# }{%- set contributorAffiliation = repliesMap[pathPrefix ~ uuids.contributorAffiliationQUuid] -%} #}
+                  {%- set contributorAffiliationPath = [pathPrefix,uuids.contributorAffiliationQUuid]|reply_path -%}
+                  {%- set contributorAffiliationAUuid = repliesMap[contributorAffiliationPath]|reply_str_value -%}
                   {%- if contributorName and contributorName.value.value -%}
                     <span class="contact-name">{{ contributorName.value.value }}</span>
                   {%- else -%}
@@ -54,30 +55,11 @@
                   {%- elif contributorOrcid and contributorOrcid.value.value %}
                     ({{ macros.formatOrcid(contributorOrcid.value.value) }})
                   {%- endif -%}
-                  {%- if contributorAffiliation and contributorAffiliation.value.value %}
-                    <br>{{ contributorAffiliation.value.value }}
-                  {%- if contributorAffiliation and contributorAffiliationKIAUuid %}
-                    <span class="affiliation">Karolinska institutet</span>
-                  {%- elif contributorAffiliation and contributorAffiliationUUAUuid %}
-                    <span class="affiliation">Uppsala universitet</span>
-                  {%- elif contributorAffiliation and contributorAffiliationLUAUuid %}
-                    <span class="affiliation">Lunds universitet</span>
-                  {%- elif contributorAffiliation and contributorAffiliationGUAUuid %}
-                    <span class="affiliation">Göteborgs universitet</span>
-                  {%- elif contributorAffiliation and contributorAffiliationUmUAUuid %}
-                    <span class="affiliation">Umeå universitet</span>
-                  {%- elif contributorAffiliation and contributorAffiliationSLUAUuid %}
-                    <span class="affiliation">Sveriges lantbruksuniversitet</span>
-                  {%- elif contributorAffiliation and contributorAffiliationSUAUuid %}
-                    <span class="affiliation">Stockholms universitet</span>
-                  {%- elif contributorAffiliation and contributorAffiliationKTHAUuid %}
-                    <span class="affiliation">Kungliga tekniska högskolan</span>
-                  {%- elif contributorAffiliation and contributorAffiliationLiUAUuid %}
-                    <span class="affiliation">Linköpings universitet</span>
-                  {%- elif contributorAffiliation and contributorAffiliationChaAUuid %}
-                    <span class="affiliation">Chalmers</span>
-                  {%- elif contributorAffiliation and contributorAffiliationOtherAUuid and contributorAffiliationOtherWich.value.value %}
+                  {%- if contributorAffiliation and contributorAffiliationAUuid=uuids.contributorAffiliationOtherAUuid %}
+                    {% set contributorAffiliationOtherPath = [contributorAffiliationOther]}
                     <br>{{ contributorAffiliationOtherWich.value.value }}
+                  {%- elif contributorAffiliation and contributorAffiliationOtherAUuid and contributorAffiliationOtherWich.value.value %}
+                    <br>{{ contributorAffiliationAUuid }}
                   {%- endif -%}
                 </li>
               {%- endfor -%}

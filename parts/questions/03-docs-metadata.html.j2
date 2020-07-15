@@ -5,7 +5,7 @@
     <p>List of data to be published is given in Section E, Question 9. This also includes information about catalogs where the data can be found. Information about data types used is given in Section A, Question 1.</p>
 
     {# Good provenance (lab notebooks) #}
-    {%- set provenancePath = [uuids.preservingCUuid, uuids.provenanceQUuid]|reply_path -%}
+    {%- set provenancePath = [uuids.documentationCUuid, uuids.provenanceQUuid]|reply_path -%}
     {%- set provenanceAUuid = repliesMap[provenancePath]|reply_str_value -%}
     {%- if provenanceAUuid == uuids.provenanceLabNotebooksAUuid -%}
       <p>We will use lab notebooks to make sure that there is good provenance of the data analysis.</p>
@@ -19,27 +19,129 @@
     {%- endif -%}
 
     {# Documentation with metadata #}
-    {%- set documentDataPath = [uuids.preservingCUuid, uuids.documentDataQUuid]|reply_path -%}
-    {%- set documentDataAUuid = repliesMap[documentDataPath]|reply_str_value -%}
-    {%- if documentDataAUuid == uuids.documentDataExploreAUuid -%}
-      {%- set documentDataDCPath = [documentDataPath, uuids.documentDataExploreAUuid, uuids.documentDataDCQUuid]|reply_path -%}
-      {%- set documentDataDCAUuid = repliesMap[documentDataDCPath]|reply_str_value -%}
-      {%- set documentDataW3CPath = [documentDataPath, uuids.documentDataExploreAUuid, uuids.documentDataW3CQUuid]|reply_path -%}
-      {%- set documentDataW3CAUuid = repliesMap[documentDataW3CPath]|reply_str_value -%}
-      {%- set usingDC = documentDataDCAUuid == uuids.documentDataDCYesAUuid -%}
-      {%- set usingW3C = documentDataW3CAUuid == uuids.documentDataW3CYesAUuid -%}
-      {%- if usingDC or usingW3C %}
-        <p>
-          We will be documenting the data with
-          {% if usingDC and usingW3C -%}
-            Dublin Core metadata and W3C PROV provenance. 
-          {%- elif usingDC -%}
-            Dublin Core metadata. 
-          {%- elif usingW3C -%}
-            W3C PROV provenance. 
-          {%- endif -%}
-        </p>
-      {%- endif -%}
-    {%- endif -%}
+    {# lägg till metadatastandarder #}
+    {%- set documentMetaDataPath = [uuids.documentationCUuid, uuids.metadataStandardQUuid]|reply_path -%}
+    {%- set documentMetaDataAUuid = repliesMap[documentMetaDataPath]|reply_str_value -%}
+
+{# definierade variabler:
+{%- set metadataStandardQUid="23611991-10d2-4b97-b423-0d2ea013370d"-%}
+{%- set metadataStandardYesAUid="7ce25433-7b97-41c6-8bee-8ab37bb4a3bc"-%}
+{%- set metadataStandardYesWhichQUuid="19143e12-8c6b-4cc4-8e2a-8a18ba9a1901" -%}
+{%- set metadataStandardYesWhichAUuid= "a3132dfd-dc41-4a32-acdd-bdec37571c52"-%}
+{%- set metadataStandardNoAUid="d8e2fb61-ece4-41df-b8b8-39afd2b764d8"-%}
+{%- set nonMetadataStandardQUid="23611991-10d2-4b97-b423-0d2ea013370d"-%}
+{%- set nonMetadataStandardYesAUid="7ce25433-7b97-41c6-8bee-8ab37bb4a3bc"-%}
+{%- set nonMetadataStandardYesWhichQUuid="19143e12-8c6b-4cc4-8e2a-8a18ba9a1901" -%}
+{%- set nonMetadataStandardYesWhichAUuid= "a3132dfd-dc41-4a32-acdd-bdec37571c52"-%}
+{%- set nonMetadataStandardNoAUid="d8e2fb61-ece4-41df-b8b8-39afd2b764d8"-%}
+#}
+    
   </div>
+
+  <h3>4. How will data quality be safeguarded?</h3>
+  <div class="answer">
+  {# Measured datasets #}
+  {%- set measuredDataPath = [uuids.creatingCUuid, uuids.measuredDataQUuid]|reply_path -%}
+  {%- set measuredDataCount = repliesMap[measuredDataPath]|reply_int_value -%}
+  {%- if measuredDataCount > 0 -%}
+    <h4>Instrument datasets</h4>
+    <ul>
+      {%- for datasetIndex in range(measuredDataCount) -%}
+        {%- set pathPrefix = [measuredDataPath, datasetIndex]|reply_path -%}
+        <li>
+          {%- set measuredDataNamePath = [pathPrefix, uuids.measuredDataNameQUuid]|reply_path -%}
+          {%- set measuredDataName = repliesMap[measuredDataNamePath]|reply_str_value -%}
+          <strong>{{ measuredDataName if measuredDataName else "(no name given)" }}</strong>
+
+          {# Quality #}
+          {# måste kolla så att detta funkar, flyttat från 02-how-data.html.j2 #}
+          {%- set measuredDataQualityPath = [pathPrefix, uuids.measuredDataQualityQUuid]|reply_path -%}
+          {%- set measuredDataQualityAUuid = repliesMap[measuredDataQualityPath]|reply_str_value -%}
+          {%- if measuredDataQualityAUuid == uuids.measuredDataQualityNoAUuid -%}
+            <p>We will not be using quality process for this dataset.</p>
+          {%- elif measuredDataQualityAUuid == uuids.measuredDataQualityYesAUuid -%}
+            {# Named quality processes #}
+            {%- set mdqPrefix = [measuredDataQualityPath, uuids.measuredDataQualityYesAUuid]|reply_path -%}
+            {%- set calibratingAUuid = repliesMap[[mdqPrefix, uuids.mdQualityCalibatingQUuid]|reply_path]|reply_str_value -%}
+            {%- set repetitionAUuid = repliesMap[[mdqPrefix, uuids.mdQualityRepetitionQUuid]|reply_path]|reply_str_value -%}
+            {%- set standardizedAUuid = repliesMap[[mdqPrefix, uuids.mdQualityStandardizedQUuid]|reply_path]|reply_str_value -%}
+            {%- set validationAUuid = repliesMap[[mdqPrefix, uuids.mdQualityValidationQUuid]|reply_path]|reply_str_value -%}
+            {%- set peerReviewAUuid = repliesMap[[mdqPrefix, uuids.mdQualityPeerReviewQUuid]|reply_path]|reply_str_value -%}
+            {%- set vocabulariesAUuid = repliesMap[[mdqPrefix, uuids.mdQualityVocabulariesQUuid]|reply_path]|reply_str_value -%}
+            {%- set calibrating = calibratingAUuid == uuids.mdQualityCalibatingYesAUuid -%}
+            {%- set repetition = repetitionAUuid == uuids.mdQualityRepetitionYesAUuid -%}
+            {%- set standardized = standardizedAUuid == uuids.mdQualityStandardizedYesAUuid -%}
+            {%- set validation = validationAUuid == uuids.mdQualityValidationYesAUuid -%}
+            {%- set peerReview = peerReviewAUuid == uuids.mdQualityPeerReviewYesAUuid -%}
+            {%- set vocabularies = vocabulariesAUuid == uuids.mdQualityVocabulariesYesAUuid -%}
+            {%- set qualityProcesses = [calibrating, repetition, standardized, validation, peerReview, vocabularies] -%}
+            {%- set qualityCount = qualityProcesses|select("true")|list|length -%}
+            {%- if qualityCount == 1 -%}
+              <p>
+                We will be using
+                {% if calibrating -%}
+                  calibrating measurements
+                {%- endif -%}
+                {%- if repetition -%}
+                  repeat samples/measurements
+                {%- endif -%}
+                {%- if standardized -%}
+                  standardized data capture/recording
+                {%- endif -%}
+                {%- if validation -%}
+                  <em>Data Entry</em> validation
+                {%- endif -%}
+                {%- if peerReview -%}
+                  data peer review
+                {%- endif -%}
+                {%- if vocabularies -%}
+                  controlled vocabularies
+                {%- endif %}
+                quality process.
+              </p>
+            {%- elif qualityCount > 1 -%}
+              <p>
+              We will be using the following quality processes:
+              <ul>
+                {%- if calibrating -%}
+                  <li>calibrating measurements</li>
+                {%- endif -%}
+                {%- if repetition -%}
+                  <li>repeat samples/measurements</li>
+                {%- endif -%}
+                {%- if standardized -%}
+                  <li>standardized data capture/recording</li>
+                {%- endif -%}
+                {%- if validation -%}
+                  <li><em>Data Entry</em> validation</li>
+                {%- endif -%}
+                {%- if peerReview -%}
+                  <li>data peer review</li>
+                {%- endif -%}
+                {%- if vocabularies -%}
+                  <li>controlled vocabularies</li>
+                {%- endif -%}
+              </ul>
+              </p>
+            {%- else -%}
+              <p>We will be using quality processes.<p>
+            {%- endif -%}
+            {# Other quality processes #}
+            {%- set mdQualityOtherPath = [mdqPrefix, uuids.mdQualityOtherQUuid]|reply_path -%}
+            {%- set mdQualityOtherAUuid = repliesMap[mdQualityOtherPath]|reply_str_value -%}
+            {%- if mdQualityOtherAUuid == uuids.mdQualityOtherYesAUuid -%}
+              {%- set mdQualityOtherYesPath = [mdQualityOtherPath, mdQualityOtherYesAUuid, mdQualityOtherYesQUuid]|reply_path -%}
+              {%- set mdQualityOther = repliesMap[mdQualityOtherYesPath]|reply_str_value -%}
+              {%- if mdQualityOther -%}
+                <p>{{ "Additional" if qualityCount > 0 else "Our" }} quality processes are: {{ mdQualityOther|dot }}</p>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- else -%}
+    There will be no instrument dataset in this project.
+  {%- endif -%}
+
 </div>

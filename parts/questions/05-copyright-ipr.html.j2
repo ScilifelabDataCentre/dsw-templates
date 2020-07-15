@@ -1,5 +1,5 @@
 <div id="q-ethical-issues" class="question">
-  <h3>5. How will you manage copyright and Intellectual Property Rights (IPR) issues?</h3>
+  <h3>7. How will you manage copyright and Intellectual Property Rights (IPR) issues?</h3>
 
   <div class="answer">
     {# Open philosophy #}
@@ -37,7 +37,7 @@
 
       {%- if nReasons > 0 -%}
         <p>
-        The data cannot become completely open immediately because 
+        The data cannot become completely open immediately because
         {%- if nReasons == 1 -%}
           {%- if legalReasons %}
             of legal reasons.
@@ -82,7 +82,7 @@
         <p>Data that is not legally restrained will be released after a fixed time period, unconditionally.</p>
       {%- endif -%}
     {%- endif -%}
-    
+
     {# Ownership #}
     {%- set ownershipPath = [uuids.creatingCUuid, uuids.ownershipQUuid]|reply_path -%}
     {%- set ownershipAUuid = repliesMap[ownershipPath]|reply_str_value -%}

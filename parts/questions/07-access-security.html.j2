@@ -2,8 +2,8 @@
   <h3>7. How will you manage access and security?</h3>
 
   <div class="answer">
-    {%- set risksPathPrefix = [uuids.processingCUuid, uuids.risksQUuid, uuids.risksExploreAUuid]|reply_path -%}
-    {%- set sharedWorkspacePrefix = [uuids.processingCUuid, uuids.sharedWorkspaceQUuid, uuids.sharedWorkspaceYesAUuid]|reply_path -%}
+    {%- set risksPathPrefix = [uuids.storageCUuid, uuids.risksQUuid, uuids.risksExploreAUuid]|reply_path -%}
+    {%- set sharedWorkspacePrefix = [uuids.storageCUuid, uuids.sharedWorkspaceQUuid, uuids.sharedWorkspaceYesAUuid]|reply_path -%}
     {# Basic risks #}
     {%- set risksStoreLabPath = [risksPathPrefix, uuids.risksStoreLabQUuid]|reply_path -%}
     {%- set risksStoreLabAUuid = repliesMap[risksStoreLabPath]|reply_str_value -%}

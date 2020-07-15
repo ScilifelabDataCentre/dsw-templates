@@ -24,6 +24,10 @@
           {%- if measuredDataWhoAUuid == uuids.measuredDataWhoExpertsOwnAUuid -%}
             <p>This dataset will be collected by experts in the project, with our own equipment.</p>
           {%- elif measuredDataWhoAUuid == uuids.measuredDataWhoExpertsOutAUuid -%}
+          {# needs to be fixed so that the infrastructure is written explicitly from
+              measuredDataWhoExpertsOutQUuid reply_str_value, and if
+              other than the written choices (measuredDataWhoExpertsOutOtherAUuid),
+              this needs to be handled separately using variable measuredDataWhoExpertsOutOtherQUuid#}
             <p>This dataset will be collected by experts in the project, at a specialized infrastructure.</p>
           {%- elif measuredDataWhoAUuid == uuids.measuredDataWhoExternalAUuid -%}
             {%- set mdExternalOwnershipPath = [measuredDataWhoPath, uuids.measuredDataWhoExternalAUuid, uuids.mdExternalOwnershipQUuid]|reply_path -%}
@@ -266,9 +270,11 @@
             {%- if formatsVolumeAUuid == uuids.formatsVolumeSmallAUuid %}
               We will have only a small amount of data stored in this format.
             {%- elif formatsVolumeAUuid == uuids.formatsVolumeTotalAUuid -%}
-              {%- set formatsVolumeTotalGB = repliesMap[[formatsVolumePath, uuids.formatsVolumeTotalAUuid, uuids.formatsVolumeTotalGBQUuid]|reply_path]|reply_str_value -%}
-              {%- if formatsVolumeTotalGB %}
-                We expect to have {{ formatsVolumeTotalGB }} GB of data in this format.
+            {# needs to be changed to read the options under formatsVolumeTotalTBQUuid
+               unsure if the set below (unchanged) works but worth a try #}
+              {%- set formatsVolumeTotalTB = repliesMap[[formatsVolumePath, uuids.formatsVolumeTotalAUuid, uuids.formatsVolumeTotalTBQUuid]|reply_path]|reply_str_value -%}
+              {%- if formatsVolumeTotalTB %}
+                We expect to have {{ formatsVolumeTotalTB }} of data in this format.
               {%- endif -%}
             {%- elif formatsVolumeAUuid == uuids.formatsVolumeFileSizeAUuid -%}
               {%- set formatsVolumeFiles = repliesMap[[formatsVolumePath, uuids.formatsVolumeFileSizeAUuid, uuids.formatsVolumeFilesQUuid]|reply_path]|reply_str_value -%}

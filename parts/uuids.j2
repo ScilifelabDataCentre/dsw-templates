@@ -258,8 +258,11 @@
 {%- set isSensitiveQUuid = "8341216e-5e62-4203-a0bb-432cf027473d" -%}
 {%- set isSensitiveYesAUuid = "7385951b-1dd1-44c0-9ced-4243e2445cea" -%}
 {%- set ethicalApprovalQUuid = "26d38536-c99a-4dea-befd-eb1c2c6059d4" -%}
+{%- set ethicalApprovalYesAUuid = "6d35cf7f-8291-4083-bda3-005c20095bee" -%}
+{%- set ethicalApprovalYesQUuid = "4d83a2f2-63ba-4a18-b41e-2e423d01fb10" -%}
+{%- set ethicalApprovalWillAUuid = "d98281f0-c21b-486e-aa84-454bdaac8534" -%}
+{%- set ethicalApprovalNotAUuid = "90491cfe-3940-4158-b7d1-ac5c10f7dc60" -%}
 {%- set needConsentQUuid = "f5e162ee-1077-4ebe-a932-192bc7f67e98" -%}
-{%- set needConsentNoNotCollectAUuid = "d4375763-1af3-48a0-8738-f216b5ceeff0" -%}
 {%- set needConsentNoAnotherLegalAUuid = "e1ae38ed-14fb-4143-8a76-3883bd794b9b" -%}
 {%- set needConsentYesSpecificAUuid = "a484287c-fd7f-47ca-8dea-cdb36f48616d" -%}
 {%- set needConsentYesReuseAUuid = "08014631-8a8a-4efa-bd58-3766cc40c7ed" -%}
@@ -274,12 +277,12 @@
 {%- set legalBaseOtherQUuid = "868f29a5-2bff-431b-8308-b0d7c3678da1" -%}
 {%- set reportDPOQUuid = "c3576511-5b78-4a8e-aa3c-7864da899250" -%}
 {%- set reportDPOYesAUuid = "8c4fef4f-3b76-401a-af23-253940f69e84" -%}
-{%- set reportDPONotYetAUuid = "6fdf997a-79db-40e9-b72b-f4adc98de0cc" -%}
+{%- set reportDPOWillAUuid = "6fdf997a-79db-40e9-b72b-f4adc98de0cc" -%}
 {%- set needDPAQUuid = "5cd770a9-f442-47bb-9598-85fd06e58f17" -%}
 {%- set needDPAYesAUuid = "ff2d0490-4c4d-44ad-83c5-495e54e80b82" -%}
 {%- set needDPAYesListQUuid = "215b4663-7961-4a1a-b080-e8aef326b093" -%}
-{%- set needDPAYesListProcessorAUuid = "9f49832a-bbf8-4901-94e1-e700437c78f1" -%}
-{%- set needDPAYesListAgreementAUuid = "4e331982-9051-4b1b-b4b5-655da41fdd75" -%}
+{%- set needDPAYesListProcessorQUuid = "9f49832a-bbf8-4901-94e1-e700437c78f1" -%}
+{%- set needDPAYesListAgreementQUuid = "4e331982-9051-4b1b-b4b5-655da41fdd75" -%}
 {%- set needDPANoAUuid = "34a65df3-e1aa-4c42-a254-3afede21fce0" -%}
 {%- set risksPersonalDataQUuid = "d5990471-0618-42cd-92cb-bbbfd4f61532" -%}
 {%- set risksPersonalDataNotUsingAUuid = "5d518250-a5d3-47f1-ada8-aa64c9ce3370" -%}
@@ -332,7 +335,6 @@
 {%- set notOpenLimitedEmbargoReleasedSoonAUuid = "82f84d7e-338c-46bc-9785-42df560c01ed" -%}
 {%- set notOpenLimitedEmbargoYesAUuid = "1b120967-803b-458b-b565-dbee6a785509" -%}
 {%- set notOpenLimitedEmbargoPeriodQUuid = "99a48a1a-5c27-4e15-9da0-515da815b4b8" -%}
-
 {%- set publishedDataQUuid = "4e0c1edf-660c-4ebf-81f5-9fa959dead30" -%}
 {%- set publishedDataNameQUuid = "b0949d09-d179-4491-9fb4-14b0deb9f862" -%}
 {%- set publishedDataRepositoryKindQUuid = "80a682bd-8a5c-4a52-935d-680509838a4e" -%}
@@ -409,9 +411,9 @@
 {%- set publishedSWRepoBitbucketAUuid = "5abb0bae-4d2e-4045-96d3-85aa7d18ab1e" -%}
 {%- set publishedSWRepoOtherAUuid = "f47a34b0-a989-453e-b20b-41d1b6a55d16" -%}
 {%- set publishedSWRepoOtherWhichQUuid = "8bb9ab1c-39be-41e0-920a-10047cba240e" -%}
-{%- set publishedSWRepoPIDQUuid = "bee9c347-7df8-4233-994e-f57d355d41c1" -%}
-{%- set publishedSWRepoPIDNoAUuid = "50d6eebe-150d-4427-9de6-f44b9a074c3b" -%}
-{%- set publishedSWRepoPIDYesAUuid = "585ed128-8bd6-4efd-9a45-6f04d29e06e3" -%}
-{%- set publishedSWRepoPIDYesQUuid = "c081e41d-b52a-4b7a-95a6-babc32a82d0c" -%}
+{%- set publishedSWDOIQUuid = "bee9c347-7df8-4233-994e-f57d355d41c1" -%}
+{%- set publishedSWDOINoAUuid = "50d6eebe-150d-4427-9de6-f44b9a074c3b" -%}
+{%- set publishedSWDOIYesAUuid = "585ed128-8bd6-4efd-9a45-6f04d29e06e3" -%}
+{%- set publishedSWDOIYesQUuid = "c081e41d-b52a-4b7a-95a6-babc32a82d0c" -%}
 {%- set publishedSWCatalogueQUuid = "3a417eea-0b1d-4dc8-b5f5-f109d7513eb4" -%}
 {%- set publishedSWCatalogueYesAUuid = "9e39ea26-cdaf-483b-9502-d47fc4f69bab" -%}

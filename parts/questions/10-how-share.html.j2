@@ -57,8 +57,56 @@
       </ul>
     {%- endif -%}
 
-    <p>Information about used repositories (i.e. where will potential users find out about the data) is provided in Section E, Question 9.</p>
+    <p>Information about used repositories (i.e. where will potential users find out about the data) is provided in Section E, Question 11.</p>
 
-    <p>Embargo on the data is described in Section C, Question 5, and Section F, Question 11.</p>
+    <p>Embargo on the data is described in Section D, Question 7, and Section E, Question 9.</p>
+
+    {# Published software #}
+    {%- set publishedSWPath = [uuids.preservingCUuid, uuids.publishedSWQUuid]|reply_path -%}
+    {%- set publishedSWCount = repliesMap[publishedSWPath]|reply_int_value -%}
+    {%- if publishedSWCount > 0 -%}
+      <ul>
+      {%- for i in range(publishedSWCount) -%}
+        {%- set pathPrefix = [publishedSWPath, i]|reply_path -%}
+        {%- set publishedSWName = repliesMap[[pathPrefix, uuids.publishedSWNameQUuid]|reply_path]|reply_str_value -%}
+        {%- set publishedSWLicensePath = [pathPrefix, uuids.publishedSWLicenseQUuid]|reply_path -%}
+        {%- set publishedSWLicenseAUuid = repliesMap[publishedSWLicensePath]|reply_str_value -%}
+        {%- set publishedSWDOIPath = [pathPrefix, uuids.publishedSWDOIQUuid]|reply_path -%}
+        {%- set publishedSWDOIAUuid = repliesMap[publishedSWDOIPath]|reply_str_value -%}
+        {%- if publishedSWLicenseAUuid or (publishedSWDOIAUuid == uuids.publishedSWDOIYesAUuid) -%}
+          <li>
+            <strong>{{ publishedSWName if publishedSWName else "(no name given)" }}</strong>
+            {%- if publishedSWLicenseAUuid == uuids.publishedSWLicenseYesAUuid -%}
+              {%- set publishedSWLicenseWhichPath = [publishedSWLicensePath, uuids.publishedSWLicenseYesAUuid, uuids.publishedSWLicenseYesQUuid]|reply_path -%}
+              {%- set publishedSWLicenseWhichAUuid = repliesMap[publishedSWLicenseWhichPath]|reply_str_value -%}
+                {%- if publishedSWLicenseWhichAUuid == uuids.publishedSWLicenseGnuAUuid %}
+                  <span class="separator">&ndash;</span> GNU license.
+                {%- elif publishedSWLicenseWhichAUuid == uuids.publishedSWLicenseMITAUuid %}
+                  <span class="separator">&ndash;</span> MIT license.
+                {%- elif publishedSWLicenseWhichAUuid == uuids.publishedSWLicenseApacheAUuid %}
+                  <span class="separator">&ndash;</span> Apache license.
+                {%- elif publishedSWLicenseWhichAUuid == uuids.publishedSWLicenseOtherAUuid %}
+                  {%- set publishedSWLicenseWhichOtherPath = [publishedSWLicenseWhichPath, uuids.publishedSWLicenseOtherAUuid, uuids.publishedSWLicenseOtherWhichQUuid]|reply_path -%}
+                  {%- set publishedSWLicenseWhichOther = repliesMap[publishedSWLicenseWhichOtherPath]|reply_str_value -%}
+                  {%- if publishedSWLicenseWhichOther %}
+                    <span class="separator">&ndash;</span> license: {{publishedSWLicenseWhichOther|dot}}
+                  {%- endif -%}
+                {%- endif -%}
+            {%- endif -%}
+            {%- if publishedDataDOIAUuid == uuids.publishedDataDOIYesAUuid -%}
+              {%- set publishedDataDOIYesWhatPath = [publishedDataDOIPath, uuids.publishedDataDOIYesAUuid, uuids.publishedDataDOIYesWhatQUuid]|reply_path -%}
+              {%- set publishedDataDOIYesWhat = repliesMap[publishedDataDOIYesWhatPath]|reply_str_value -%}
+              {%- if publishedDataDOIYesWhat %}
+                The DOI for this data set is <a href="https://doi.org/{{ publishedDataDOIYesWhat }}" target="_blank">{{ publishedDataDOIYesWhat }}</a>.
+              {%- else %}
+                We will get a DOI for this data set.
+              {%- endif -%}
+            {%- endif -%}
+          {%- endif -%}
+      </li>
+      {%- endif -%}
+    {%- endfor -%}
+    </ul>
+  {%- endif -%}
   </div>
 </div>

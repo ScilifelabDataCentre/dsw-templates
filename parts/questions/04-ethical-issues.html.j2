@@ -50,38 +50,88 @@
     {%- endif -%}
 
     {# Collected data #}
-    {%- set needConsentPath = [uuids.creatingCUuid, uuids.needConsentQUuid]|reply_path -%}
-    {%- set needConsentAUuid = repliesMap[needConsentPath]|reply_str_value -%}
-    {%- if needConsentAUuid -%}
-      <h4>Data we collect</h4>
-      <p>
-      {%- if needConsentAUuid == uuids.needConsentNoNotCollectAUuid -%}
-        We don't need any consent for collected data because those are not personal.
-      {%- elif needConsentAUuid == uuids.needConsentNoAnotherLegalAUuid -%}
-        Our work on personal data can be done without consent using another legal base
-        {%- set legalBasePath = [needConsentPath, uuids.needConsentNoAnotherLegalAUuid, uuids.legalBaseQUuid]|reply_path -%}
-        {%- set legalBaseAUuid = repliesMap[legalBasePath]|reply_str_value -%}
-        {%- if legalBaseAUuid == uuids.legalBaseComplianceAUuid %}
-          <span class="separator">&ndash;</span> compliance with a legal obligation.
-        {%- elif legalBaseAUuid == uuids.legalBaseContractAUuid %}
-          <span class="separator">&ndash;</span> contractual performance.
-        {%- elif legalBaseAUuid == uuids.legalBaseVitalInterestsAUuid %}
-          <span class="separator">&ndash;</span> vital interests.
-        {%- elif legalBaseAUuid == uuids.legalBasePublicInterestsAUuid %}
-          <span class="separator">&ndash;</span> public interest or acting under official public authority.
-        {%- elif legalBaseAUuid == uuids.legalBaseLegitimateInterestsAUuid %}
-          <span class="separator">&ndash;</span> legitimate interests.
-        {%- elif legalBaseAUuid == uuids.legalBaseOtherAUuid -%}
-          {%- set legalBaseOtherPath = [legalBasePath, uuids.legalBaseOtherAUuid, uuids.legalBaseOtherQUuid]|reply_path -%}
-          {%- set legalBaseOther = repliesMap[legalBaseOtherPath]|reply_str_value -%}
-          {{ ": " ~ legalBaseOther|dot if legalBaseOther else " (not further specified)."}}
-        {%- else %} (not further specified).{%- endif -%}
-      {%- elif needConsentAUuid == uuids.needConsentYesSpecificAUuid -%}
-        We will collect consent for our specific use of the data.
-      {%- elif needConsentAUuid == uuids.needConsentYesReuseAUuid -%}
-        We will collect consent for our use as well as reuse of the data.
-      {%- elif needConsentAUuid == uuids.needConsentYesAnonymizeAUuid -%}
-        We will collect consent for our use of the data, and will anonymize the data afterwards for reuse.
+    <h4>Data we collect</h4>
+    <p>
+    {%- set isSensitivePath = [uuids.legalEthicalCUuid, uuids.isSensitiveQUuid]|reply_path -%}
+    {%- set isSensitive = repliesMap[isSensitivePath]|reply_str_value -%}
+    {%- if isSensitive == uuids.isSensitiveNoAUuid -%}
+      None of the collected data sets are personal. </p>
+    {%- elif if isSensitive == uuids.isSensitiveYesAUuid -%}
+      {%- set isSensitiveYesPath = [isSensitivePath, uuids.isSensitiveYesAUuid]|reply_path -%}
+      {%- set ethicalApprovalPath = [isSensitiveYesPath, uuids.ethicalApprovalQUuid]|reply_path -%}
+      {%- set ethicalApproval = repliesMap[ethicalApprovalPath]|reply_str_value -%}
+      {%- if ethicalApproval == uuids.ethicalApprovalYesAUuid -%}
+        {%- set ethicalApprovalYesPath = [ethicalApprovalPath, uuids.ethicalApprovalYesAUuid, uuids.ethicalApprovalYesQUuid]|reply_path -%}
+        {%- set ethicalApprovalYes = repliesMap[ethicalApprovalYesPath]|reply_str_value -%}
+        {%- if ethicalApprovalYes -%}
+          Our project has an ethical approval: {{ethicalApprovalYes}}
+        {%- else -%}
+          Our project has an ethical approval.
+        {%- endif -%}
+      {%- elif ethicalApproval == uuids.ethicalApprovalWillAUuid -%}
+            An ethical approval will be applied for.
+      {%- elif ethicalApproval == uuids.ethicalApprovalNotAUuid -%}
+            An ethical approval will not be applied for.
+      {%- endif -%}
+      {%- set reportDPOPath = [isSensitiveYesPath, uuids.reportDPOQUuid]|reply_path -%}
+      {%- set reportDPO = repliesMap[reportDPOPath]|reply_str_value -%}
+      {%- if reportDPO == uuids.reportDPOYesAUuid -%}
+        The processing has been reported to our Data Protection Officer.
+      {%- elif reportDPO == uuids.reportDPOWillAUuid -%}
+        The processing will be reported to our Data Protection Officer.
+      {%- endif -%}
+      {%- set needDPAPath = [isSensitiveYesPath, uuids.needDPAQUuid]|reply_path -%}
+      {%- set needDPAAUuid = repliesMap[needDPAPath]|reply_str_value -%}
+      {%- if needDPAAUuid == uuids.needDPAYesAUuid -%}
+        {%- set needDPAYesListPath = [needDPAPath, uuids.needDPAYesAUuid, uuids.needDPAYesListQUuid]|reply_path -%}
+        {%- set needDPAYesListCount = repliesMap[needDPAesListPath]|reply_int_value -%}
+        {%- if needDPAYesListCount > 0 -%} {# There is a list... #}
+        {# step through the list of Processors and agreements, after checking that
+          needDPAYesListQUuid is not null. Not sure if correct but think so #}
+          <ul>
+          {%- for i in range(needDPAYesListCount) -%}
+            {%- set pathPrefix = [needDPAYesListPath, i]|reply_path -%}
+            {%- set DPAProcessors = repliesMap[[pathPrefix, uuids.needDPAYesListProcessorQUuid]|reply_path]|reply_str_value -%}-%}
+            {%- set DPAAgreement = repliesMap[[pathPrefix, uuids.needDPAYesListAgreementQUuid]|reply_path]|reply_str_value -%}-%}
+            <li>
+              <strong>Processors: </strong>{{ DPAProcessors if DPAProcessors else "(no names given)" }}
+              <strong>Agreement: </strong>{{ DPAAgreement if DPAAgreement else "(no agreement given)" }}
+            </li>
+          {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      {%- elif needDPAAUuid == uuids.needDPANoAUuid -%}
+        All data processing agreements are already in place.
+      {%- endif -%}
+      {%- set needConsentPath = [isSensitiveYesPath, uuids.needConsentQUuid]|reply_path -%}
+      {%- set needConsentAUuid = repliesMap[needConsentPath]|reply_str_value -%}
+      {%- if needConsentAUuid -%}
+        {%- if needConsentAUuid == uuids.needConsentNoAnotherLegalAUuid -%}
+          Our work on personal data can be done without consent using another legal base
+          {%- set legalBasePath = [needConsentPath, uuids.needConsentNoAnotherLegalAUuid, uuids.legalBaseQUuid]|reply_path -%}
+          {%- set legalBaseAUuid = repliesMap[legalBasePath]|reply_str_value -%}
+          {%- if legalBaseAUuid == uuids.legalBaseComplianceAUuid %}
+            <span class="separator">&ndash;</span> compliance with a legal obligation.
+            {%- elif legalBaseAUuid == uuids.legalBaseContractAUuid %}
+            <span class="separator">&ndash;</span> contractual performance.
+            {%- elif legalBaseAUuid == uuids.legalBaseVitalInterestsAUuid %}
+            <span class="separator">&ndash;</span> vital interests.
+            {%- elif legalBaseAUuid == uuids.legalBasePublicInterestsAUuid %}
+            <span class="separator">&ndash;</span> public interest or acting under official public authority.
+            {%- elif legalBaseAUuid == uuids.legalBaseLegitimateInterestsAUuid %}
+            <span class="separator">&ndash;</span> legitimate interests.
+            {%- elif legalBaseAUuid == uuids.legalBaseOtherAUuid -%}
+              {%- set legalBaseOtherPath = [legalBasePath, uuids.legalBaseOtherAUuid, uuids.legalBaseOtherQUuid]|reply_path -%}
+              {%- set legalBaseOther = repliesMap[legalBaseOtherPath]|reply_str_value -%}
+              {{ ": " ~ legalBaseOther|dot if legalBaseOther else " (not further specified)."}}
+              {%- else %} (not further specified).{%- endif -%}
+        {%- elif needConsentAUuid == uuids.needConsentYesSpecificAUuid -%}
+          We will collect consent for our specific use of the data.
+        {%- elif needConsentAUuid == uuids.needConsentYesReuseAUuid -%}
+          We will collect consent for our use as well as reuse of the data.
+        {%- elif needConsentAUuid == uuids.needConsentYesAnonymizeAUuid -%}
+          We will collect consent for our use of the data, and will anonymize the data afterwards for reuse.
+        {%- endif -%}
       {%- endif -%}
       </p>
     {%- endif -%}

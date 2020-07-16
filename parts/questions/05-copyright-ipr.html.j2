@@ -3,14 +3,14 @@
 
   <div class="answer">
     {# Open philosophy #}
-    {%- set asOpenAsPossiblePath = [uuids.accessCUuid, uuids.asOpenAsPossibleQUuid]|reply_path -%}
+    {%- set asOpenAsPossiblePath = [uuids.preservingCUuid, uuids.asOpenAsPossibleQUuid]|reply_path -%}
     {%- set asOpenAsPossibleAUuid = repliesMap[asOpenAsPossiblePath]|reply_str_value -%}
     {%- if asOpenAsPossibleAUuid == uuids.asOpenAsPossibleYesAUuid -%}
       <p>We will be working with the philosophy <em>as open as possible</em> for our data.</p>
     {%- endif -%}
 
     {# Can open data #}
-    {%- set openImmediatelyPath = [uuids.accessCUuid, uuids.openImmediatelyQUuid]|reply_path -%}
+    {%- set openImmediatelyPath = [uuids.preservingCUuid, uuids.openImmediatelyQUuid]|reply_path -%}
     {%- set openImmediatelyAUuid = repliesMap[openImmediatelyPath]|reply_str_value -%}
     {%- if openImmediatelyAUuid == uuids.openImmediatelyYesAUuid -%}
       <p>All of our data can become completely open immediately.</p>
@@ -84,7 +84,7 @@
     {%- endif -%}
 
     {# Ownership #}
-    {%- set ownershipPath = [uuids.creatingCUuid, uuids.ownershipQUuid]|reply_path -%}
+    {%- set ownershipPath = [uuids.legalEthicalCUuid, uuids.ownershipQUuid]|reply_path -%}
     {%- set ownershipAUuid = repliesMap[ownershipPath]|reply_str_value -%}
     {%- if ownershipAUuid == uuids.ownershipNoOwnerAUuid -%}
       <p>Our data is legally not copyrightable, there is no legal owner.</p>
@@ -103,16 +103,13 @@
     {%- endif -%}
 
     {# (Non)reference data - license #}
-    {%- set preexistingPath = [uuids.reusingCUuid, uuids.preexistingQUuid]|reply_path -%}
-    {%- set preexistingAUuid = repliesMap[preexistingPath]|reply_str_value -%}
-    {%- if preexistingAUuid == uuids.preexistingYesAUuid -%}
-      {%- set usingPreexistingPath = [preexistingPath, uuids.preexistingYesAUuid, uuids.usingPreexistingQUuid]|reply_path -%}
-      {%- set usingPreexistingAUuid = repliesMap[usingPreexistingPath]|reply_str_value -%}
-      {%- if usingPreexistingAUuid == uuids.usingPreexistingYesAUuid -%}
+    {%- set usingPreexistingPath = [uuids.reusingCUuid, uuids.usingPreexistingQUuid]|reply_path -%}
+    {%- set usingPreexistingAUuid = repliesMap[usingPreexistingPath]|reply_str_value -%}
+    {%- if usingPreexistingAUuid == uuids.usingPreexistingYesAUuid -%}
         {%- set refDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.refDataQUuid]|reply_path -%}
         {%- set refDataCount = repliesMap[refDataPath]|reply_int_value -%}
         {%- set nrefDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.nrefDataQUuid]|reply_path -%}
-        {%- set nrefDataCount = repliesMap[nrefDataPath]|reply_int_value -%}
+        {%- set nrefDataCount = repliesMap[nrefDataPath]|reply_int_value -%} #}
         {%- set answeredRefData = [] -%}
         {%- for i in range(refDataCount) -%}
           {%- if repliesMap[[refDataPath, i, uuids.refDataConditionsQUuid]|reply_path] -%}

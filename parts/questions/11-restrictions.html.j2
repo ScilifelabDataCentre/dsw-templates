@@ -2,9 +2,9 @@
   <h3>9. Are any restrictions on data sharing required?</h3>
 
   <div class="answer">
-    <p>Ethical and legal restrictions are documented under Section C. We have used the Data Stewardship Wizard, which made us aware of options to minimize the restrictions.</p>
+    <p>Ethical and legal restrictions are documented under Section D. </p>
 
-    {%- set openImmediatelyPath = [uuids.accessCUuid, uuids.openImmediatelyQUuid]|reply_path -%}
+    {%- set openImmediatelyPath = [uuids.preservingCUuid, uuids.openImmediatelyQUuid]|reply_path -%}
     {%- set openImmediatelyAUuid = repliesMap[openImmediatelyPath]|reply_str_value -%}
     {%- if openImmediatelyAUuid == uuids.openImmediatelyYesAUuid -%}
       <p>No data sharing agreement will be required.</p>

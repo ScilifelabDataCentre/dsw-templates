@@ -1,5 +1,5 @@
 <div id="q-longterm-plan" class="question">
-  <h3>11. What is the longterm preservation plan for the dataset?</h3>
+  <h3>12. What is the longterm preservation plan for the dataset?</h3>
 
   <div class="answer">
     {# Published datasets #}
@@ -14,6 +14,8 @@
         {%- set publishedDataRepositoryKindAUuid = repliesMap[publishedDataRepositoryKindPath]|reply_str_value -%}
         {%- set publishedDataCataloguePath = [pathPrefix, uuids.publishedDataCatalogueQUuid]|reply_path -%}
         {%- set publishedDataCatalogueAUuid = repliesMap[publishedDataCataloguePath]|reply_str_value -%}
+        {%- set publishedDataRepositoryFormatPath = [pathPrefix, uuids.repoFileFormatQUuid]|reply_path -%}
+        {%- set publishedDataRepositoryFormatReply = repliesMap[publishedDataRepositoryFormatPath] -%}
         {%- if publishedDataRepositoryKindAUuid or publishedDataCatalogueAUuid -%}
           <li>
             <strong>{{ publishedDataName if publishedDataName else "(no name given)" }}</strong>
@@ -65,6 +67,11 @@
                 {%- endif -%}
               {%- endif -%}
             {%- endif -%}
+            {# File format #}
+            {# might not work #}
+            {%- if publishedDataRepositoryFormatReply -%}
+              File format will be: {{ macros.integrationValue(publishedDataRepositoryFormatReply, uuids.repoFileFormatQUuid) }}.
+            {%- endif -%}
             {%- if publishedDataCatalogueAUuid == uuids.publishedDataCatalogueYesAUuid -%}
               {%- if publishedDataRepositoryKindAUuid %}
                 We
@@ -72,6 +79,52 @@
                 <span class="separator">&ndash;</span> we
               {%- endif %}
               will be adding a reference to the published data to at least one data catalogue.
+            {%- endif -%}
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    {# Published software #}
+    {%- set publishedSWPath = [uuids.preservingCUuid, uuids.publishedSWQUuid]|reply_path -%}
+    {%- set publishedSWCount = repliesMap[publishedSWPath]|reply_int_value -%}
+    {%- if publishedSWCount > 0 -%}
+      <ul>
+      {%- for i in range(publishedSWCount) -%}
+        {%- set pathPrefix = [publishedSWPath, i]|reply_path -%}
+        {%- set publishedSWName = repliesMap[[pathPrefix, uuids.publishedSWNameQUuid]|reply_path]|reply_str_value -%}
+        {%- set publishedSWRepoPath = [pathPrefix, uuids.publishedSWRepoQUuid]|reply_path -%}
+        {%- set publishedSWRepoAUuid = repliesMap[publishedSWRepoPath]|reply_str_value -%}
+        {%- set publishedSWCataloguePath = [pathPrefix, uuids.publishedSWCatalogueQUuid]|reply_path -%}
+        {%- set publishedSWCatalogueAUuid = repliesMap[publishedSWCataloguePath]|reply_str_value -%}
+        {%- if publishedSWRepoAUuid or publishedSWCatalogueAUuid -%}
+          <li>
+            <strong>{{ publishedSWName if publishedSWName else "(no name given)" }}</strong>
+            {%- if publishedSWRepoAUuid %}
+              will be stored in
+              {%- if publishedSWRepositoryKindAUuid == uuids.publishedSWRepoGitAUuid %}
+                GitHub.
+              {% endif -%}
+              {%- elif publishedSWRepositoryKindAUuid == uuids.publishedSWRepoBitbucketAUuid %}
+                BitBucket.
+              {%- elif publishedSWRepositoryKindAUuid == uuids.publishedSWRepoOtherAUuid %}
+                {%- set publishedSWRepoOtherPath = [publishedSWRepoPath, uuids.publishedSWRepoOtherAUuid, uuids.publishedSWRepoOtherWhichQUuid]|reply_path -%}
+                {%- set publishedSWRepoOtherWhichAUuid = repliesMap[publishedSWRepoOtherPath]|reply_str_value %}
+                {%- if publishedSWRepoOtherWhichAUuid %}
+                  : {{publishedSWRepoOtherWhichAUuid}}. {# |dot? #}
+                {%- else %}
+                  another, not specified, repository.
+                {%- endif -%}
+
+              {%- endif -%}
+            {%- endif -%}
+            {%- if publishedSWCatalogueAUuid == uuids.publishedSWCatalogueYesAUuid -%}
+              {%- if publishedSWRepositoryKindAUuid %}
+                We
+              {%- else %}
+                <span class="separator">&ndash;</span> we
+              {%- endif %}
+              will be adding a reference to the published software to at least one catalogue.
             {%- endif -%}
           </li>
         {%- endif -%}

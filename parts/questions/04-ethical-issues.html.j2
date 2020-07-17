@@ -1,5 +1,5 @@
 <div id="q-ethical-issues" class="question">
-  <h3>6. How will you manage any ethical issues?</h3>
+  <h3>7. How will you manage any ethical issues?</h3>
 
   <div class="answer">
     {# Non reference data #}
@@ -56,7 +56,7 @@
     {%- set isSensitive = repliesMap[isSensitivePath]|reply_str_value -%}
     {%- if isSensitive == uuids.isSensitiveNoAUuid -%}
       None of the collected data sets are personal. </p>
-    {%- elif if isSensitive == uuids.isSensitiveYesAUuid -%}
+    {%- elif isSensitive == uuids.isSensitiveYesAUuid -%}
       {%- set isSensitiveYesPath = [isSensitivePath, uuids.isSensitiveYesAUuid]|reply_path -%}
       {%- set ethicalApprovalPath = [isSensitiveYesPath, uuids.ethicalApprovalQUuid]|reply_path -%}
       {%- set ethicalApproval = repliesMap[ethicalApprovalPath]|reply_str_value -%}
@@ -91,8 +91,8 @@
           <ul>
           {%- for i in range(needDPAYesListCount) -%}
             {%- set pathPrefix = [needDPAYesListPath, i]|reply_path -%}
-            {%- set DPAProcessors = repliesMap[[pathPrefix, uuids.needDPAYesListProcessorQUuid]|reply_path]|reply_str_value -%}-%}
-            {%- set DPAAgreement = repliesMap[[pathPrefix, uuids.needDPAYesListAgreementQUuid]|reply_path]|reply_str_value -%}-%}
+            {%- set DPAProcessors = repliesMap[[pathPrefix, uuids.needDPAYesListProcessorQUuid]|reply_path]|reply_str_value -%}
+            {%- set DPAAgreement = repliesMap[[pathPrefix, uuids.needDPAYesListAgreementQUuid]|reply_path]|reply_str_value -%}
             <li>
               <strong>Processors: </strong>{{ DPAProcessors if DPAProcessors else "(no names given)" }}
               <strong>Agreement: </strong>{{ DPAAgreement if DPAAgreement else "(no agreement given)" }}

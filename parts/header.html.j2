@@ -25,7 +25,11 @@
         {%- set contacts = [] -%}
         {%- for i in range(nContributors) -%}
           {%- set pathPrefix = [contributorsPath, i]|join(".") ~ "." -%}
-          {%- set contributorRole = repliesMap[pathPrefix ~ uuids.contributorRoleQUuid] -%}
+          {# {%- set contributorRole = repliesMap[pathPrefix ~ uuids.contributorRoleQUuid] -%} #}
+          {%- set contributorRole = repliesMap[pathPrefix ~ uuids.contributorAddRoleQUuid ~ uuids.contributorRoleQUuid] -%}
+          {# only write the ones who are named as contact persons (I think). However,
+            since I have made Role an item list, the coding below will not work...
+            perhaps if [pathPrefix ~ uuids.contributorAddRoleQUuid ~ uuids.contributorRoleQUuid]? #}
           {%- if contributorRole and contributorRole.value.value == uuids.contributorRoleContactPersonAUuid -%}
             {% do contacts.append(pathPrefix)  %}
           {%- endif -%}
@@ -40,9 +44,6 @@
                   {%- set contributorName = repliesMap[pathPrefix ~ uuids.contributorNameQUuid] -%}
                   {%- set contributorEmail = repliesMap[pathPrefix ~ uuids.contributorEmailQUuid] -%}
                   {%- set contributorOrcid = repliesMap[pathPrefix ~ uuids.contributorOrcidQUuid] -%}
-                  {# }{%- set contributorAffiliation = repliesMap[pathPrefix ~ uuids.contributorAffiliationQUuid] -%} #}
-                  {%- set contributorAffiliationPath = [pathPrefix,uuids.contributorAffiliationQUuid]|reply_path -%}
-                  {%- set contributorAffiliationAUuid = repliesMap[contributorAffiliationPath]|reply_str_value -%}
                   {%- if contributorName and contributorName.value.value -%}
                     <span class="contact-name">{{ contributorName.value.value }}</span>
                   {%- else -%}
@@ -55,11 +56,41 @@
                   {%- elif contributorOrcid and contributorOrcid.value.value %}
                     ({{ macros.formatOrcid(contributorOrcid.value.value) }})
                   {%- endif -%}
-                  {%- if contributorAffiliation and contributorAffiliationAUuid=uuids.contributorAffiliationOtherAUuid %}
-                    {% set contributorAffiliationOtherPath = [contributorAffiliationOther]}
+                  {#{%- set contributorAffiliation = repliesMap[pathPrefix ~ uuids.contributorAffiliationQUuid] -%} #}
+                  {#{%- if contributorAffiliation and contributorAffiliation.value.value -%}
                     <br>{{ contributorAffiliationOtherWich.value.value }}
-                  {%- elif contributorAffiliation and contributorAffiliationOtherAUuid and contributorAffiliationOtherWich.value.value %}
-                    <br>{{ contributorAffiliationAUuid }}
+                  {%- endif -%} #}
+                  {# Below is my 1st attempt at writing affiliation #}
+                  {%- set contributorAffiliationPath = [pathPrefix,uuids.contributorAffiliationQUuid]|reply_path -%}
+                  {%- set contributorAffiliationAUuid = repliesMap[contributorAffiliationPath]|reply_str_value -%}
+                  {%- if contributorAffiliationAUuid -%}
+                    {%- if contributorAffiliationAUuid == uuids.contributorAffiliationKIAUuid -%}
+                      Karolinska institutet
+                    {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationUUAUuid -%}
+                      Uppsala universitet
+                    {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationLUAUuid -%}
+                      Lunds universitet
+                    {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationGUAUuid -%}
+                      Göteborgs universitet
+                    {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationUmUAUuid -%}
+                      Umeå universitet
+                    {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationSLUAUuid -%}
+                      Sveriges lantbruksuniversitet
+                    {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationSUAUuid -%}
+                      Stockholms universitet
+                    {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationKTHAUuid -%}
+                      Kungliga tekniska högskolan
+                    {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationLiUAUuid -%}
+                      Linköpings universitet
+                    {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationChaAUuid -%}
+                      Chalmers
+                    {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationOtherAUuid -%}
+                      {%- set contributorAffiliationOtherPath = [contributorAffiliationPath, uuids.contributorAffiliationOtherAUuid, uuids.contributorAffiliationOtherQUuid]|reply_path -%}
+                      {%- set contributorAffiliationOtherWhichAUuid = repliesMap[contributorAffiliationOtherPath]|reply_str_value -%}
+                      {%- if contributorAffiliationOtherWhichAUuid -%}
+                        {{ contributorAffiliationOtherWhichAUuid }}
+                      {%- endif -%}
+                    {%- endif -%}
                   {%- endif -%}
                 </li>
               {%- endfor -%}
@@ -70,7 +101,7 @@
         </dd>
       {%- endif -%}
 
-      {# {%- set projectAbstractPath = join([uuids.adminDetailsCUuid, uuids.projectAbstractQUuid], ".") -%}
+      {#{%- set projectAbstractPath = join([uuids.adminDetailsCUuid, uuids.projectAbstractQUuid], ".") -%}
       {%- set projectAbstractReply = repliesMap[projectAbstractPath] -%}
       {%- if projectAbstractReply %}
         <dt>Project abstract</dt>

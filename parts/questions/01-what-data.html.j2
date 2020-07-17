@@ -24,11 +24,31 @@
           {%- if measuredDataWhoAUuid == uuids.measuredDataWhoExpertsOwnAUuid -%}
             <p>This dataset will be collected by experts in the project, with our own equipment.</p>
           {%- elif measuredDataWhoAUuid == uuids.measuredDataWhoExpertsOutAUuid -%}
-          {# needs to be fixed so that the infrastructure is written explicitly from
-              measuredDataWhoExpertsOutQUuid reply_str_value, and if
-              other than the written choices (measuredDataWhoExpertsOutOtherAUuid),
-              this needs to be handled separately using variable measuredDataWhoExpertsOutOtherQUuid#}
-            <p>This dataset will be collected by experts in the project, at a specialized infrastructure.</p>
+            {%- set measuredDataWhoInfraPath = [measuredDataWhoPath, uuids.measuredDataWhoExpertsOutAUuid, uuids.measuredDataWhoExpertsOutQUuid]|reply_path -%}
+            {%- set measuredDataWhoInfraWhichAUuid = repliesMap[measuredDataWhoInfraPath]|reply_str_value -%}
+            {%- if measuredDataWhoInfraWhichAUuid == uuids.measuredDataWhoExpertsOutNGIAUuid -%}
+              <p>This dataset will be collected by National Genomics Infrastructure (NGI).</p>
+            {%- elif measuredDataWhoInfraWhichAUuid == uuids.measuredDataWhoExpertsOutESCGAUuid -%}
+              <p>This dataset will be collected by Eukaryotic Single-Cell Genomics (ESCG).</p>
+            {%- elif measuredDataWhoInfraWhichAUuid == uuids.measuredDataWhoExpertsOutMSCGAUuid -%}
+              <p>This dataset will be collected by Microbial Single Cell Genomics.</p>
+            {%- elif measuredDataWhoInfraWhichAUuid == uuids.measuredDataWhoExpertsOutSMCAUuid -%}
+              <p>This dataset will be collected by Swedish Metabolomics Centre (SMC).</p>
+            {%- elif measuredDataWhoInfraWhichAUuid == uuids.measuredDataWhoExpertsOutNMRAUuid -%}
+              <p>This dataset will be collected by Swedish NMR Centre.</p>
+            {%- elif measuredDataWhoInfraWhichAUuid == uuids.measuredDataWhoExpertsOutBioMSAUuid -%}
+              <p>This dataset will be collected by Swedish National Infrastructure for Biological Mass Spectrometry (BioMS).</p>
+            {%- elif measuredDataWhoInfraWhichAUuid == uuids.measuredDataWhoExpertsOutChemAUuid -%}
+              <p>This dataset will be collected by Chemical proteomics & proteogenomics national facility.</p>
+            {%- elif measuredDataWhoInfraWhichAUuid == uuids.measuredDataWhoExpertsOutOtherAUuid -%}
+              {%- set measuredDataWhoInfraOtherPath = [measuredDataWhoPath, uuids.measuredDataWhoExpertsOutOtherAUuid, uuids.measuredDataWhoExpertsOutOtherQUuid]|reply_path -%}
+              {%- set measuredDataWhoInfraOtherAUuid = repliesMap[measuredDataWhoInfraOtherPath]|reply_str_value -%}
+              {%- if measuredDataWhoInfraOtherAUuid -%}
+                <p>This dataset will be collected by {{ measuredDataWhoInfraOtherAUuid }}.</p>
+              {%- else -%}
+                <p>This dataset will be collected by Experts in the project, at a specialized infrastructure.</p>
+              {%- endif -%}
+            {%- endif -%}
           {%- elif measuredDataWhoAUuid == uuids.measuredDataWhoExternalAUuid -%}
             {%- set mdExternalOwnershipPath = [measuredDataWhoPath, uuids.measuredDataWhoExternalAUuid, uuids.mdExternalOwnershipQUuid]|reply_path -%}
             {%- set mdExternalOwnershipAUuid = repliesMap[mdExternalOwnershipPath]|reply_str_value -%}
@@ -269,18 +289,24 @@
             {# volume #}
             {%- if formatsVolumeAUuid == uuids.formatsVolumeSmallAUuid %}
               We will have only a small amount of data stored in this format.
-            {%- elif formatsVolumeAUuid == uuids.formatsVolumeTotalAUuid -%}
-            {# needs to be changed to read the options under formatsVolumeTotalTBQUuid
-               unsure if the set below (unchanged) works but worth a try #}
+            {%- elif formatsVolumeAUuid == uuids.formatsVolumeTotalAUuid %}
+            {# changed to read the options under formatsVolumeTotalTBQUuid
+               think this works #}
               {%- set formatsVolumeTotalTB = repliesMap[[formatsVolumePath, uuids.formatsVolumeTotalAUuid, uuids.formatsVolumeTotalTBQUuid]|reply_path]|reply_str_value -%}
-              {%- if formatsVolumeTotalTB %}
-                We expect to have {{ formatsVolumeTotalTB }} of data in this format.
+              {%- if formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQLess10AUuid %}
+                We expect to have between 1 TB and 10 TB of data in this format.
+              {%- elif formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQLess50AUuid %}
+                We expect to have between 10 TB and 50 TB of data in this format.
+              {%- elif formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQLess100AUuid %}
+                We expect to have between 50 TB and 100 TB of data in this format.
+              {%- elif formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQMore100AUuid %}
+                  We expect to have more than 100 TB of data in this format.
               {%- endif -%}
             {%- elif formatsVolumeAUuid == uuids.formatsVolumeFileSizeAUuid -%}
               {%- set formatsVolumeFiles = repliesMap[[formatsVolumePath, uuids.formatsVolumeFileSizeAUuid, uuids.formatsVolumeFilesQUuid]|reply_path]|reply_str_value -%}
               {%- set formatsVolumeFileGB = repliesMap[[formatsVolumePath, uuids.formatsVolumeFileSizeAUuid, uuids.formatsVolumeFileGBQUuid]|reply_path]|reply_str_value -%}
               {%- if formatsVolumeFiles and formatsVolumeFileGB %}
-                We expect to have {{ formatsVolumeFiles }} files of average size {{ formatsVolumeFileGB }} GB (i.e. approximatelly {{ (formatsVolumeFiles|int * formatsVolumeFileGB|float)|round(2) }} GB in total).
+                We expect to have {{ formatsVolumeFiles }} files of average size {{ formatsVolumeFileGB }} GB (i.e. approximately {{ (formatsVolumeFiles|int * formatsVolumeFileGB|float)|round(2) }} GB in total).
               {%- endif -%}
             {%- endif -%}
             </p>

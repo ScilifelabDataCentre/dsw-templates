@@ -41,16 +41,14 @@
     There will be no instrument dataset in this project.
   {%- endif -%}
   {# Storage and file conventions #}
-  {%- set storageConvPath = [uuids.storageCUuid, uuids.storageOrganizeQUuid]|reply_path -%}
-  {%- set storageConvAUuid = repliesMap[storageConvPath]|reply_str_value -%}
-  {# not sure how to write, but if there is a reply in storageConvAUuid (.value.value?) #}
-  {%- if storageConvAUuid -%}
+  {%- set storageOrganizePath = [uuids.storageCUuid, uuids.storageOrganizeQUuid]|reply_path -%}
+  {%- set storageOrganizeAUuid = repliesMap[storageOrganizePath]|reply_str_value -%}
+  {%- if storageOrganizeAUuid -%}
     <h4>Storage and file conventions</h4>
     <p>
       <ul>
-      {# not sure, but if reply==storOrgSubjFoldersAUuid #}
-      {%- if storageConvAUuid == uuids.storOrgSubjFoldersAUuid -%}
-        {%- set storOrgSubjFoldersPath = [storageConvPath, uuids.storOrgSubjFoldersAUuid]|reply_path -%}
+      {%- if storageOrganizeAUuid == uuids.storOrgSubjFoldersAUuid -%}
+        {%- set storOrgSubjFoldersPath = [storageOrganizePath, uuids.storOrgSubjFoldersAUuid]|reply_path -%}
         {%- set storOrgSubjFoldersConvs = repliesMap[[storOrgSubjFoldersPath, uuids.storOrgSubjFoldersConvsQUuid]|reply_path]|reply_str_value -%}
         <li>
           There will be a <strong>folder for each sample/subject</strong>.
@@ -58,8 +56,8 @@
             Each of those will use the following conventions: {{ storOrgSubjFoldersConvs|dot }}
           {%- endif -%}
         </li>
-      {%- elif storageConvAUuid == uuids.storOrgAnalysisFoldersAUuid -%}
-        {%- set storOrgAnalysisFoldersPath = [storageConvPath, uuids.storOrgAnalysisFoldersAUuid]|reply_path -%}
+      {%- elif storageOrganizeAUuid == uuids.storOrgAnalysisFoldersAUuid -%}
+        {%- set storOrgAnalysisFoldersPath = [storageOrganizePath, uuids.storOrgAnalysisFoldersAUuid]|reply_path -%}
         {%- set storOrgAnalysisFoldersConvs = repliesMap[[storOrgAnalysisFoldersPath, uuids.storOrgAnalysisFoldersConvsQUuid]|reply_path]|reply_str_value -%}
         <li>
           There will be a <strong>folder for each sample/subject</strong>.
@@ -67,8 +65,8 @@
             Each of those will use the following conventions: {{ storOrgAnalysisFoldersConvs|dot }}
           {%- endif -%}
         </li>
-      {%- elif storageConvAUuid == uuids.storOrgWorkflowStepFoldersAUuid -%}
-        {%- set storOrgWorkflowStepFoldersPath = [storageConvPath, uuids.storOrgWorkflowStepFoldersAUuid]|reply_path -%}
+      {%- elif storageOrganizeAUuid == uuids.storOrgWorkflowStepFoldersAUuid -%}
+        {%- set storOrgWorkflowStepFoldersPath = [storageOrganizePath, uuids.storOrgWorkflowStepFoldersAUuid]|reply_path -%}
         {%- set storOrgWorkflowStepFoldersConvs = repliesMap[[storOrgWorkflowStepFoldersPath, uuids.storOrgWorkflowStepFoldersConvsQUuid]|reply_path]|reply_str_value -%}
         <li>
           There will be a <strong>folder for each sample/subject</strong>.
@@ -76,15 +74,15 @@
             Each of those will use the following conventions: {{ storOrgWorkflowStepFoldersConvs|dot }}
           {%- endif -%}
         </li>
+      {%- endif -%}
       </ul>
-    {%- endif -%}
   </p>
     {# File naming conventions #}
-    {%- set storOrgAppointmentsPath = [storageConvPath, uuids.storOrgFilesConvsQUuid]|reply_path -%}
+    {%- set storOrgAppointmentsPath = [storageOrganizePath, uuids.storOrgFilesConvsQUuid]|reply_path -%}
     {%- set storOrgAppointments = repliesMap[storOrgAppointmentsPath]|reply_str_value -%}
     {%- if storOrgAppointments %}
     <p>
-      We have made appointments about naming the files. {{ storOrgAppointments|dot }}
+      We have made decisions about naming the files. {{ storOrgAppointments|dot }}
     </p>
     {%- endif -%}
   </div>

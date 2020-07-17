@@ -17,22 +17,29 @@
         {%- set sharedWhereSNICPath = [sharedWherePath, uuids.sharedWhereSNICAUuid]|reply_path -%}
         {%- set sharedWhereSNICWhichPath = [sharedWhereSNICPath, uuids.sharedWhereSNICwhichQUuid]|reply_path -%}
         {%- set sharedWhereSNICWhichAUuid = repliesMap[sharedWhereSNICWhichPath]|reply_str_value -%}
-        {# is sharedWhereSNICWhichAUuid holding answer to which SNIC center? Then next if-row is not necessary
         {%- if sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichUppmaxAUuid -%}
-        but perhaps .value.value is necessary in order to print the actual choice #}
-          <p>Data will be stored at {{sharedWhereSNICWhichAUuid}} SNIC center.</p>
+          <p>Data will be stored at SNIC center Uppmax.</p>
+        {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichPDCAUuid-%}
+          <p>Data will be stored at SNIC center PDC.</p>
+        {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichNSCAUuid-%}
+          <p>Data will be stored at SNIC center NSC.</p>
+        {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichLunarcAUuid-%}
+          <p>Data will be stored at SNIC center Lunarc.</p>
+        {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichHPC2NAUuid-%}
+          <p>Data will be stored at SNIC center HPC2N.</p>
+        {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichC3SEAUuid-%}
+          <p>Data will be stored at SNIC center C3CSE.</p>
+        {%- endif -%}
         {%- set sharedWhereSNICSWPath = [sharedWhereSNICPath, uuids.sharedWhereSNICSWQUuid]|reply_path -%}
         {%- set sharedWhereSNICSWAUuid = repliesMap[sharedWhereSNICWhichPath]|reply_str_value -%}
         {%- if sharedWhereSNICSWAUuid == uuids.sharedWhereSNICSWInstalledYesAUuid -%}
           <p>All necessary software is already installed. </p>
         {%- elif sharedWhereSNICSWAUuid == uuids.sharedWhereSNICSWInstalledNeedAUuid -%}
-          {%- set sharedWhereSNICSWInstNeedPath = [sharedWhereSNICSWPath, uuids.sharedWhereSNICSWInstalledNeedAUuid]|reply_path -%}
+          {%- set sharedWhereSNICSWInstNeedPath = [sharedWhereSNICSWPath, uuids.sharedWhereSNICSWInstalledNeedAUuid, uuids.sharedWhereSNICSWInstalledNeedQUuid]|reply_path -%}
           {%- set sharedWhereSNICSWInstNeedAUuid = repliesMap[sharedWhereSNICSWInstNeedPath]|reply_str_value -%}
           {%- if sharedWhereSNICSWInstNeedAUuid -%}
-            {%- set sharedWhereSNICSWInstNeedQUuidPath = [sharedWhereSNICSWInstNeedPath, uuids.sharedWhereSNICSWInstalledNeedQUuid]|reply_path -%}
-            {%- set sharedWhereSNICSWInstNeedQUuid = repliesMap[sharedWhereSNICSWInstNeedQUuidPath]|reply_str_value -%}
-            {# most likely syntax error... also should it be sharedWhereSNICSWInstNeedQUuid|dot? #}
-            <p> The following software needs to be installed: {{ sharedWhereSNICSWInstNeedQUuid }} </p>
+              {# should it be sharedWhereSNICSWInstNeedAUuid|dot? #}
+              <p> The following software needs to be installed: {{ sharedWhereSNICSWInstNeedAUuid }} </p>
           {%- else -%}
             <p> Some software needs to be installed. </p>
           {%- endif -%}
@@ -51,7 +58,7 @@
       {%- elif sharedWhereAUuid == uuids.sharedWhereOtherAUuid -%}
         {%- set sharedWhereOtherPath = [sharedWherePath, uuids.sharedWhereOtherAUuid, uuids.sharedWhereOtherQUuid]|reply_path -%}
         {%- set sharedWhereOther = repliesMap[sharedWhereOtherPath]]|reply_str_value -%}
-        <p> Project stored and back-up: {{sharedWhereOther}} </p>
+        <p> Project storage and back-up: {{sharedWhereOther}} </p>
       {%- endif -%}
       {%- set sharedReliablePath = [sharedWorkspacePath, uuids.sharedWorkspaceYesAUuid, uuids.sharedReliableQUuid]|reply_path -%}
       {%- set sharedReliableAUuid = repliesMap[sharedReliablePath]|reply_str_value -%}

@@ -1,5 +1,5 @@
 <div id="q-dm-responsible" class="question">
-  <h3>12. Who will be responsible for data management?</h3>
+  <h3>13. Who will be responsible for data management?</h3>
 
   <div class="answer">
     {# NOTE: Public questionnaires does not have "ctx.createdBy" filled #}
@@ -40,8 +40,6 @@
       {{ contributorsResponsibility(nContributors, uuids.contributorRoleDataCollectorAUuid, "responsible for finding, gathering, and collecting data.") }}
       {# Data managers #}
       {{ contributorsResponsibility(nContributors, uuids.contributorRoleDataManagerAUuid, "responsible for maintaining the finished resource.") }}
-      {# Distributors #}
-      {{ contributorsResponsibility(nContributors, uuids.contributorRoleDistributorAUuid, "responsible for generating/disseminating copies of the resouce in either electronic or print form.") }}
     {%- endif -%}
   </div>
 </div>

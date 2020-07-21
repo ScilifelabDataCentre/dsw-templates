@@ -111,7 +111,7 @@
                 {%- set publishedSWRepoOtherPath = [publishedSWRepoPath, uuids.publishedSWRepoOtherAUuid, uuids.publishedSWRepoOtherWhichQUuid]|reply_path -%}
                 {%- set publishedSWRepoOtherWhichAUuid = repliesMap[publishedSWRepoOtherPath]|reply_str_value %}
                 {%- if publishedSWRepoOtherWhichAUuid %}
-                  : {{publishedSWRepoOtherWhichAUuid}}. {# |dot? #}
+                  : {{ publishedSWRepoOtherWhichAUuid }}. {# |dot? #}
                 {%- else %}
                   another, not specified, repository.
                 {%- endif -%}

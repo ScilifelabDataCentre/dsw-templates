@@ -185,7 +185,7 @@
                   {%- endif -%}
                 {%- endif -%}
             {%- endif -%}
-            {%- if publishedDataDOIAUuid == uuids.publishedDataDOIYesAUuid -%}
+            {# {%- if publishedDataDOIAUuid == uuids.publishedDataDOIYesAUuid -%}
               {%- set publishedDataDOIYesWhatPath = [publishedDataDOIPath, uuids.publishedDataDOIYesAUuid, uuids.publishedDataDOIYesWhatQUuid]|reply_path -%}
               {%- set publishedDataDOIYesWhat = repliesMap[publishedDataDOIYesWhatPath]|reply_str_value -%}
               {%- if publishedDataDOIYesWhat %}
@@ -193,7 +193,7 @@
               {%- else %}
                 We will get a DOI for this data set.
               {%- endif -%}
-            {%- endif -%}
+            {%- endif -%} #}
           </li>
         {%- endif -%}
       {%- endfor -%}

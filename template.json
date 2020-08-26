@@ -3,9 +3,9 @@
   "organizationId": "SciLifeLab",
   "templateId": "SLL-SE-VR-TEMPLATE",
   "version": "0.1.0",
-  "name": "Vetenskapsrådet DMP",
+  "name": "SciLifeLab Vetenskapsrådet DMP",
   "description": "Default DMP template based on the style recommended by the Swedish Research Council",
-  "readme": "See [https://www.vr.se/english/applying-for-funding/requirements-terms-and-conditions/producing-a-data-management-plan.html](https://www.vr.se/english/applying-for-funding/requirements-terms-and-conditions/producing-a-data-management-plan.html)",
+  "readme": "# Vetenskapsrådet DMP template\n\nThis is a template that can be used for producing a DMP that fulfills the requirements by [Vetenskapsrådet](https://www.vr.se) in [Producing a data management plan](https://www.vr.se/english/applying-for-funding/requirements-terms-and-conditions/producing-a-data-management-plan.html), designed for use in [SciLifeLab Data Stewardship Wizard](https://dsw.scilifelab.se) with knowledge model *SciLifeLab Vetenskapsrådet DMP* (SciLifeLab:SLL-VR-DMP:2.0.1).\n",
   "recommendedPackageId": "dsw:root:2.2.0",
   "allowedPackages": [
     {

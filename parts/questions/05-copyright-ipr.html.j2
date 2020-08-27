@@ -106,26 +106,26 @@
     {%- set usingPreexistingPath = [uuids.reusingCUuid, uuids.usingPreexistingQUuid]|reply_path -%}
     {%- set usingPreexistingAUuid = repliesMap[usingPreexistingPath]|reply_str_value -%}
     {%- if usingPreexistingAUuid == uuids.usingPreexistingYesAUuid -%}
-        {%- set refDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.refDataQUuid]|reply_path -%}
-        {%- set refDataCount = repliesMap[refDataPath]|reply_int_value -%}
-        {%- set nrefDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.nrefDataQUuid]|reply_path -%}
-        {%- set nrefDataCount = repliesMap[nrefDataPath]|reply_int_value -%} #}
-        {%- set answeredRefData = [] -%}
-        {%- for i in range(refDataCount) -%}
+      {%- set refDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.refDataQUuid]|reply_path -%}
+      {%- set refDataCount = repliesMap[refDataPath]|reply_int_value -%}
+      {%- set nrefDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.nrefDataQUuid]|reply_path -%}
+      {%- set nrefDataCount = repliesMap[nrefDataPath]|reply_int_value -%} #}
+      {%- set answeredRefData = [] -%}
+      {%- for i in range(refDataCount) -%}
           {%- if repliesMap[[refDataPath, i, uuids.refDataConditionsQUuid]|reply_path] -%}
             {%- do answeredRefData.append(i) -%}
           {%- endif -%}
-        {%- endfor -%}
-        {%- set answeredNRefData = [] -%}
-        {%- for i in range(nrefDataCount) -%}
+      {%- endfor -%}
+      {%- set answeredNRefData = [] -%}
+      {%- for i in range(nrefDataCount) -%}
           {%- if repliesMap[[nrefDataPath, i, uuids.nrefDataConditionsQUuid]|reply_path] -%}
             {%- do answeredNRefData.append(i) -%}
           {%- endif -%}
-        {%- endfor -%}
-        {%- if (answeredRefData|length + answeredNRefData|length) > 0 -%}
-          <p>For the reference and non-reference data sets that we reuse, conditions are as follows:
-          <ul>
-            {%- for i in answeredRefData -%}
+      {%- endfor -%}
+      {%- if (answeredRefData|length + answeredNRefData|length) > 0 -%}
+        <p>For the reference and non-reference data sets that we reuse, conditions are as follows:
+        <ul>
+          {%- for i in answeredRefData -%}
               {%- set refDataNamePath = [refDataPath, i, uuids.refDataNameQUuid]|reply_path -%}
               {%- set refDataNameReply = repliesMap[refDataNamePath] -%}
               {%- set refDataConditionsPath = [refDataPath, i, uuids.refDataConditionsQUuid]|reply_path -%}
@@ -145,8 +145,8 @@
                   {%- endif -%}
                 </li>
               {%- endif -%}
-            {%- endfor -%}
-            {%- for i in answeredNRefData -%}
+          {%- endfor -%}
+          {%- for i in answeredNRefData -%}
               {%- set nrefDataNamePath = [nrefDataPath, i, uuids.nrefDataNameQUuid]|reply_path -%}
               {%- set nrefDataNameReply = repliesMap[nrefDataNamePath] -%}
               {%- set nrefDataConditionsPath = [nrefDataPath, i, uuids.nrefDataConditionsQUuid]|reply_path -%}
@@ -166,10 +166,10 @@
                   {%- endif -%}
                 </li>
               {%- endif -%}
-            {%- endfor -%}
-          </ul>
-        {%- endif -%}
+          {%- endfor -%}
+        </ul>
       {%- endif -%}
     {%- endif -%}
+    
   </div>
 </div>

@@ -1,7 +1,15 @@
 {
   "uuid": "70c09f78-85d7-11e9-8241-00163eba999d",
+  "id": "SciLifeLab:full:1.0.0",
+  "organizationId": "SciLifeLab",
+  "templateId": "full",
+  "version": "1.0.0",
   "name": "SciLifeLab Full",
-  "allowedKMs": [
+  "description": "Template intended for the SciLifeLab DMP",
+  "readme": "# SciLifeLab Full",
+  "license": "CC BY-SA 4.0",
+  "recommendedPackageId": "SciLifeLab:SciLifeLab-DMP:1.2.3",
+  "allowedPackages": [
     {
       "orgId": null,
       "kmId": null,
@@ -13,7 +21,9 @@
     {
       "uuid": "278a615b-cb5e-4ca0-bd85-f58f446a07c9",
       "name": "JSON Data",
+      "shortName": "json",
       "icon": "far fa-file",
+      "color": "#f15a24",
       "steps": [
         {
           "name": "json",
@@ -24,7 +34,9 @@
     {
       "uuid": "1b3174fb-9882-4bdb-9cd5-55ae3a3f5296",
       "name": "HTML Document",
+      "shortName": "html",
       "icon": "far fa-file-code",
+      "color": "#f15a24",
       "steps": [
         {
           "name": "jinja",
@@ -39,7 +51,9 @@
     {
       "uuid": "85c65917-504c-4b6f-8456-63dbd262af02",
       "name": "PDF Document",
+      "shortName": "pdf",
       "icon": "far fa-file-pdf",
+      "color": "#f15a24",
       "steps": [
         {
           "name": "jinja",
@@ -58,7 +72,9 @@
     {
       "uuid": "85d85a5d-4804-48a4-afe6-34afab1e2d98",
       "name": "LaTeX Document",
+      "shortName": "latex",
       "icon": "far fa-file-alt",
+      "color": "#f15a24",
       "steps": [
         {
           "name": "jinja",
@@ -80,7 +96,9 @@
     {
       "uuid": "4703535e-f9e0-458f-9465-dbaac7d8638b",
       "name": "MS Word Document",
+      "shortName": "docx",
       "icon": "far fa-file-word",
+      "color": "#f15a24",
       "steps": [
         {
           "name": "jinja",
@@ -102,7 +120,9 @@
     {
       "uuid": "0a94046b-2391-47b5-a7d7-ba364cfffbd4",
       "name": "OpenDocument Text",
+      "shortName": "odt",
       "icon": "far fa-file-alt",
+      "color": "#f15a24",
       "steps": [
         {
           "name": "jinja",
@@ -124,7 +144,9 @@
     {
       "uuid": "2882931f-7c8f-4bef-b4f2-556017573745",
       "name": "Markdown Document",
+      "shortName": "md",
       "icon": "far fa-file-alt",
+      "color": "#f15a24",
       "steps": [
         {
           "name": "jinja",

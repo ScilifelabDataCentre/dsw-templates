@@ -57,7 +57,7 @@
         <p> The project will be stored at or own backed-up network system. </p>
       {%- elif sharedWhereAUuid == uuids.sharedWhereOtherAUuid -%}
         {%- set sharedWhereOtherPath = [sharedWherePath, uuids.sharedWhereOtherAUuid, uuids.sharedWhereOtherQUuid]|reply_path -%}
-        {%- set sharedWhereOther = repliesMap[sharedWhereOtherPath]]|reply_str_value -%}
+        {%- set sharedWhereOther = repliesMap[sharedWhereOtherPath]|reply_str_value -%}
         <p> Project storage and back-up: {{sharedWhereOther}} </p>
       {%- endif -%}
       {%- set sharedReliablePath = [sharedWorkspacePath, uuids.sharedWorkspaceYesAUuid, uuids.sharedReliableQUuid]|reply_path -%}

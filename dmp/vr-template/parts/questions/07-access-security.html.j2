@@ -97,7 +97,7 @@
     {%- set sharedAccessControlPath = [sharedWorkspacePrefix, uuids.sharedAccessControlQUuid]|reply_path -%}
     {%- set sharedAccessControlAUuid = repliesMap[sharedAccessControlPath]|reply_str_value -%}
     {%- if sharedAccessControlAUuid == uuids.sharedAccessControlMembersRWAUuid -%}
-      <p>Only all project members have read/write access to the data.</p>
+      <p>Only project members have read/write access to the data.</p>
     {%- elif sharedAccessControlAUuid == uuids.sharedAccessControlInstituteRAUuid -%}
       <p>Anyone in the institute has read access to the data; all project members have read/write access.</p>
     {%- elif sharedAccessControlAUuid == uuids.sharedAccessControlMembersRAUuid -%}

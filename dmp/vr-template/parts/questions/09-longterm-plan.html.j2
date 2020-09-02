@@ -143,7 +143,7 @@
       {%- endfor -%}
       </ul>
     {%- endif -%}
-    {# Repository charges #}
+    {# Repository charges
     {%- set repoChargesPath = [uuids.preservingCUuid, uuids.repoChargesQUuid]|reply_path -%}
     {%- set repoChargesAUuid = repliesMap[repoChargesPath]|reply_str_value -%}
     {%- if repoChargesAUuid == uuids.repoChargesNoAUuid -%}
@@ -164,12 +164,12 @@
           <p>We will carry the costs related to the used repositories by: {{ repoChargesHowPayOther|dot }}</p>
         {%- endif -%}
       {%- endif -%}
-    {%- endif -%}
-    {# Budget time and effort #}
+    {%- endif -%} #}
+    {# Budget time and effort
     {%- set budgetTimeEffortPath = [uuids.preservingCUuid, uuids.budgetTimeEffortQUuid]|reply_path -%}
     {%- set budgetTimeEffortAUuid = repliesMap[budgetTimeEffortPath]|reply_str_value -%}
     {%- if budgetTimeEffortAUuid == uuids.budgetTimeEffortYesAUuid -%}
       <p>We have a reserved budget for the time and effort it will take to prepare the data for publication.</p>
-    {%- endif -%}
+    {%- endif -%} #}
   </div>
 </div>

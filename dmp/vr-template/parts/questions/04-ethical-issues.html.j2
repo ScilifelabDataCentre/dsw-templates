@@ -3,52 +3,48 @@
 
   <div class="answer">
     {# Non reference data #}
-    {%- set preexistingPath = [uuids.reusingCUuid, uuids.preexistingQUuid]|reply_path -%}
-    {%- set preexistingAUuid = repliesMap[preexistingPath]|reply_str_value -%}
-    {%- if preexistingAUuid == uuids.preexistingYesAUuid -%}
-      {%- set usingPreexistingPath = [preexistingPath, uuids.preexistingYesAUuid, uuids.usingPreexistingQUuid]|reply_path -%}
-      {%- set usingPreexistingAUuid = repliesMap[usingPreexistingPath]|reply_str_value -%}
-      {%- if usingPreexistingAUuid == uuids.usingPreexistingYesAUuid -%}
-        {%- set nrefDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.nrefDataQUuid]|reply_path -%}
-        {%- set nrefDataCount = repliesMap[nrefDataPath]|reply_int_value -%}
-        {%- set answeredNRefData = [] -%}
-        {%- for i in range(nrefDataCount) -%}
-          {%- if repliesMap[[nrefDataPath, i, uuids.nrefDataConsentQUuid]|reply_path] -%}
-            {%- do answeredNRefData.append(i) -%}
-          {%- endif -%}
-        {%- endfor -%}
-        {%- if answeredNRefData|length > 0 -%}
-          <h4>Data we reuse</h4>
-          <ul>
-            {%- for i in answeredNRefData -%}
-              {%- set nrefDataNamePath = [nrefDataPath, i, uuids.nrefDataNameQUuid]|reply_path -%}
-              {%- set nrefDataNameReply = repliesMap[nrefDataNamePath] -%}
-              {%- set nrefDataConsentPath = [nrefDataPath, i, uuids.nrefDataConsentQUuid]|reply_path -%}
-              {%- set nrefDataConsentAUuid = repliesMap[nrefDataConsentPath]|reply_str_value -%}
-              {%- if nrefDataConsentAUuid -%}
-              <li>
-                <strong>{{ macros.integrationValue(nrefDataNameReply, uuids.nrefDataNameQUuid) }}</strong>
-                {%- if nrefDataConsentAUuid == uuids.nrefDataConsentNotPersonalAUuid %}
-                  does not need an extension of any consent because it is not personal data.
-                {%- elif nrefDataConsentAUuid == uuids.nrefDataConsentAnotherLegalAUuid %}
-                  does not need an extension of any consent because we will use another legal base for the processing.
-                {%- elif nrefDataConsentAUuid == uuids.nrefDataConsentCoversAUuid %}
-                  <span class="separator">&ndash;</span> the existing consent covers our reuse.
-                {%- elif nrefDataConsentAUuid == uuids.nrefDataConsentNewAUuid %}
-                  does need a new consent to cover our usage of the data.
-                {%- elif nrefDataConsentAUuid == uuids.nrefDataConsentOtherAUuid %}
-                  {%- set nrefDataConsentOtherPath = [nrefDataConsentPath, uuids.nrefDataConsentOtherAUuid, uuids.nrefDataConsentOtherQUuid]|reply_path -%}
-                  {%- set nrefDataConsentOther = repliesMap[nrefDataConsentOtherPath]|reply_str_value %}
-                  has special arragements{{ ": " ~ nrefDataConsentOther|dot if nrefDataConsentOther else "." }}
-                {%- endif -%}
-              </li>
-              {%- endif -%}
-            {%- endfor -%}
-          </ul>
+    {%- set usingPreexistingPath = [uuids.reusingCUuid, uuids.usingPreexistingQUuid]|reply_path -%}
+    {%- set usingPreexistingAUuid = repliesMap[usingPreexistingPath]|reply_str_value -%}
+    {%- if usingPreexistingAUuid == uuids.usingPreexistingYesAUuid -%}
+      {%- set nrefDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.nrefDataQUuid]|reply_path -%}
+      {%- set nrefDataCount = repliesMap[nrefDataPath]|reply_int_value -%}
+      {%- set answeredNRefData = [] -%}
+      {%- for i in range(nrefDataCount) -%}
+        {%- if repliesMap[[nrefDataPath, i, uuids.nrefDataConsentQUuid]|reply_path] -%}
+          {%- do answeredNRefData.append(i) -%}
         {%- endif -%}
+      {%- endfor -%}
+      {%- if answeredNRefData|length > 0 -%}
+        <h4>Data we reuse</h4>
+        <ul>
+          {%- for i in answeredNRefData -%}
+            {%- set nrefDataNamePath = [nrefDataPath, i, uuids.nrefDataNameQUuid]|reply_path -%}
+            {%- set nrefDataNameReply = repliesMap[nrefDataNamePath] -%}
+            {%- set nrefDataConsentPath = [nrefDataPath, i, uuids.nrefDataConsentQUuid]|reply_path -%}
+            {%- set nrefDataConsentAUuid = repliesMap[nrefDataConsentPath]|reply_str_value -%}
+            {%- if nrefDataConsentAUuid -%}
+            <li>
+              <strong>{{ macros.integrationValue(nrefDataNameReply, uuids.nrefDataNameQUuid) }}</strong>
+              {%- if nrefDataConsentAUuid == uuids.nrefDataConsentNotPersonalAUuid %}
+                does not need an extension of any consent because it is not personal data.
+              {%- elif nrefDataConsentAUuid == uuids.nrefDataConsentAnotherLegalAUuid %}
+                does not need an extension of any consent because we will use another legal base for the processing.
+              {%- elif nrefDataConsentAUuid == uuids.nrefDataConsentCoversAUuid %}
+                <span class="separator">&ndash;</span> the existing consent covers our reuse.
+              {%- elif nrefDataConsentAUuid == uuids.nrefDataConsentNewAUuid %}
+                does need a new consent to cover our usage of the data.
+              {%- elif nrefDataConsentAUuid == uuids.nrefDataConsentOtherAUuid %}
+                {%- set nrefDataConsentOtherPath = [nrefDataConsentPath, uuids.nrefDataConsentOtherAUuid, uuids.nrefDataConsentOtherQUuid]|reply_path -%}
+                {%- set nrefDataConsentOther = repliesMap[nrefDataConsentOtherPath]|reply_str_value %}
+                has special arragements{{ ": " ~ nrefDataConsentOther|dot if nrefDataConsentOther else "." }}
+              {%- endif -%}
+            </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
       {%- endif -%}
     {%- endif -%}
-
+    
     {# Collected data #}
     <h4>Data we collect</h4>
     <p>

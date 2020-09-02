@@ -81,11 +81,13 @@
       </ul>
     </p>
     {# File naming conventions #}
-    {%- set storOrgAppointmentsPath = [storageOrganizePath, uuids.storOrgFilesConvsQUuid]|reply_path -%}
-    {%- set storOrgAppointments = repliesMap[storOrgAppointmentsPath]|reply_str_value -%}
-    {%- if storOrgAppointments %}
+    {#   {%- set storageOrganizePath = [uuids.storageCUuid, uuids.storageOrganizeQUuid]|reply_path -%}
+      {%- set storageOrganizeAUuid = repliesMap[storageOrganizePath]|reply_str_value -%} #}
+    {%- set storOrgFileConvsPath = [uuids.storageCUuid, uuids.storOrgFilesConvsQUuid]|reply_path -%}
+    {%- set storOrgFileConvs = repliesMap[storOrgFileConvsPath]|reply_str_value -%}
+    {%- if storOrgFileConvs %}
     <p>
-      We have made decisions about naming the files. {{ storOrgAppointments|dot }}
+      We have made decisions about naming the files. {{ storOrgFileConvs|dot }}
     </p>
     {%- endif -%}
   {%- endif -%}

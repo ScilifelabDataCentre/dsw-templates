@@ -27,7 +27,9 @@
                   {%- set measuredDataInstrName = repliesMap[measuredDataInstrNamePath]|reply_str_value -%}
                   {%- set measuredDataInstrDescPath = [instrPathPrefix, uuids.measuredDataInstrDescQUuid]|reply_path -%}
                   {%- set measuredDataInstrDesc = repliesMap[measuredDataInstrDescPath]|reply_str_value -%}
-                  <strong>{{ measuredDataInstrName }}</strong>
+                  {# Since measuredDataInstrName gives a string with value, id and type, I try using
+                     measuredDataInstrName.value instead #}
+                  <strong>{{ measuredDataInstrName.value if (measuredDataInstrName and measuredDataInstrName.value)  else "(no name given)" }}</strong>
                   {% if measuredDataInstrName and measuredDataInstrDesc -%}<span class="separator">&ndash;</span>{%- endif %}
                   {{ measuredDataInstrDesc }}
                 </li>

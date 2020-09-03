@@ -14,48 +14,49 @@
       {%- set sharedWherePath = [sharedWorkspacePath, uuids.sharedWorkspaceYesAUuid, uuids.sharedWhereQUuid]|reply_path -%}
       {%- set sharedWhereAUuid = repliesMap[sharedWherePath]|reply_str_value -%}
       {%- if sharedWhereAUuid == uuids.sharedWhereSNICAUuid -%}
+        <p>
         {%- set sharedWhereSNICPath = [sharedWherePath, uuids.sharedWhereSNICAUuid]|reply_path -%}
         {%- set sharedWhereSNICWhichPath = [sharedWhereSNICPath, uuids.sharedWhereSNICwhichQUuid]|reply_path -%}
         {%- set sharedWhereSNICWhichAUuid = repliesMap[sharedWhereSNICWhichPath]|reply_str_value -%}
         {%- if sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichUppmaxAUuid -%}
-          <p>Data will be stored at SNIC center Uppmax.</p>
+          Data will be stored at SNIC center Uppmax.
         {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichPDCAUuid-%}
-          <p>Data will be stored at SNIC center PDC.</p>
+          Data will be stored at SNIC center PDC.
         {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichNSCAUuid-%}
-          <p>Data will be stored at SNIC center NSC.</p>
+          Data will be stored at SNIC center NSC.
         {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichLunarcAUuid-%}
-          <p>Data will be stored at SNIC center Lunarc.</p>
+          Data will be stored at SNIC center Lunarc.
         {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichHPC2NAUuid-%}
-          <p>Data will be stored at SNIC center HPC2N.</p>
+          Data will be stored at SNIC center HPC2N.
         {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichC3SEAUuid-%}
-          <p>Data will be stored at SNIC center C3CSE.</p>
+          Data will be stored at SNIC center C3CSE.
         {%- endif -%}
         {# necessary software is not written #}
         {%- set sharedWhereSNICSWPath = [sharedWhereSNICPath, uuids.sharedWhereSNICSWQUuid]|reply_path -%}
         {%- set sharedWhereSNICSWAUuid = repliesMap[sharedWhereSNICSWPath]|reply_str_value -%}
         {%- if sharedWhereSNICSWAUuid == uuids.sharedWhereSNICSWInstalledYesAUuid -%}
-          <p>All necessary software is already installed. </p>
+          All necessary software is already installed.
         {%- elif sharedWhereSNICSWAUuid == uuids.sharedWhereSNICSWInstalledNeedAUuid -%}
           {%- set sharedWhereSNICSWInstNeedPath = [sharedWhereSNICSWPath, uuids.sharedWhereSNICSWInstalledNeedAUuid, uuids.sharedWhereSNICSWInstalledNeedQUuid]|reply_path -%}
           {%- set sharedWhereSNICSWInstNeedAUuid = repliesMap[sharedWhereSNICSWInstNeedPath]|reply_str_value -%}
           {%- if sharedWhereSNICSWInstNeedAUuid -%}
-              {# should it be sharedWhereSNICSWInstNeedAUuid|dot? #}
-              <p> The following software needs to be installed: {{ sharedWhereSNICSWInstNeedAUuid }} </p>
+              The following software needs to be installed: {{ sharedWhereSNICSWInstNeedAUuid|dot }}
           {%- else -%}
-            <p> Some software needs to be installed. </p>
+            Some software needs to be installed.
           {%- endif -%}
         {%- elif sharedWhereSNICSWAUuid == uuids.sharedWhereSNICSWInstalledNoAUuid -%}
-          <p> No special software or tool is needed. </p>
+          No special software or tool is needed.
         {%- endif -%}
         {%- set sharedWhereSNICApplyPath = [sharedWhereSNICPath, uuids.sharedWhereSNICApplyQUuid]|reply_path -%}
         {%- set sharedWhereSNICApplyAUuid = repliesMap[sharedWhereSNICApplyPath]|reply_str_value -%}
         {%- if sharedWhereSNICApplyAUuid == uuids.sharedWhereSNICApplyDoneAUuid -%}
-          <p> We have already applied for a project. </p>
+           We have already applied for a project.
         {%- elif sharedWhereSNICApplyAUuid == uuids.sharedWhereSNICApplyWillAUuid -%}
-          <p> An application for project time will be made. </p>
+           An application for project time will be made.
         {%- endif -%}
+      </p> {# if this results in no spece btw list of software and application sentence, move </p> up #}
       {%- elif sharedWhereAUuid == uuids.sharedWhereOwnAUuid -%}
-        <p> The project will be stored at or own backed-up network system. </p>
+        <p> The project will be stored at our own backed-up network system. </p>
       {%- elif sharedWhereAUuid == uuids.sharedWhereOtherAUuid -%}
         {%- set sharedWhereOtherPath = [sharedWherePath, uuids.sharedWhereOtherAUuid, uuids.sharedWhereOtherQUuid]|reply_path -%}
         {%- set sharedWhereOther = repliesMap[sharedWhereOtherPath]|reply_str_value -%}

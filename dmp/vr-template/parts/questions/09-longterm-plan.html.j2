@@ -113,18 +113,19 @@
         {%- if publishedSWRepoAUuid or publishedSWCatalogueAUuid -%}
           <li>
             <strong>{{ publishedSWName if publishedSWName else "(no name given)" }}</strong>
-            {%- if publishedSWRepoAUuid %}
+            {# the chosen repo is not written so I tried adding - to %} #}
+            {%- if publishedSWRepoAUuid -%}
               will be stored in
-              {%- if publishedSWRepositoryKindAUuid == uuids.publishedSWRepoGitAUuid %}
+              {%- if publishedSWRepositoryKindAUuid == uuids.publishedSWRepoGitAUuid -%}
                 GitHub.
-              {%- elif publishedSWRepositoryKindAUuid == uuids.publishedSWRepoBitbucketAUuid %}
+              {%- elif publishedSWRepositoryKindAUuid == uuids.publishedSWRepoBitbucketAUuid -%}
                 BitBucket.
-              {%- elif publishedSWRepositoryKindAUuid == uuids.publishedSWRepoOtherAUuid %}
+              {%- elif publishedSWRepositoryKindAUuid == uuids.publishedSWRepoOtherAUuid -%}
                 {%- set publishedSWRepoOtherPath = [publishedSWRepoPath, uuids.publishedSWRepoOtherAUuid, uuids.publishedSWRepoOtherWhichQUuid]|reply_path -%}
-                {%- set publishedSWRepoOtherWhichAUuid = repliesMap[publishedSWRepoOtherPath]|reply_str_value %}
-                {%- if publishedSWRepoOtherWhichAUuid %}
-                  : {{ publishedSWRepoOtherWhichAUuid }}. {# |dot? #}
-                {%- else %}
+                {%- set publishedSWRepoOtherWhichAUuid = repliesMap[publishedSWRepoOtherPath]|reply_str_value -%}
+                {%- if publishedSWRepoOtherWhichAUuid -%}
+                  : {{ publishedSWRepoOtherWhichAUuid|dot }}
+                {%- else -%}
                   another, not specified, repository.
                 {%- endif -%}
 

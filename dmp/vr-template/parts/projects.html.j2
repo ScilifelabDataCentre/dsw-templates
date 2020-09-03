@@ -25,18 +25,17 @@
         {% endfor %}
       </section>
     {%- endif -%}
-    
+
     {%- set projectStartPath = [projectsPath, projectIndex, uuids.projectStartQUuid]|reply_path -%}
     {%- set projectStart = repliesMap[projectStartPath]|reply_str_value -%}
     {%- set projectEndPath = [projectsPath, projectIndex, uuids.projectEndQUuid]|reply_path -%}
     {%- set projectEnd = repliesMap[projectEndPath]|reply_str_value -%}
     {%- set fundersPath = [projectsPath, projectIndex, uuids.fundersQUuid]|reply_path -%}
     {%- set fundersCount = repliesMap[fundersPath]|reply_int_value -%}
+      <p><strong>Start date: </strong> {{ projectStart if projectStart else "N/A" }}</br>
+        <strong>End date: </strong> {{ projectEnd if projectEnd else "N/A" }}
+      </p>
       <dl>
-        <dt>Start date</dt>
-        <dd>{{ projectStart if projectStart else "N/A" }}</dd>
-        <dt>End date</dt>
-        <dd>{{ projectEnd if projectEnd else "N/A" }}</dd>
         <dt>Funding</dt>
         <dd>
           {%- if fundersCount > 0 %}

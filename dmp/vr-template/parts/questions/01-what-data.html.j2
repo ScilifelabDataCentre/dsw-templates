@@ -41,12 +41,12 @@
             {%- elif measuredDataWhoInfraWhichAUuid == uuids.measuredDataWhoExpertsOutChemAUuid -%}
               <p>This dataset will be collected by Chemical proteomics & proteogenomics national facility.</p>
             {%- elif measuredDataWhoInfraWhichAUuid == uuids.measuredDataWhoExpertsOutOtherAUuid -%}
-              {%- set measuredDataWhoInfraOtherPath = [measuredDataWhoPath, uuids.measuredDataWhoExpertsOutOtherAUuid, uuids.measuredDataWhoExpertsOutOtherQUuid]|reply_path -%}
+              {%- set measuredDataWhoInfraOtherPath = [measuredDataWhoInfraPath, uuids.measuredDataWhoExpertsOutOtherAUuid, uuids.measuredDataWhoExpertsOutOtherQUuid]|reply_path -%}
               {%- set measuredDataWhoInfraOtherAUuid = repliesMap[measuredDataWhoInfraOtherPath]|reply_str_value -%}
               {%- if measuredDataWhoInfraOtherAUuid -%}
-                <p>This dataset will be collected by {{ measuredDataWhoInfraOtherAUuid }}.</p>
+                <p>This dataset will be collected by: {{ measuredDataWhoInfraOtherAUuid }}.</p>
               {%- else -%}
-                <p>This dataset will be collected by Experts in the project, at a specialized infrastructure.</p>
+                <p>This dataset will be collected at a specialized infrastructure.</p>
               {%- endif -%}
             {%- endif -%}
           {%- elif measuredDataWhoAUuid == uuids.measuredDataWhoExternalAUuid -%}
@@ -108,16 +108,15 @@
         {%- if typesCount > 0 -%}
           We also collect data from
           {% if typesCount == 1 -%}
-              {{ typesNames[0] }}.
+              {{ typesNames[0] }}:
           {%- elif typesCount == 2 -%}
-              {{ typesNames[0] }} and {{ typesNames[1] }}.
+              {{ typesNames[0] }} and {{ typesNames[1] }}:
           {%- else -%}
-              {{ typesNames[0] }}, {{ typesNames[1] }}, and {{ typesNames[2] }}.
+              {{ typesNames[0] }}, {{ typesNames[1] }}, and {{ typesNames[2] }}:
           {%- endif -%}
         {% endif %}
         {# Datasets #}
         {%- if neqDataSetsCount > 0 -%}
-          The non-equipment datasets are:
           <ul>
           {%- for neqDataSetIndex in range(neqDataSetsCount) -%}
             {%- set pathPrefix = [neqDataSetsPath, neqDataSetIndex]|reply_path -%}
@@ -176,7 +175,7 @@
                       We will use version "{{ refDataVersionedWhich }}" of this dataset.
                     {%- endif -%}
                     {%- if refDataVersionedChangeAUuid == uuids.refDataVersionedChangeStayAUuid %}
-                      If a new version becomes available during the project, we will stay with the old version.
+                      Even if a new version becomes available during the project, we will stay with the old version.
                     {%- elif refDataVersionedChangeAUuid == uuids.refDataVersionedChangeNewAUuid %}
                       If a new version becomes available during the project, new analyses will be done with the new version.
                     {%- elif refDataVersionedChangeAUuid == uuids.refDataVersionedChangeAllAUuid %}

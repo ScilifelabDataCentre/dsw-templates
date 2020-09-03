@@ -157,6 +157,7 @@
     {%- set publishedSWPath = [uuids.preservingCUuid, uuids.publishedSWQUuid]|reply_path -%}
     {%- set publishedSWCount = repliesMap[publishedSWPath]|reply_int_value -%}
     {%- if publishedSWCount > 0 -%}
+    <p> We will also publish the following code: </p>
       <ul>
       {%- for i in range(publishedSWCount) -%}
         {%- set pathPrefix = [publishedSWPath, i]|reply_path -%}

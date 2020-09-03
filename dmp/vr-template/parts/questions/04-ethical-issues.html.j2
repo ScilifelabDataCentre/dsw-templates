@@ -67,7 +67,7 @@
       {%- elif ethicalApproval == uuids.ethicalApprovalWillAUuid -%}
             An ethical approval will be applied for.
       {%- elif ethicalApproval == uuids.ethicalApprovalNotAUuid -%}
-            An ethical approval will not be applied for. 
+            An ethical approval will not be applied for.
       {%- endif -%}
       {%- set reportDPOPath = [isSensitiveYesPath, uuids.reportDPOQUuid]|reply_path -%}
       {%- set reportDPO = repliesMap[reportDPOPath]|reply_str_value -%}
@@ -80,7 +80,7 @@
       {%- set needDPAAUuid = repliesMap[needDPAPath]|reply_str_value -%}
       {%- if needDPAAUuid == uuids.needDPAYesAUuid -%}
         {%- set needDPAYesListPath = [needDPAPath, uuids.needDPAYesAUuid, uuids.needDPAYesListQUuid]|reply_path -%}
-        {%- set needDPAYesListCount = repliesMap[needDPAesListPath]|reply_int_value -%}
+        {%- set needDPAYesListCount = repliesMap[needDPAYesListPath]|reply_int_value -%}
         <p>Test, this should be the number of DPAs listed {{ needDPAYesListCount }} </p>
         {%- if needDPAYesListCount > 0 -%} {# There is a list... #}
         {# step through the list of Processors and agreements, after checking that

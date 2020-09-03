@@ -3,49 +3,45 @@
 
   <div class="answer">
     {# Non reference data #}
-    {%- set preexistingPath = [uuids.reusingCUuid, uuids.preexistingQUuid]|reply_path -%}
-    {%- set preexistingAUuid = repliesMap[preexistingPath]|reply_str_value -%}
-    {%- if preexistingAUuid == uuids.preexistingYesAUuid -%}
-      {%- set usingPreexistingPath = [preexistingPath, uuids.preexistingYesAUuid, uuids.usingPreexistingQUuid]|reply_path -%}
-      {%- set usingPreexistingAUuid = repliesMap[usingPreexistingPath]|reply_str_value -%}
-      {%- if usingPreexistingAUuid == uuids.usingPreexistingYesAUuid -%}
-        {%- set nrefDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.nrefDataQUuid]|reply_path -%}
-        {%- set nrefDataCount = repliesMap[nrefDataPath]|reply_int_value -%}
-        {%- set answeredNRefData = [] -%}
-        {%- for i in range(nrefDataCount) -%}
-          {%- if repliesMap[[nrefDataPath, i, uuids.nrefDataConsentQUuid]|reply_path] -%}
-            {%- do answeredNRefData.append(i) -%}
-          {%- endif -%}
-        {%- endfor -%}
-        {%- if answeredNRefData|length > 0 -%}
-          <h4>Data we reuse</h4>
-          <ul>
-            {%- for i in answeredNRefData -%}
-              {%- set nrefDataNamePath = [nrefDataPath, i, uuids.nrefDataNameQUuid]|reply_path -%}
-              {%- set nrefDataNameReply = repliesMap[nrefDataNamePath] -%}
-              {%- set nrefDataConsentPath = [nrefDataPath, i, uuids.nrefDataConsentQUuid]|reply_path -%}
-              {%- set nrefDataConsentAUuid = repliesMap[nrefDataConsentPath]|reply_str_value -%}
-              {%- if nrefDataConsentAUuid -%}
-              <li>
-                <strong>{{ macros.integrationValue(nrefDataNameReply, uuids.nrefDataNameQUuid) }}</strong>
-                {%- if nrefDataConsentAUuid == uuids.nrefDataConsentNotPersonalAUuid %}
-                  does not need an extension of any consent because it is not personal data.
-                {%- elif nrefDataConsentAUuid == uuids.nrefDataConsentAnotherLegalAUuid %}
-                  does not need an extension of any consent because we will use another legal base for the processing.
-                {%- elif nrefDataConsentAUuid == uuids.nrefDataConsentCoversAUuid %}
-                  <span class="separator">&ndash;</span> the existing consent covers our reuse.
-                {%- elif nrefDataConsentAUuid == uuids.nrefDataConsentNewAUuid %}
-                  does need a new consent to cover our usage of the data.
-                {%- elif nrefDataConsentAUuid == uuids.nrefDataConsentOtherAUuid %}
-                  {%- set nrefDataConsentOtherPath = [nrefDataConsentPath, uuids.nrefDataConsentOtherAUuid, uuids.nrefDataConsentOtherQUuid]|reply_path -%}
-                  {%- set nrefDataConsentOther = repliesMap[nrefDataConsentOtherPath]|reply_str_value %}
-                  has special arragements{{ ": " ~ nrefDataConsentOther|dot if nrefDataConsentOther else "." }}
-                {%- endif -%}
-              </li>
-              {%- endif -%}
-            {%- endfor -%}
-          </ul>
+    {%- set usingPreexistingPath = [uuids.reusingCUuid, uuids.usingPreexistingQUuid]|reply_path -%}
+    {%- set usingPreexistingAUuid = repliesMap[usingPreexistingPath]|reply_str_value -%}
+    {%- if usingPreexistingAUuid == uuids.usingPreexistingYesAUuid -%}
+      {%- set nrefDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.nrefDataQUuid]|reply_path -%}
+      {%- set nrefDataCount = repliesMap[nrefDataPath]|reply_int_value -%}
+      {%- set answeredNRefData = [] -%}
+      {%- for i in range(nrefDataCount) -%}
+        {%- if repliesMap[[nrefDataPath, i, uuids.nrefDataConsentQUuid]|reply_path] -%}
+          {%- do answeredNRefData.append(i) -%}
         {%- endif -%}
+      {%- endfor -%}
+      {%- if answeredNRefData|length > 0 -%}
+        <h4>Data we reuse</h4>
+        <ul>
+          {%- for i in answeredNRefData -%}
+            {%- set nrefDataNamePath = [nrefDataPath, i, uuids.nrefDataNameQUuid]|reply_path -%}
+            {%- set nrefDataNameReply = repliesMap[nrefDataNamePath] -%}
+            {%- set nrefDataConsentPath = [nrefDataPath, i, uuids.nrefDataConsentQUuid]|reply_path -%}
+            {%- set nrefDataConsentAUuid = repliesMap[nrefDataConsentPath]|reply_str_value -%}
+            {%- if nrefDataConsentAUuid -%}
+            <li>
+              <strong>{{ macros.integrationValue(nrefDataNameReply, uuids.nrefDataNameQUuid) }}</strong>
+              {%- if nrefDataConsentAUuid == uuids.nrefDataConsentNotPersonalAUuid %}
+                does not need an extension of any consent because it is not personal data.
+              {%- elif nrefDataConsentAUuid == uuids.nrefDataConsentAnotherLegalAUuid %}
+                does not need an extension of any consent because we will use another legal base for the processing.
+              {%- elif nrefDataConsentAUuid == uuids.nrefDataConsentCoversAUuid %}
+                <span class="separator">&ndash;</span> the existing consent covers our reuse.
+              {%- elif nrefDataConsentAUuid == uuids.nrefDataConsentNewAUuid %}
+                does need a new consent to cover our usage of the data.
+              {%- elif nrefDataConsentAUuid == uuids.nrefDataConsentOtherAUuid %}
+                {%- set nrefDataConsentOtherPath = [nrefDataConsentPath, uuids.nrefDataConsentOtherAUuid, uuids.nrefDataConsentOtherQUuid]|reply_path -%}
+                {%- set nrefDataConsentOther = repliesMap[nrefDataConsentOtherPath]|reply_str_value %}
+                has special arragements{{ ": " ~ nrefDataConsentOther|dot if nrefDataConsentOther else "." }}
+              {%- endif -%}
+            </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
       {%- endif -%}
     {%- endif -%}
 
@@ -64,14 +60,14 @@
         {%- set ethicalApprovalYesPath = [ethicalApprovalPath, uuids.ethicalApprovalYesAUuid, uuids.ethicalApprovalYesQUuid]|reply_path -%}
         {%- set ethicalApprovalYes = repliesMap[ethicalApprovalYesPath]|reply_str_value -%}
         {%- if ethicalApprovalYes -%}
-          Our project has an ethical approval: {{ethicalApprovalYes}}
+          Our project has an ethical approval: {{ethicalApprovalYes}}.
         {%- else -%}
           Our project has an ethical approval.
         {%- endif -%}
       {%- elif ethicalApproval == uuids.ethicalApprovalWillAUuid -%}
             An ethical approval will be applied for.
       {%- elif ethicalApproval == uuids.ethicalApprovalNotAUuid -%}
-            An ethical approval will not be applied for.
+            An ethical approval will not be applied for. 
       {%- endif -%}
       {%- set reportDPOPath = [isSensitiveYesPath, uuids.reportDPOQUuid]|reply_path -%}
       {%- set reportDPO = repliesMap[reportDPOPath]|reply_str_value -%}
@@ -85,6 +81,7 @@
       {%- if needDPAAUuid == uuids.needDPAYesAUuid -%}
         {%- set needDPAYesListPath = [needDPAPath, uuids.needDPAYesAUuid, uuids.needDPAYesListQUuid]|reply_path -%}
         {%- set needDPAYesListCount = repliesMap[needDPAesListPath]|reply_int_value -%}
+        <p>Test, this should be the number of DPAs listed {{ needDPAYesListCount }} </p>
         {%- if needDPAYesListCount > 0 -%} {# There is a list... #}
         {# step through the list of Processors and agreements, after checking that
           needDPAYesListQUuid is not null. Not sure if correct but think so #}
@@ -94,8 +91,9 @@
             {%- set DPAProcessors = repliesMap[[pathPrefix, uuids.needDPAYesListProcessorQUuid]|reply_path]|reply_str_value -%}
             {%- set DPAAgreement = repliesMap[[pathPrefix, uuids.needDPAYesListAgreementQUuid]|reply_path]|reply_str_value -%}
             <li>
-              <strong>Processors: </strong>{{ DPAProcessors if DPAProcessors else "(no names given)" }}
-              <strong>Agreement: </strong>{{ DPAAgreement if DPAAgreement else "(no agreement given)" }}
+              {# testing to add .value in what to print but not sure what will help #}
+              <strong>Processors: </strong>{{ DPAProcessors.value if DPAProcessors else "(no names given)" }}
+              <strong>Agreement: </strong>{{ DPAAgreement.value if DPAAgreement else "(no agreement given)" }}
             </li>
           {%- endfor -%}
           </ul>

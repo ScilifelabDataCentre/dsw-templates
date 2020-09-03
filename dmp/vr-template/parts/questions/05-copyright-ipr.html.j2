@@ -109,7 +109,7 @@
       {%- set refDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.refDataQUuid]|reply_path -%}
       {%- set refDataCount = repliesMap[refDataPath]|reply_int_value -%}
       {%- set nrefDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.nrefDataQUuid]|reply_path -%}
-      {%- set nrefDataCount = repliesMap[nrefDataPath]|reply_int_value -%} #}
+      {%- set nrefDataCount = repliesMap[nrefDataPath]|reply_int_value -%}
       {%- set answeredRefData = [] -%}
       {%- for i in range(refDataCount) -%}
           {%- if repliesMap[[refDataPath, i, uuids.refDataConditionsQUuid]|reply_path] -%}
@@ -170,6 +170,6 @@
         </ul>
       {%- endif -%}
     {%- endif -%}
-    
+
   </div>
 </div>

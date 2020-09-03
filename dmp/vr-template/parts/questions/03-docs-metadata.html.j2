@@ -25,7 +25,10 @@
     {%- if metadataStandardAUuid == uuids.metadataStandardYesAUid -%}
       {%- set metadataStandardWhichPath = [metadataStandardPath, uuids.metadataStandardYesAUid, uuids.metadataStandardYesWhichQUuid]|reply_path -%}
       {%- set metadataStandardWhichCount = repliesMap[metadataStandardWhichPath]|reply_int_value-%}
+      <p> Test, this should be the number of standards entered: {{ metadataStandardWhichCount }} </p>
       {%- if metadataStandardWhichCount > 0 -%}
+      {# Check that at least this sentence is printed #}
+        <p>We will use metadata standards</p>
         <ul>
         {%- for i in range(metadataStandardWhichCount) -%}
           <li>
@@ -104,7 +107,7 @@
                   standardized data capture/recording
                 {%- endif -%}
                 {%- if validation -%}
-                  <em>Data Entry</em> validation
+                  data entry validation
                 {%- endif -%}
                 {%- if peerReview -%}
                   data peer review

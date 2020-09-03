@@ -30,8 +30,9 @@
         {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichC3SEAUuid-%}
           <p>Data will be stored at SNIC center C3CSE.</p>
         {%- endif -%}
+        {# necessary software is not written #}
         {%- set sharedWhereSNICSWPath = [sharedWhereSNICPath, uuids.sharedWhereSNICSWQUuid]|reply_path -%}
-        {%- set sharedWhereSNICSWAUuid = repliesMap[sharedWhereSNICWhichPath]|reply_str_value -%}
+        {%- set sharedWhereSNICSWAUuid = repliesMap[sharedWhereSNICSWPath]|reply_str_value -%}
         {%- if sharedWhereSNICSWAUuid == uuids.sharedWhereSNICSWInstalledYesAUuid -%}
           <p>All necessary software is already installed. </p>
         {%- elif sharedWhereSNICSWAUuid == uuids.sharedWhereSNICSWInstalledNeedAUuid -%}

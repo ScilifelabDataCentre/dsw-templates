@@ -116,11 +116,11 @@
             {# the chosen repo is not written so I tried adding - to %} #}
             {%- if publishedSWRepoAUuid -%}
               will be stored in
-              {%- if publishedSWRepositoryKindAUuid == uuids.publishedSWRepoGitAUuid -%}
+              {%- if publishedSWRepoAUuid == uuids.publishedSWRepoGitAUuid -%}
                 GitHub.
-              {%- elif publishedSWRepositoryKindAUuid == uuids.publishedSWRepoBitbucketAUuid -%}
+              {%- elif publishedSWRepoAUuid == uuids.publishedSWRepoBitbucketAUuid -%}
                 BitBucket.
-              {%- elif publishedSWRepositoryKindAUuid == uuids.publishedSWRepoOtherAUuid -%}
+              {%- elif publishedSWRepoAUuid == uuids.publishedSWRepoOtherAUuid -%}
                 {%- set publishedSWRepoOtherPath = [publishedSWRepoPath, uuids.publishedSWRepoOtherAUuid, uuids.publishedSWRepoOtherWhichQUuid]|reply_path -%}
                 {%- set publishedSWRepoOtherWhichAUuid = repliesMap[publishedSWRepoOtherPath]|reply_str_value -%}
                 {%- if publishedSWRepoOtherWhichAUuid -%}
@@ -132,7 +132,7 @@
               {%- endif -%}
             {%- endif -%}
             {%- if publishedSWCatalogueAUuid == uuids.publishedSWCatalogueYesAUuid -%}
-              {%- if publishedSWRepositoryKindAUuid %}
+              {%- if publishedSWRepoAUuid %}
                 We
               {%- else %}
                 <span class="separator">&ndash;</span> we

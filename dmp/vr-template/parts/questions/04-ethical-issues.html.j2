@@ -81,19 +81,19 @@
       {%- if needDPAAUuid == uuids.needDPAYesAUuid -%}
         {%- set needDPAYesListPath = [needDPAPath, uuids.needDPAYesAUuid, uuids.needDPAYesListQUuid]|reply_path -%}
         {%- set needDPAYesListCount = repliesMap[needDPAYesListPath]|reply_int_value -%}
-        <p>Test, this should be the number of DPAs listed {{ needDPAYesListCount }} </p>
-        {%- if needDPAYesListCount > 0 -%} {# There is a list... #}
+        {%- if needDPAYesListCount > 0 -%}
         {# step through the list of Processors and agreements, after checking that
           needDPAYesListQUuid is not null. Not sure if correct but think so #}
           <ul>
           {%- for i in range(needDPAYesListCount) -%}
             {%- set pathPrefix = [needDPAYesListPath, i]|reply_path -%}
-            {%- set DPAProcessors = repliesMap[[pathPrefix, uuids.needDPAYesListProcessorQUuid]|reply_path]|reply_str_value -%}
-            {%- set DPAAgreement = repliesMap[[pathPrefix, uuids.needDPAYesListAgreementQUuid]|reply_path]|reply_str_value -%}
+            {%- set DPAProcessorsPath = [pathPrefix, uuids.needDPAYesListProcessorQUuid]|reply_path -%}
+            {%- set DPAProcessorsName = repliesMap[DPAProcessorsPath]|reply_str_value -%}
+            {%- set DPAAgreementPath = [pathPrefix, uuids.needDPAYesListAgreementQUuid]|reply_path -%}
+            {%- set DPAAgreementName = repliesMap[DPAAgreementPath]|reply_str_value -%}
             <li>
-              {# testing to add .value in what to print but not sure what will help #}
-              <strong>Processors: </strong>{{ DPAProcessors.value if DPAProcessors else "(no names given)" }}
-              <strong>Agreement: </strong>{{ DPAAgreement.value if DPAAgreement else "(no agreement given)" }}
+              <strong>Processors: </strong>{{ DPAProcessorsName if DPAProcessors else "(no names given)" }}
+              <strong>Agreement: </strong>{{ DPAAgreementName if DPAAgreement else "(no agreement given)" }}
             </li>
           {%- endfor -%}
           </ul>

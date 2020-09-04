@@ -72,7 +72,6 @@
           <strong>{{ measuredDataName if measuredDataName else "(no name given)" }}</strong>
 
           {# Quality #}
-          {# måste kolla så att detta funkar, flyttat från 02-how-data.html.j2 #}
           {%- set measuredDataQualityPath = [pathPrefix, uuids.measuredDataQualityQUuid]|reply_path -%}
           {%- set measuredDataQualityAUuid = repliesMap[measuredDataQualityPath]|reply_str_value -%}
           {%- if measuredDataQualityAUuid == uuids.measuredDataQualityNoAUuid -%}

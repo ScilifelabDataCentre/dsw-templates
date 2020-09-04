@@ -22,8 +22,8 @@
     {# Metadata standards #}
     {%- set metadataStandardPath = [uuids.documentationCUuid, uuids.metadataStandardQUuid]|reply_path -%}
     {%- set metadataStandardAUuid = repliesMap[metadataStandardPath]|reply_str_value -%}
-    {%- if metadataStandardAUuid == uuids.metadataStandardYesAUid -%} {# verkar inte ens som att denna blir true #}
-      {%- set metadataStandardWhichPath = [metadataStandardPath, uuids.metadataStandardYesAUid, uuids.metadataStandardYesWhichQUuid]|reply_path -%}
+    {%- if metadataStandardAUuid == uuids.metadataStandardYesAUuid -%} {# verkar inte ens som att denna blir true #}
+      {%- set metadataStandardWhichPath = [metadataStandardPath, uuids.metadataStandardYesAUuid, uuids.metadataStandardYesWhichQUuid]|reply_path -%}
       {%- set metadataStandardWhichCount = repliesMap[metadataStandardWhichPath]|reply_int_value -%}
       <p> Test, this should be the number of standards entered: {{ metadataStandardWhichCount }} </p>
       {%- if metadataStandardWhichCount > 0 -%}
@@ -47,8 +47,8 @@
     {# Non-Metadata standards #}
     {%- set nMetadataStandardPath = [uuids.documentationCUuid, uuids.nonMetadataStandardQUuid]|reply_path -%}
     {%- set nMetadataStandardAUuid = repliesMap[nMetadataStandardPath]|reply_str_value -%}
-    {%- if nMetadataStandardAUuid == uuids.nonMetadataStandardYesAUid -%}
-      {%- set nMetadataStandardWhichPath = [nMetadataStandardPath, uuids.nonMetadataStandardYesAUid, uuids.nMetadataStandardYesWhichQUuid]|reply_path -%}
+    {%- if nMetadataStandardAUuid == uuids.nonMetadataStandardYesAUuid -%}
+      {%- set nMetadataStandardWhichPath = [nMetadataStandardPath, uuids.nonMetadataStandardYesAUuid, uuids.nMetadataStandardYesWhichQUuid]|reply_path -%}
       {%- set nMetadataStandardWhichAUuid = repliesMap[nMetadataStandardWhichPath]|reply_str_value -%}
       {%- if nMetadataStandardWhichAUuid -%}
         <p> In addition, the following metadata will be provided as documentation: {{ nMetadataStandardWhichAUuid}} </p>

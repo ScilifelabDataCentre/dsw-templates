@@ -40,7 +40,7 @@
           {%- set sharedWhereSNICSWInstNeedPath = [sharedWhereSNICSWPath, uuids.sharedWhereSNICSWInstalledNeedAUuid, uuids.sharedWhereSNICSWInstalledNeedQUuid]|reply_path -%}
           {%- set sharedWhereSNICSWInstNeedAUuid = repliesMap[sharedWhereSNICSWInstNeedPath]|reply_str_value -%}
           {%- if sharedWhereSNICSWInstNeedAUuid -%}
-              The following software needs to be installed: {{ sharedWhereSNICSWInstNeedAUuid|dot " " }}
+              The following software needs to be installed: {{ sharedWhereSNICSWInstNeedAUuid|dot ~ " " }}
           {%- else -%}
             Some software needs to be installed.
           {%- endif -%}

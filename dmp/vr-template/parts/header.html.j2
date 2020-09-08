@@ -5,88 +5,103 @@
   </h1>
   <div>
     <dl>
-      {%- set contributorsPath = [uuids.adminDetailsCUuid, uuids.contributorsQUuid]|join(".") -%}
-      {%- set contributorsReply = repliesMap[contributorsPath] -%}
-      {%- if contributorsReply -%}
-        {%- set nContributors = contributorsReply.value.value -%}
-        {%- set contacts = [] -%}
-        {%- for i in range(nContributors) -%}
-          {%- set pathPrefix = [contributorsPath, i]|join(".") ~ "." -%}
-          {# {%- set contributorRole = repliesMap[pathPrefix ~ uuids.contributorRoleQUuid] -%} #}
-          {%- set contributorRole = repliesMap[pathPrefix ~ uuids.contributorAddRoleQUuid ~ uuids.contributorRoleQUuid] -%}
-          {# only write the ones who are named as contact persons (I think). However,
-            since I have made Role an item list, the coding below will not work...
-            perhaps if [pathPrefix ~ uuids.contributorAddRoleQUuid ~ uuids.contributorRoleQUuid]? #}
-          {%- if contributorRole and contributorRole.value.value == uuids.contributorRoleContactPersonAUuid -%}
-            {% do contacts.append(pathPrefix)  %}
-          {%- endif -%}
-        {%- endfor -%}
-        {%- set nContacts = contacts|length -%}
-        <dt>Contact {{ "people" if (nContacts > 1) else "person" }}</dt>
+      {%- set contributorsPath = [uuids.adminDetailsCUuid, uuids.contributorsQUuid]|replypath -%}
+      {%- set nContributors = repliesMap[contributorsPath]|reply_int_value -%}
+      {%- if nContributors > 0 -%}
+        <dt>{{ "Contributors" if (nContributors > 1) else "Contributor" }}</dt>
         <dd>
-          {%- if nContacts > 0 -%}
-            <ul>
-              {%- for pathPrefix in contacts -%}
-                <li>
-                  {%- set contributorName = repliesMap[pathPrefix ~ uuids.contributorNameQUuid] -%}
-                  {%- set contributorEmail = repliesMap[pathPrefix ~ uuids.contributorEmailQUuid] -%}
-                  {%- set contributorOrcid = repliesMap[pathPrefix ~ uuids.contributorOrcidQUuid] -%}
-                  {%- if contributorName and contributorName.value.value -%}
-                    <span class="contact-name">{{ contributorName.value.value }}</span>
-                  {%- else -%}
-                    <span class="contact-name missing">(name not given)</span>
+        <ul>
+        {%- for i in range(nContributors) -%}
+          {%- set pathPrefix = [contributorsPath, i]||reply_path -%}
+          <li>
+            {%- set contributorName = repliesMap[pathPrefix ~ uuids.contributorNameQUuid] -%}
+            {%- set contributorEmail = repliesMap[pathPrefix ~ uuids.contributorEmailQUuid] -%}
+            {%- set contributorOrcid = repliesMap[pathPrefix ~ uuids.contributorOrcidQUuid] -%}
+            {%- if contributorName and contributorName.value.value -%}
+              <span class="contact-name">{{ contributorName.value.value }}</span>
+            {%- else -%}
+              <span class="contact-name missing">(name not given)</span>
+            {%- endif -%}
+            {%- if contributorEmail and contributorEmail.value.value and contributorOrcid and contributorOrcid.value.value %}
+              ({{ macros.formatEmail(contributorEmail.value.value) }}, {{ macros.formatOrcid(contributorOrcid.value.value) }})
+            {%- elif contributorEmail and contributorEmail.value.value %}
+              ({{ macros.formatEmail(contributorEmail.value.value) }})
+            {%- elif contributorOrcid and contributorOrcid.value.value %}
+              ({{ macros.formatOrcid(contributorOrcid.value.value) }})
+            {%- endif -%}
+            {%- set contributorAffiliationPath = [pathPrefix,uuids.contributorAffiliationQUuid]|reply_path -%}
+            {%- set contributorAffiliationAUuid = repliesMap[contributorAffiliationPath]|reply_str_value -%}
+            {%- if contributorAffiliationAUuid -%}
+              {%- if contributorAffiliationAUuid == uuids.contributorAffiliationKIAUuid -%}
+                Karolinska institutet
+              {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationUUAUuid -%}
+                Uppsala universitet
+              {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationLUAUuid -%}
+                Lunds universitet
+              {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationGUAUuid -%}
+                Göteborgs universitet
+              {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationUmUAUuid -%}
+                Umeå universitet
+              {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationSLUAUuid -%}
+                Sveriges lantbruksuniversitet
+              {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationSUAUuid -%}
+                Stockholms universitet
+              {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationKTHAUuid -%}
+                Kungliga tekniska högskolan
+              {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationLiUAUuid -%}
+                Linköpings universitet
+              {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationChaAUuid -%}
+                Chalmers
+              {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationOtherAUuid -%}
+                {%- set contributorAffiliationOtherPath = [contributorAffiliationPath, uuids.contributorAffiliationOtherAUuid, uuids.contributorAffiliationOtherQUuid]|reply_path -%}
+                {%- set contributorAffiliationOtherWhichAUuid = repliesMap[contributorAffiliationOtherPath]|reply_str_value -%}
+                {%- if contributorAffiliationOtherWhichAUuid -%}
+                  {{ contributorAffiliationOtherWhichAUuid }}
+                {%- endif -%}
+              {%- endif -%}
+            {%- endif -%}
+            {# fixa till Roles när resten fungerar, blir ännu en for-sats iaf
+            {%- set rolePath = [pathPrefix, uuids.contributorAddRoleQUuid]|reply_path -%}
+            {%- set nRoles = repliesMap[rolePath]|reply_int_value -%}
+            {%- if nRoles > 0 -%}
+              <p> (
+              {%- for roleIndex in range(nRoles) -%}
+                {%- set roleNamePath = [rolePath, uuids.contributorRoleQUuid]|reply_path -%}
+                {%- set roleName = repliesMap[roleNamePath]|reply_str_value -%}
+                {%- if roleName == uuids.contributorRolePIAUuid -%}
+                  PI
+                {%- elif roleName == uuids.contributorRoleResearcherAUuid -%}
+                  researcher
+                {%- elif roleName == uuids.contributorRoleContactPersonAUuid -%}
+                  <strong>contact person</strong>
+                {%- elif roleName == uuids.contributorRoleDataProducerAUuid -%}
+                  data producer
+                {%- elif roleName == uuids.contributorRoleDataCollectorAUuid -%}
+                  data collector
+                {%- elif roleName == uuids.contributorRoleDataCuratorAUuid -%}
+                  data curator
+                {%- elif roleName == uuids.contributorRoleDataManagerAUuid -%}
+                  data manager
+                {%- elif roleName == uuids.contributorRoleOtherAUuid -%}
+                  {%- set roleOtherPath = [roleNamePath, uuids.contributorRoleOtherAUuid, uuids.contributorRoleOtherQUuid]|reply_path -%}
+                  {%- set roleOtherWhichAUuid = repliesMap[roleOtherPath]|reply_str_value -%}
+                  {%- if roleOtherWhichAUuid -%}
+                    {{ roleOtherWhichAUuid }}
                   {%- endif -%}
-                  {%- if contributorEmail and contributorEmail.value.value and contributorOrcid and contributorOrcid.value.value %}
-                    ({{ macros.formatEmail(contributorEmail.value.value) }}, {{ macros.formatOrcid(contributorOrcid.value.value) }})
-                  {%- elif contributorEmail and contributorEmail.value.value %}
-                    ({{ macros.formatEmail(contributorEmail.value.value) }})
-                  {%- elif contributorOrcid and contributorOrcid.value.value %}
-                    ({{ macros.formatOrcid(contributorOrcid.value.value) }})
-                  {%- endif -%}
-                  {#{%- set contributorAffiliation = repliesMap[pathPrefix ~ uuids.contributorAffiliationQUuid] -%} #}
-                  {#{%- if contributorAffiliation and contributorAffiliation.value.value -%}
-                    <br>{{ contributorAffiliationOtherWich.value.value }}
-                  {%- endif -%} #}
-                  {# Below is my 1st attempt at writing affiliation #}
-                  {%- set contributorAffiliationPath = [pathPrefix,uuids.contributorAffiliationQUuid]|reply_path -%}
-                  {%- set contributorAffiliationAUuid = repliesMap[contributorAffiliationPath]|reply_str_value -%}
-                  {%- if contributorAffiliationAUuid -%}
-                    {%- if contributorAffiliationAUuid == uuids.contributorAffiliationKIAUuid -%}
-                      Karolinska institutet
-                    {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationUUAUuid -%}
-                      Uppsala universitet
-                    {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationLUAUuid -%}
-                      Lunds universitet
-                    {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationGUAUuid -%}
-                      Göteborgs universitet
-                    {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationUmUAUuid -%}
-                      Umeå universitet
-                    {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationSLUAUuid -%}
-                      Sveriges lantbruksuniversitet
-                    {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationSUAUuid -%}
-                      Stockholms universitet
-                    {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationKTHAUuid -%}
-                      Kungliga tekniska högskolan
-                    {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationLiUAUuid -%}
-                      Linköpings universitet
-                    {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationChaAUuid -%}
-                      Chalmers
-                    {%- elif contributorAffiliationAUuid == uuids.contributorAffiliationOtherAUuid -%}
-                      {%- set contributorAffiliationOtherPath = [contributorAffiliationPath, uuids.contributorAffiliationOtherAUuid, uuids.contributorAffiliationOtherQUuid]|reply_path -%}
-                      {%- set contributorAffiliationOtherWhichAUuid = repliesMap[contributorAffiliationOtherPath]|reply_str_value -%}
-                      {%- if contributorAffiliationOtherWhichAUuid -%}
-                        {{ contributorAffiliationOtherWhichAUuid }}
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                </li>
+                {%- endif -%}
+                {%- if roleIndex < nRoles -%}  if more roles left
+                  ,
+                {%- else -%}
+                  )
+                {%- endif -%}
               {%- endfor -%}
-            </ul>
-          {%- else -%}
-            <span class="empty-value">There are no contact people defined</span>
-          {%- endif -%}
-        </dd>
-      {%- endif -%}
+              </p>
+            {%- endif -%} #}
+          </li>
+        {%- endfor -%}
+      </ul>
+      </dd>
+    {%- endif -%}
 
       <dt>Based on</dt>
       <dd>{{ ctx.package.name }}, {{ ctx.package.version }} (<span class="package-id"><span class="organization-id">{{ ctx.package.organizationId }}</span>:<span class="km-id">{{ ctx.package.kmId }}</span>:<span class="version">{{ ctx.package.version }}</span></span>)</dd>

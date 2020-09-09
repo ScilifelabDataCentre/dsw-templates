@@ -79,8 +79,17 @@
 
                     {# File format #}
                     {# might not work #}
-                    {%- if publishedDataRepositoryFormatReply -%}
-                      File format will be: {{ macros.integrationValue(publishedDataRepositoryFormatReply, uuids.repoFileFormatQUuid) }}.
+                    {%- set publishedRepoFormatPath = [isPublishedDataPath, uuids.isPublishedDataYesAUuid, uuids.repoFileFormatQUuid]|reply_path -%}
+                    {%- set publishedRepoFormatCount = repliesMap[publishedRepoFormatPath]|reply_int_value -%}
+                    {%- if publishedRepoFormatCount > 0 -%}
+                      File formats will be: {{ if publishedRepoFormatCount>1 else "File format will be: " }}
+                      {%- for nFormats in range(publishedRepoFormatCount) -%}
+                        {%- set formatPathPrefix = [publishedRepoFormatPath, nFormats]|reply_path -%}
+                        {%- set formatName = repliesMap[formatPathPrefix]|reply_str_value -%]
+                        {%- if formatName %}
+                          {{ macros.integrationValue(formatName, uuids.repoFileFormatQUuid) }}.
+                        {%- endif -%}
+                      {%- endfor -%}
                     {%- endif -%}
                   </li>
                 {%- endif -%}
@@ -114,18 +123,18 @@
           <li>
             <strong>{{ publishedSWName if publishedSWName else "(no name given)" }}</strong>
             {# the chosen repo is not written so I tried adding - to %} #}
-            {%- if publishedSWRepoAUuid -%}
+            {%- if publishedSWRepoAUuid %}
               will be stored in
-              {%- if publishedSWRepoAUuid == uuids.publishedSWRepoGitAUuid -%}
+              {%- if publishedSWRepoAUuid == uuids.publishedSWRepoGitAUuid %}
                 GitHub.
-              {%- elif publishedSWRepoAUuid == uuids.publishedSWRepoBitbucketAUuid -%}
+              {%- elif publishedSWRepoAUuid == uuids.publishedSWRepoBitbucketAUuid %}
                 BitBucket.
               {%- elif publishedSWRepoAUuid == uuids.publishedSWRepoOtherAUuid -%}
                 {%- set publishedSWRepoOtherPath = [publishedSWRepoPath, uuids.publishedSWRepoOtherAUuid, uuids.publishedSWRepoOtherWhichQUuid]|reply_path -%}
                 {%- set publishedSWRepoOtherWhichAUuid = repliesMap[publishedSWRepoOtherPath]|reply_str_value -%}
-                {%- if publishedSWRepoOtherWhichAUuid -%}
+                {%- if publishedSWRepoOtherWhichAUuid %}
                   : {{ publishedSWRepoOtherWhichAUuid|dot }}
-                {%- else -%}
+                {%- else %}
                   another, not specified, repository.
                 {%- endif -%}
 

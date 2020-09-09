@@ -18,9 +18,9 @@
             {%- set isPublishedDataPath = [pathPrefix, uuids.isPublishedDataQUuid]|reply_path -%}
             {%- set isPublishedDataAUuid = repliesMap[isPublishedDataPath]|reply_str_value -%}
             {% if isPublishedDataAUuid == uuids.isPublishedDataNoAUuid %}
-              (not published)
+              (not published):
             {% elif isPublishedDataAUuid == uuids.isPublishedDataYesAUuid %}
-              (published)
+              (published):
             {% endif -%}
             {# How long will be stored + Metadata FAIRness #}
             {%- set publishedDataHowLongPath = [pathPrefix, uuids.publishedDataHowLongQUuid]|reply_path -%}
@@ -38,7 +38,7 @@
                   This data set will be kept available for a fixed period (prepaid){{ " of: " ~ publishedDataHowLongFixed|dot if publishedDataHowLongFixed else ". " }}
                 {%- endif -%}
               {%- if publishedDataMetadataPersistentAUuid == uuids.publishedDataMetadataPersistentYesAUuid %}
-                The metadata will be available even when the data no longer exists. 
+                The metadata will be available even when the data no longer exists.
               {%- endif -%}
             {%- endif -%}
           </li>

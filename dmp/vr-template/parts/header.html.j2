@@ -60,7 +60,7 @@
                 {%- endif -%}
               {%- endif -%}
             {%- endif -%}
-            {# fixa till Roles när resten fungerar, blir ännu en for-sats iaf
+            {# Roles #}
             {%- set rolePath = [pathPrefix, uuids.contributorAddRoleQUuid]|reply_path -%}
             {%- set nRoles = repliesMap[rolePath]|reply_int_value -%}
             {%- if nRoles > 0 -%}
@@ -89,14 +89,14 @@
                     {{ roleOtherWhichAUuid }}
                   {%- endif -%}
                 {%- endif -%}
-                {%- if roleIndex < nRoles -%}  if more roles left
+                {%- if roleIndex < nRoles -%}  {# if more roles left #}
                   ,
                 {%- else -%}
                   )
                 {%- endif -%}
               {%- endfor -%}
               </p>
-            {%- endif -%} #}
+            {%- endif -%} 
           </li>
         {%- endfor -%}
       </ul>

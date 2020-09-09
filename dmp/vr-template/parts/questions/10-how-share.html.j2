@@ -173,16 +173,16 @@
               {%- set publishedSWLicenseWhichPath = [publishedSWLicensePath, uuids.publishedSWLicenseYesAUuid, uuids.publishedSWLicenseYesQUuid]|reply_path -%}
               {%- set publishedSWLicenseWhichAUuid = repliesMap[publishedSWLicenseWhichPath]|reply_str_value -%}
                 {%- if publishedSWLicenseWhichAUuid == uuids.publishedSWLicenseGnuAUuid %}
-                  <span class="separator">&ndash;</span> GNU license.
+                  with a GNU license.
                 {%- elif publishedSWLicenseWhichAUuid == uuids.publishedSWLicenseMITAUuid %}
-                  <span class="separator">&ndash;</span> MIT license.
+                  with a MIT license.
                 {%- elif publishedSWLicenseWhichAUuid == uuids.publishedSWLicenseApacheAUuid %}
-                  <span class="separator">&ndash;</span> Apache license.
+                  with a Apache license.
                 {%- elif publishedSWLicenseWhichAUuid == uuids.publishedSWLicenseOtherAUuid %}
                   {%- set publishedSWLicenseWhichOtherPath = [publishedSWLicenseWhichPath, uuids.publishedSWLicenseOtherAUuid, uuids.publishedSWLicenseOtherWhichQUuid]|reply_path -%}
                   {%- set publishedSWLicenseWhichOther = repliesMap[publishedSWLicenseWhichOtherPath]|reply_str_value -%}
                   {%- if publishedSWLicenseWhichOther %}
-                    <span class="separator">&ndash;</span> license: {{publishedSWLicenseWhichOther|dot}}
+                    with license: {{publishedSWLicenseWhichOther|dot}}
                   {%- endif -%}
                 {%- endif -%}
             {%- endif -%}

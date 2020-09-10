@@ -1,9 +1,9 @@
 {
-    "uuid": "f2ec0d93-66cd-4810-b35b-471ebb1271e0",
-  "id": "SciLifeLab:minimal:1.0.0",
+  "uuid": "f2ec0d93-66cd-4810-b35b-471ebb1271e0",
+  "id": "SciLifeLab:minimal:1.1.0",
   "organizationId": "SciLifeLab",
   "templateId": "minimal",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "name": "SciLifeLab Minimal",
   "description": "Template intended for the SciLifeLab DMP, with minimal help text",
   "readme": "# SciLifeLab Minimal",

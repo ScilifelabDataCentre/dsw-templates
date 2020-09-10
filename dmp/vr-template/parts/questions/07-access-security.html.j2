@@ -69,13 +69,17 @@
       <p>{{ risksInfoXText }}</p>
     {%- endif -%}
     {# Personal data #}
-    {%- set risksPersonalDataPath = [risksPathPrefix, uuids.risksPersonalDataQUuid]|reply_path -%}
-    {%- set risksPersonalDataAUuid = repliesMap[risksPersonalDataPath]|reply_str_value -%}
-    {%- if risksPersonalDataAUuid == uuids.risksPersonalDataNotUsingAUuid -%}
-      <p>We are not using any personal information.</p>
-    {%- elif risksPersonalDataAUuid == uuids.risksPersonalDataPseudoAUuid -%}
-      <p>
-        All personal information will be processed in pseudonymized form only.
+    {# {%- set risksPersonalDataPath = [risksPathPrefix, uuids.risksPersonalDataQUuid]|reply_path -%} #}
+    {%- set isSensitivePath = [uuids.legalEthicalCUuid, uuids.isSensitiveQUuid]|reply_path -%}
+    {%- set isSensitive = repliesMap[isSensitivePath]|reply_str_value -%}
+    {%- if isSensitive == uuids.isSensitiveYesAUuid -%}
+      {%- set risksPersonalDataPath = [isSensitivePath, uuids.isSensitiveYesAUuid,uuids.risksPersonalDataQUuid]|reply_path -%}
+      {%- set risksPersonalDataAUuid = repliesMap[risksPersonalDataPath]|reply_str_value -%}
+      {%- if risksPersonalDataAUuid == uuids.risksPersonalDataNotUsingAUuid -%}
+        <p>We are not using any personal information.</p>
+      {%- elif risksPersonalDataAUuid == uuids.risksPersonalDataPseudoAUuid -%}
+        <p>
+          All personal information will be processed in pseudonymized form only.
         {%- set risksPseudonymizationPath = [risksPersonalDataPath, uuids.risksPersonalDataPseudoAUuid, uuids.risksPseudonymizationQUuid]|reply_path -%}
         {%- set risksPseudonymizationAUuid = repliesMap[risksPseudonymizationPath]|reply_str_value -%}
         {%- if risksPseudonymizationAUuid == uuids.risksPseudonymizationInsideAUuid %}
@@ -85,19 +89,20 @@
         {%- elif risksPseudonymizationAUuid == uuids.risksPseudonymizationAnotherAUuid -%}
           {%- set risksPseudonymizationAnotherQUuid = [risksPseudonymizationPath, uuids.risksPseudonymizationAnotherAUuid, uuids.risksPseudonymizationAnotherQUuid]|reply_path -%}
           {%- set risksPseudonymizationAnother = repliesMap[risksPseudonymizationAnotherQUuid]|reply_str_value %}
-          We have a specific way of pseudonymization{{ ": " ~ risksPseudonymizationAnother|dot if risksPseudonymizationAnother else "." }}
+            We have a specific way of pseudonymization{{ ": " ~ risksPseudonymizationAnother|dot if risksPseudonymizationAnother else "." }}
         {%- endif -%}
-      </p>
-    {%- elif risksPersonalDataAUuid == uuids.risksPersonalDataAnonymousAUuid -%}
-      <p>All personal data will be collected anonymously.</p>
-    {%- elif risksPersonalDataAUuid == uuids.risksPersonalDataAnonymizedAUuid -%}
-      <p>All personal data will be anonymized as early as possible.</p>
+        </p>
+      {%- elif risksPersonalDataAUuid == uuids.risksPersonalDataAnonymousAUuid -%}
+        <p>All personal data will be collected anonymously.</p>
+      {%- elif risksPersonalDataAUuid == uuids.risksPersonalDataAnonymizedAUuid -%}
+        <p>All personal data will be anonymized as early as possible.</p>
+      {%- endif -%}
     {%- endif -%}
     {# Access control in shared workspace #}
     {%- set sharedAccessControlPath = [sharedWorkspacePrefix, uuids.sharedAccessControlQUuid]|reply_path -%}
     {%- set sharedAccessControlAUuid = repliesMap[sharedAccessControlPath]|reply_str_value -%}
     {%- if sharedAccessControlAUuid == uuids.sharedAccessControlMembersRWAUuid -%}
-      <p>Only all project members have read/write access to the data.</p>
+      <p>Only project members have read/write access to the data.</p>
     {%- elif sharedAccessControlAUuid == uuids.sharedAccessControlInstituteRAUuid -%}
       <p>Anyone in the institute has read access to the data; all project members have read/write access.</p>
     {%- elif sharedAccessControlAUuid == uuids.sharedAccessControlMembersRAUuid -%}

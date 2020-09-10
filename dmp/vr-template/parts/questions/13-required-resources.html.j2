@@ -40,7 +40,38 @@
         <p>We require hardware or software in addition to what is usually available in the institute.</p>
       {%- endif -%}
     {%- endif -%}
-    {# charges #}
+    {# charges
     <p>Charges applied by data repositories (if any) are mentioned already in Section E, Question 12.</p>
+     Testing if this works, since it fits better here instead of in 09-longterm... #}
+    {# Repository charges #}
+    {%- set repoChargesPath = [uuids.preservingCUuid, uuids.repoChargesQUuid]|reply_path -%}
+    {%- set repoChargesAUuid = repliesMap[repoChargesPath]|reply_str_value -%}
+    {%- if repoChargesAUuid == uuids.repoChargesNoAUuid -%}
+      <p>None of the used repositories charge for their services.</p>
+    {%- elif repoChargesAUuid == uuids.repoChargesYesAUuid -%}
+      {%- set repoChargesHowPayPath = [repoChargesPath, uuids.repoChargesYesAUuid, uuids.repoChargesHowPayQUuid]|reply_path -%}
+      {%- set repoChargesHowPayAUuid = repliesMap[repoChargesHowPayPath]|reply_str_value -%}
+      {%- if repoChargesHowPayAUuid == uuids.repoChargesHowPayBudgetedAUuid -%}
+        <p>We have budgeted for the costs in the project to pay charges of the used repositories.</p>
+      {%- elif repoChargesHowPayAUuid == uuids.repoChargesHowPayDepartmentAUuid -%}
+        <p>The costs related to the used repositories will be carried by (one of) the departments involved in the project.</p>
+      {%- elif repoChargesHowPayAUuid == uuids.repoChargesHowPayInstituteAUuid -%}
+        <p>The costs related to the used repositories will be carried by (one of) the institutes involved in the project.</p>
+      {%- elif repoChargesHowPayAUuid == uuids.repoChargesHowPayOtherAUuid -%}
+        {%- set repoChargesHowPayOtherPath = [repoChargesHowPayPath, uuids.repoChargesHowPayOtherAUuid, uuids.repoChargesHowPayOtherQUuid]|reply_path -%}
+        {%- set repoChargesHowPayOther = repliesMap[repoChargesHowPayOtherPath]|reply_str_value -%}
+        {%- if repoChargesHowPayOther -%}
+          <p>We will carry the costs related to the used repositories by: {{ repoChargesHowPayOther|dot }}</p>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
+    {# Budget time and effort #}
+    {%- set budgetTimeEffortPath = [uuids.preservingCUuid, uuids.budgetTimeEffortQUuid]|reply_path -%}
+    {%- set budgetTimeEffortAUuid = repliesMap[budgetTimeEffortPath]|reply_str_value -%}
+    {%- if budgetTimeEffortAUuid == uuids.budgetTimeEffortYesAUuid -%}
+      <p>We have a reserved budget for the time and effort it will take to prepare the data for publication.</p>
+    {%- endif -%}
+
+
   </div>
 </div>

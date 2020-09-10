@@ -14,51 +14,53 @@
       {%- set sharedWherePath = [sharedWorkspacePath, uuids.sharedWorkspaceYesAUuid, uuids.sharedWhereQUuid]|reply_path -%}
       {%- set sharedWhereAUuid = repliesMap[sharedWherePath]|reply_str_value -%}
       {%- if sharedWhereAUuid == uuids.sharedWhereSNICAUuid -%}
+        <p>
         {%- set sharedWhereSNICPath = [sharedWherePath, uuids.sharedWhereSNICAUuid]|reply_path -%}
         {%- set sharedWhereSNICWhichPath = [sharedWhereSNICPath, uuids.sharedWhereSNICwhichQUuid]|reply_path -%}
         {%- set sharedWhereSNICWhichAUuid = repliesMap[sharedWhereSNICWhichPath]|reply_str_value -%}
-        {%- if sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichUppmaxAUuid -%}
-          <p>Data will be stored at SNIC center Uppmax.</p>
-        {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichPDCAUuid-%}
-          <p>Data will be stored at SNIC center PDC.</p>
-        {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichNSCAUuid-%}
-          <p>Data will be stored at SNIC center NSC.</p>
-        {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichLunarcAUuid-%}
-          <p>Data will be stored at SNIC center Lunarc.</p>
-        {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichHPC2NAUuid-%}
-          <p>Data will be stored at SNIC center HPC2N.</p>
-        {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichC3SEAUuid-%}
-          <p>Data will be stored at SNIC center C3CSE.</p>
+        {%- if sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichUppmaxAUuid %}
+          Data will be stored at SNIC center Uppmax.
+        {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichPDCAUuid %}
+          Data will be stored at SNIC center PDC.
+        {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichNSCAUuid %}
+          Data will be stored at SNIC center NSC.
+        {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichLunarcAUuid %}
+          Data will be stored at SNIC center Lunarc.
+        {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichHPC2NAUuid %}
+          Data will be stored at SNIC center HPC2N.
+        {%- elif sharedWhereSNICWhichAUuid == uuids.sharedWhereSNICwhichC3SEAUuid %}
+          Data will be stored at SNIC center C3CSE.
         {%- endif -%}
+        {# necessary software is not written #}
         {%- set sharedWhereSNICSWPath = [sharedWhereSNICPath, uuids.sharedWhereSNICSWQUuid]|reply_path -%}
-        {%- set sharedWhereSNICSWAUuid = repliesMap[sharedWhereSNICWhichPath]|reply_str_value -%}
-        {%- if sharedWhereSNICSWAUuid == uuids.sharedWhereSNICSWInstalledYesAUuid -%}
-          <p>All necessary software is already installed. </p>
+        {%- set sharedWhereSNICSWAUuid = repliesMap[sharedWhereSNICSWPath]|reply_str_value -%}
+        {%- if sharedWhereSNICSWAUuid == uuids.sharedWhereSNICSWInstalledYesAUuid %}
+          All necessary software is already installed.
         {%- elif sharedWhereSNICSWAUuid == uuids.sharedWhereSNICSWInstalledNeedAUuid -%}
           {%- set sharedWhereSNICSWInstNeedPath = [sharedWhereSNICSWPath, uuids.sharedWhereSNICSWInstalledNeedAUuid, uuids.sharedWhereSNICSWInstalledNeedQUuid]|reply_path -%}
           {%- set sharedWhereSNICSWInstNeedAUuid = repliesMap[sharedWhereSNICSWInstNeedPath]|reply_str_value -%}
-          {%- if sharedWhereSNICSWInstNeedAUuid -%}
-              {# should it be sharedWhereSNICSWInstNeedAUuid|dot? #}
-              <p> The following software needs to be installed: {{ sharedWhereSNICSWInstNeedAUuid }} </p>
-          {%- else -%}
-            <p> Some software needs to be installed. </p>
+          {%- if sharedWhereSNICSWInstNeedAUuid %}
+              The following software needs to be installed: {{ sharedWhereSNICSWInstNeedAUuid|dot ~ " " }}
+          {%- else %}
+            Some software needs to be installed.
           {%- endif -%}
-        {%- elif sharedWhereSNICSWAUuid == uuids.sharedWhereSNICSWInstalledNoAUuid -%}
-          <p> No special software or tool is needed. </p>
+        {%- elif sharedWhereSNICSWAUuid == uuids.sharedWhereSNICSWInstalledNoAUuid %}
+          No special software or tool is needed.
         {%- endif -%}
         {%- set sharedWhereSNICApplyPath = [sharedWhereSNICPath, uuids.sharedWhereSNICApplyQUuid]|reply_path -%}
         {%- set sharedWhereSNICApplyAUuid = repliesMap[sharedWhereSNICApplyPath]|reply_str_value -%}
-        {%- if sharedWhereSNICApplyAUuid == uuids.sharedWhereSNICApplyDoneAUuid -%}
-          <p> We have already applied for a project. </p>
-        {%- elif sharedWhereSNICApplyAUuid == uuids.sharedWhereSNICApplyWillAUuid -%}
-          <p> An application for project time will be made. </p>
+        {%- if sharedWhereSNICApplyAUuid == uuids.sharedWhereSNICApplyDoneAUuid %}
+           We have already applied for a project.
+        {%- elif sharedWhereSNICApplyAUuid == uuids.sharedWhereSNICApplyWillAUuid %}
+           An application for project time will be made.
         {%- endif -%}
+        </p> 
       {%- elif sharedWhereAUuid == uuids.sharedWhereOwnAUuid -%}
-        <p> The project will be stored at or own backed-up network system. </p>
+        <p> The project will be stored at our own backed-up network system. </p>
       {%- elif sharedWhereAUuid == uuids.sharedWhereOtherAUuid -%}
         {%- set sharedWhereOtherPath = [sharedWherePath, uuids.sharedWhereOtherAUuid, uuids.sharedWhereOtherQUuid]|reply_path -%}
         {%- set sharedWhereOther = repliesMap[sharedWhereOtherPath]|reply_str_value -%}
-        <p> Project storage and back-up: {{sharedWhereOther}} </p>
+        <p> Project storage and back-up: {{ sharedWhereOther }} </p>
       {%- endif -%}
       {%- set sharedReliablePath = [sharedWorkspacePath, uuids.sharedWorkspaceYesAUuid, uuids.sharedReliableQUuid]|reply_path -%}
       {%- set sharedReliableAUuid = repliesMap[sharedReliablePath]|reply_str_value -%}
@@ -77,7 +79,7 @@
           {%- if sharedReliableBackupAUuid == uuids.sharedReliableBackupCopyLeftAUuid %}
             Backup of project data that is not in the work space is left to the project participants.
           {%- elif sharedReliableBackupAUuid == uuids.sharedReliableBackupCopyNoDataAUuid %}
-            Data is stored only in the work space, therefore additional backup copies of files outside work space are necessary.</p>
+            Data is stored only in the work space, therefore additional backup copies of files outside work space are necessary.
           {%- elif sharedReliableBackupAUuid == uuids.sharedReliableBackupCopyAllSomewhereAUuid %}
             All project data stored outside of the working area will be adequately backed up.
           {%- elif sharedReliableBackupAUuid == uuids.sharedReliableBackupCopyBackupsAUuid %}

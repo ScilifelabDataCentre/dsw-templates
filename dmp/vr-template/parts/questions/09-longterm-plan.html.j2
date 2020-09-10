@@ -79,8 +79,17 @@
 
                     {# File format #}
                     {# might not work #}
-                    {%- if publishedDataRepositoryFormatReply -%}
-                      File format will be: {{ macros.integrationValue(publishedDataRepositoryFormatReply, uuids.repoFileFormatQUuid) }}.
+                    {%- set publishedRepoFormatPath = [isPublishedDataPath, uuids.isPublishedDataYesAUuid, uuids.repoFileFormatQUuid]|reply_path -%}
+                    {%- set publishedRepoFormatCount = repliesMap[publishedRepoFormatPath]|reply_int_value -%}
+                    {%- if publishedRepoFormatCount > 0 -%}
+                      {{ "File formats will be: " if (publishedRepoFormatCount>1) else "File format will be: " }}
+                      {%- for nFormats in range(publishedRepoFormatCount) -%}
+                        {%- set formatPathPrefix = [publishedRepoFormatPath, nFormats]|reply_path -%}
+                        {%- set formatName = repliesMap[formatPathPrefix]|reply_str_value -%]
+                        {%- if formatName %}
+                          {{ macros.integrationValue(formatName, uuids.repoFileFormatQUuid) }}.
+                        {%- endif -%}
+                      {%- endfor -%}
                     {%- endif -%}
                   </li>
                 {%- endif -%}
@@ -113,17 +122,18 @@
         {%- if publishedSWRepoAUuid or publishedSWCatalogueAUuid -%}
           <li>
             <strong>{{ publishedSWName if publishedSWName else "(no name given)" }}</strong>
+            {# the chosen repo is not written so I tried adding - to %} #}
             {%- if publishedSWRepoAUuid %}
               will be stored in
-              {%- if publishedSWRepositoryKindAUuid == uuids.publishedSWRepoGitAUuid %}
+              {%- if publishedSWRepoAUuid == uuids.publishedSWRepoGitAUuid %}
                 GitHub.
-              {%- elif publishedSWRepositoryKindAUuid == uuids.publishedSWRepoBitbucketAUuid %}
+              {%- elif publishedSWRepoAUuid == uuids.publishedSWRepoBitbucketAUuid %}
                 BitBucket.
-              {%- elif publishedSWRepositoryKindAUuid == uuids.publishedSWRepoOtherAUuid %}
+              {%- elif publishedSWRepoAUuid == uuids.publishedSWRepoOtherAUuid -%}
                 {%- set publishedSWRepoOtherPath = [publishedSWRepoPath, uuids.publishedSWRepoOtherAUuid, uuids.publishedSWRepoOtherWhichQUuid]|reply_path -%}
-                {%- set publishedSWRepoOtherWhichAUuid = repliesMap[publishedSWRepoOtherPath]|reply_str_value %}
+                {%- set publishedSWRepoOtherWhichAUuid = repliesMap[publishedSWRepoOtherPath]|reply_str_value -%}
                 {%- if publishedSWRepoOtherWhichAUuid %}
-                  : {{ publishedSWRepoOtherWhichAUuid }}. {# |dot? #}
+                  : {{ publishedSWRepoOtherWhichAUuid|dot }}
                 {%- else %}
                   another, not specified, repository.
                 {%- endif -%}
@@ -131,7 +141,7 @@
               {%- endif -%}
             {%- endif -%}
             {%- if publishedSWCatalogueAUuid == uuids.publishedSWCatalogueYesAUuid -%}
-              {%- if publishedSWRepositoryKindAUuid %}
+              {%- if publishedSWRepoAUuid %}
                 We
               {%- else %}
                 <span class="separator">&ndash;</span> we
@@ -143,7 +153,7 @@
       {%- endfor -%}
       </ul>
     {%- endif -%}
-    {# Repository charges #}
+    {# Repository charges
     {%- set repoChargesPath = [uuids.preservingCUuid, uuids.repoChargesQUuid]|reply_path -%}
     {%- set repoChargesAUuid = repliesMap[repoChargesPath]|reply_str_value -%}
     {%- if repoChargesAUuid == uuids.repoChargesNoAUuid -%}
@@ -164,12 +174,12 @@
           <p>We will carry the costs related to the used repositories by: {{ repoChargesHowPayOther|dot }}</p>
         {%- endif -%}
       {%- endif -%}
-    {%- endif -%}
-    {# Budget time and effort #}
+    {%- endif -%} #}
+    {# Budget time and effort
     {%- set budgetTimeEffortPath = [uuids.preservingCUuid, uuids.budgetTimeEffortQUuid]|reply_path -%}
     {%- set budgetTimeEffortAUuid = repliesMap[budgetTimeEffortPath]|reply_str_value -%}
     {%- if budgetTimeEffortAUuid == uuids.budgetTimeEffortYesAUuid -%}
       <p>We have a reserved budget for the time and effort it will take to prepare the data for publication.</p>
-    {%- endif -%}
+    {%- endif -%} #}
   </div>
 </div>

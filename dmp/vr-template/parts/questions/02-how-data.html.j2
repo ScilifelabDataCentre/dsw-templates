@@ -27,7 +27,7 @@
                   {%- set measuredDataInstrName = repliesMap[measuredDataInstrNamePath]|reply_str_value -%}
                   {%- set measuredDataInstrDescPath = [instrPathPrefix, uuids.measuredDataInstrDescQUuid]|reply_path -%}
                   {%- set measuredDataInstrDesc = repliesMap[measuredDataInstrDescPath]|reply_str_value -%}
-                  <strong>{{ measuredDataInstrName }}</strong>
+                  <strong>{{ measuredDataInstrName.value if (measuredDataInstrName and measuredDataInstrName.value)  else "(no name given)" }}</strong>
                   {% if measuredDataInstrName and measuredDataInstrDesc -%}<span class="separator">&ndash;</span>{%- endif %}
                   {{ measuredDataInstrDesc }}
                 </li>
@@ -54,7 +54,7 @@
         <li>
           There will be a <strong>folder for each sample/subject</strong>.
           {% if storOrgSubjFoldersConvs %}
-            Each of those will use the following conventions: {{ storOrgSubjFoldersConvs|dot }}
+            Each of those will use the following naming conventions: {{ storOrgSubjFoldersConvs|dot }}
           {%- endif -%}
         </li>
       {%- elif storageOrganizeAUuid == uuids.storOrgAnalysisFoldersAUuid -%}
@@ -63,7 +63,7 @@
         <li>
           There will be a <strong>folder for each sample/subject</strong>.
           {% if storOrgAnalysisFoldersConvs %}
-            Each of those will use the following conventions: {{ storOrgAnalysisFoldersConvs|dot }}
+            Each of those will use the following naming conventions: {{ storOrgAnalysisFoldersConvs|dot }}
           {%- endif -%}
         </li>
       {%- elif storageOrganizeAUuid == uuids.storOrgWorkflowStepFoldersAUuid -%}
@@ -72,18 +72,20 @@
         <li>
           There will be a <strong>folder for each sample/subject</strong>.
           {% if storOrgWorkflowStepFoldersConvs %}
-            Each of those will use the following conventions: {{ storOrgWorkflowStepFoldersConvs|dot }}
+            Each of those will use the following naming conventions: {{ storOrgWorkflowStepFoldersConvs|dot }}
           {%- endif -%}
         </li>
       {%- endif -%}
       </ul>
     </p>
     {# File naming conventions #}
-    {%- set storOrgAppointmentsPath = [storageOrganizePath, uuids.storOrgFilesConvsQUuid]|reply_path -%}
-    {%- set storOrgAppointments = repliesMap[storOrgAppointmentsPath]|reply_str_value -%}
-    {%- if storOrgAppointments %}
+    {#   {%- set storageOrganizePath = [uuids.storageCUuid, uuids.storageOrganizeQUuid]|reply_path -%}
+      {%- set storageOrganizeAUuid = repliesMap[storageOrganizePath]|reply_str_value -%} #}
+    {%- set storOrgFileConvsPath = [uuids.storageCUuid, uuids.storOrgFilesConvsQUuid]|reply_path -%}
+    {%- set storOrgFileConvs = repliesMap[storOrgFileConvsPath]|reply_str_value -%}
+    {%- if storOrgFileConvs %}
     <p>
-      We have made decisions about naming the files. {{ storOrgAppointments|dot }}
+      We have made the following decisions about naming the files: {{ storOrgFileConvs }}
     </p>
     {%- endif -%}
   {%- endif -%}

@@ -1,9 +1,9 @@
 {
   "uuid": "70c09f78-85d7-11e9-8241-00163eba999d",
-  "id": "SciLifeLab:full:1.0.0",
+  "id": "SciLifeLab:full:1.1.0",
   "organizationId": "SciLifeLab",
   "templateId": "full",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "name": "SciLifeLab Full",
   "description": "Template intended for the SciLifeLab DMP",
   "readme": "# SciLifeLab Full",

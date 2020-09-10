@@ -4,7 +4,7 @@
 {# ------------------------------------------------------------------------------------ #}
 {%- set km = ctx.knowledgeModel -%}
 {%- set replies = ctx.questionnaireReplies -%}
-{%- set repliesMap = ctx.questionnaireRepliesMap -%}
+{%- set repliesMap = ctx.questionnaireReplies -%}
 {%- set report = ctx.report -%}
 {%- set metricDefinitions = ctx.metrics -%}
 {%- set levelDefinitions = ctx.levels -%}
@@ -80,16 +80,16 @@
   <div class="answer-block answer-simple" id="{{path}}" data-path="{{reply.path}}" data-type="answer">
     <p class="answer">
       {% if reply.value.type == "StringReply" %}
-        <span>{{reply.value.value}}</span>
+        <span>{{reply.value}}</span>
       {% else %}
-        <span>{{reply.value.value.value}}</span>
-        {% if reply.value.value.type == "IntegrationValue" and reply.value.value.id %}
+        <span>{{reply.value}}</span>
+        {% if reply.value.type == "IntegrationValue" and reply.value.id %}
           {# Integration #}
           {% set integration = km.entities.integrations[question.integrationUuid] %}
           <div class="integration-link">
             {% if integration.logo %}<img src="{{ integration.logo }}" alt="{{ integration.name }}">{% endif %}
-            <a href="{{ integration.itemUrl|replace('${id}', reply.value.value.id) }}">
-              {{ integration.itemUrl|replace("${id}", reply.value.value.id) }}
+            <a href="{{ integration.itemUrl|replace('${id}', reply.value.id) }}">
+              {{ integration.itemUrl|replace("${id}", reply.value.id) }}
             </a>
           </div>
         {% endif %}
@@ -98,8 +98,8 @@
   </div>
 {%- endmacro -%}
 {%- macro renderAnswerOption(question, reply, path, humanIdentifier) -%}
-  {% set hi = question.answerUuids.index(reply.value.value) %}
-  {% set answer = km.entities.answers[reply.value.value] %}
+  {% set hi = question.answerUuids.index(reply.value) %}
+  {% set answer = km.entities.answers[reply.value] %}
   {% set path = path ~ "." ~ answer.uuid %}
   {% set humanIdentifier = humanIdentifier ~ "." ~ hi|of_alphabet %}
   <div class="answer-block answer-option" id="{{path}}" data-path="{{reply.path}}" data-uuid="{{answer.uuid}}" data-type="answer">
@@ -123,10 +123,10 @@
     <h4>Answers</h4>
     {% set itemPathPrefix = path ~ "." %}
     {% set hiPrefix = humanIdentifier ~ "." %}
-    {% for i in range(0, reply.value.value) %}
+    {% for i in range(0, reply.value) %}
       {% set itemPath = itemPathPrefix ~ i %}
       {% set itemHumanIdenfifier = hiPrefix ~ i|of_alphabet %}
-      <div class="answer-item" id="{{reply.path}}-{{reply.value.value}}">
+      <div class="answer-item" id="{{reply.path}}-{{reply.value}}">
         <div class="followups">
           {% for questionUuid in question.itemTemplateQuestionUuids %}
             {% set x = loop.index %}

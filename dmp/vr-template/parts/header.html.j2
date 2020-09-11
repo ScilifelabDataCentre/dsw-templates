@@ -5,14 +5,14 @@
   </h1>
   <div>
     <dl>
-      {%- set contributorsPath = [uuids.adminDetailsCUuid, uuids.contributorsQUuid]|replypath -%}
+      {%- set contributorsPath = [uuids.adminDetailsCUuid, uuids.contributorsQUuid]|reply_path -%}
       {%- set nContributors = repliesMap[contributorsPath]|reply_int_value -%}
       {%- if nContributors > 0 -%}
         <dt>{{ "Contributors" if (nContributors > 1) else "Contributor" }}</dt>
         <dd>
         <ul>
         {%- for i in range(nContributors) -%}
-          {%- set pathPrefix = [contributorsPath, i]||reply_path -%}
+          {%- set pathPrefix = [contributorsPath, i]|reply_path -%}
           <li>
             {%- set contributorName = repliesMap[pathPrefix ~ uuids.contributorNameQUuid] -%}
             {%- set contributorEmail = repliesMap[pathPrefix ~ uuids.contributorEmailQUuid] -%}
@@ -60,7 +60,7 @@
                 {%- endif -%}
               {%- endif -%}
             {%- endif -%}
-            {# Roles #}
+             Roles
             {%- set rolePath = [pathPrefix, uuids.contributorAddRoleQUuid]|reply_path -%}
             {%- set nRoles = repliesMap[rolePath]|reply_int_value -%}
             {%- if nRoles > 0 -%}
@@ -89,18 +89,18 @@
                     {{ roleOtherWhichAUuid }}
                   {%- endif -%}
                 {%- endif -%}
-                {%- if roleIndex < nRoles -%}  {# if more roles left #}
+                {%- if roleIndex < nRoles -%}   {# if more roles left #}
                   ,
                 {%- else -%}
                   )
                 {%- endif -%}
               {%- endfor -%}
               </p>
-            {%- endif -%} 
+            {%- endif -%}
           </li>
         {%- endfor -%}
       </ul>
-      </dd>
+    </dd>
     {%- endif -%}
 
       <dt>Based on</dt>

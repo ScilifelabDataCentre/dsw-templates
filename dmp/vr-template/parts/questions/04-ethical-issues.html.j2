@@ -84,6 +84,13 @@
         {%- if needDPAYesListCount > 0 -%}
         {# step through the list of Processors and agreements, after checking that
           needDPAYesListQUuid is not null. Not sure if correct but think so #}
+          <p>
+          {%- if needDPAYesListCount > 1 -%}
+            The following Data Processing Agreements have been established:
+          {%- else -%}
+            The following Data Processing Agreement has been established:
+          {%- endif -%}
+          </p>
           <ul>
           {%- for i in range(needDPAYesListCount) -%}
             {%- set pathPrefix = [needDPAYesListPath, i]|reply_path -%}
@@ -93,6 +100,7 @@
             {%- set DPAAgreementName = repliesMap[DPAAgreementPath]|reply_str_value -%}
             <li>
               <strong>Processors: </strong>{{ DPAProcessorsName if DPAProcessorsName else "(no names given)" }}
+              <br>
               <strong>Agreement: </strong>{{ DPAAgreementName if DPAAgreementName else "(no agreement given)" }}
             </li>
           {%- endfor -%}

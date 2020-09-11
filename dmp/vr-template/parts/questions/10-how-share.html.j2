@@ -27,7 +27,7 @@
               {%- set identifierPrefix = [identifiersPath, j]|reply_path -%}
               {%- set identifierTypePath = [identifierPrefix, uuids.dataIdentifierTypeQUuid]|reply_path -%}
               {%- set identifierTypeAUuid = repliesMap[identifierTypePath]|reply_str_value -%}
-              {%- set identifierValuePath = [identifierPrefix, uuids.dataIdentifierIdenfitierQUuid]|reply_path -%}
+              {%- set identifierValuePath = [identifierPrefix, uuids.dataIdentifierIdentifierQUuid]|reply_path -%}
               {%- set identifierValue = repliesMap[identifierValuePath]|reply_str_value -%}
               {%- if identifierTypeAUuid == uuids.dataIdentifierTypeHandleAUuid -%}
                 <li>Handle: <strong>{{ identifierValue }}</strong></li>
@@ -177,7 +177,7 @@
                 {%- elif publishedSWLicenseWhichAUuid == uuids.publishedSWLicenseMITAUuid %}
                   with a MIT license.
                 {%- elif publishedSWLicenseWhichAUuid == uuids.publishedSWLicenseApacheAUuid %}
-                  with a Apache license.
+                  with an Apache license.
                 {%- elif publishedSWLicenseWhichAUuid == uuids.publishedSWLicenseOtherAUuid %}
                   {%- set publishedSWLicenseWhichOtherPath = [publishedSWLicenseWhichPath, uuids.publishedSWLicenseOtherAUuid, uuids.publishedSWLicenseOtherWhichQUuid]|reply_path -%}
                   {%- set publishedSWLicenseWhichOther = repliesMap[publishedSWLicenseWhichOtherPath]|reply_str_value -%}

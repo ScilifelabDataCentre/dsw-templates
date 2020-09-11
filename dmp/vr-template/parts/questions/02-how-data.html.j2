@@ -47,36 +47,28 @@
   {%- if storageOrganizeAUuid -%}
     <h4>Storage and file conventions</h4>
     <p>
-      <ul>
       {%- if storageOrganizeAUuid == uuids.storOrgSubjFoldersAUuid -%}
         {%- set storOrgSubjFoldersPath = [storageOrganizePath, uuids.storOrgSubjFoldersAUuid]|reply_path -%}
         {%- set storOrgSubjFoldersConvs = repliesMap[[storOrgSubjFoldersPath, uuids.storOrgSubjFoldersConvsQUuid]|reply_path]|reply_str_value -%}
-        <li>
           There will be a <strong>folder for each sample/subject</strong>.
           {% if storOrgSubjFoldersConvs %}
             Each of those will use the following naming conventions: {{ storOrgSubjFoldersConvs|dot }}
           {%- endif -%}
-        </li>
       {%- elif storageOrganizeAUuid == uuids.storOrgAnalysisFoldersAUuid -%}
         {%- set storOrgAnalysisFoldersPath = [storageOrganizePath, uuids.storOrgAnalysisFoldersAUuid]|reply_path -%}
         {%- set storOrgAnalysisFoldersConvs = repliesMap[[storOrgAnalysisFoldersPath, uuids.storOrgAnalysisFoldersConvsQUuid]|reply_path]|reply_str_value -%}
-        <li>
           There will be a <strong>folder for each sample/subject</strong>.
           {% if storOrgAnalysisFoldersConvs %}
             Each of those will use the following naming conventions: {{ storOrgAnalysisFoldersConvs|dot }}
           {%- endif -%}
-        </li>
       {%- elif storageOrganizeAUuid == uuids.storOrgWorkflowStepFoldersAUuid -%}
         {%- set storOrgWorkflowStepFoldersPath = [storageOrganizePath, uuids.storOrgWorkflowStepFoldersAUuid]|reply_path -%}
         {%- set storOrgWorkflowStepFoldersConvs = repliesMap[[storOrgWorkflowStepFoldersPath, uuids.storOrgWorkflowStepFoldersConvsQUuid]|reply_path]|reply_str_value -%}
-        <li>
           There will be a <strong>folder for each sample/subject</strong>.
           {% if storOrgWorkflowStepFoldersConvs %}
             Each of those will use the following naming conventions: {{ storOrgWorkflowStepFoldersConvs|dot }}
           {%- endif -%}
-        </li>
       {%- endif -%}
-      </ul>
     </p>
     {# File naming conventions #}
     {#   {%- set storageOrganizePath = [uuids.storageCUuid, uuids.storageOrganizeQUuid]|reply_path -%}

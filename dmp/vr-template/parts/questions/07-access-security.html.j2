@@ -23,9 +23,9 @@
           Project members will not store data or software on computers in the lab or external hard drives connected to those computers.
         {%- endif -%}
         {%- if risksCarryHomeAUuid == uuids.risksCarryHomeNoAUuid %}
-          {%- if risksStoreLabAUuid == uuids.risksStoreLabNoAUuid -%}They{%- else -%}Project members{%- endif %} will not carry data with them (e.g. on laptops, USB sticks, or other external media).
+          {%- if risksStoreLabAUuid == uuids.risksStoreLabNoAUuid %} They{%- else %}Project members{%- endif %} will not carry data with them (e.g. on laptops, USB sticks, or other external media).
         {%- elif risksCarryHomeEncAUuid == uuids.risksCarryHomeEncYesAUuid %}
-          {%- if risksStoreLabAUuid == uuids.risksStoreLabNoAUuid -%}They{%- else -%}Project members{%- endif %} can carry data with them on encrypted data carriers and password-protected laptops.
+          {%- if risksStoreLabAUuid == uuids.risksStoreLabNoAUuid %} They{%- else %}Project members{%- endif %} can carry data with them on encrypted data carriers and password-protected laptops.
         {%- endif -%}
         {%- if risksCertificationsAUuid == uuids.risksCertificationsYesAUuid %}
           All data centers where project data is stored carry sufficient certifications.

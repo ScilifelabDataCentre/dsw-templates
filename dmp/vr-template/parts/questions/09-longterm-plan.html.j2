@@ -83,15 +83,15 @@
                     {%- set publishedRepoFormatCount = repliesMap[publishedRepoFormatPath]|reply_int_value -%}
                     {%- if publishedRepoFormatCount > 0 -%}
                       {{ "File formats will be: " if (publishedRepoFormatCount>1) else "File format will be: " }}
+                      <ul>
                       {%- for nFormats in range(publishedRepoFormatCount) -%}
-                        {%- set formatPathPrefix = [publishedRepoFormatPath, nFormats]|reply_path -%}
-                        {%- set formatNameReply = repliesMap[[formatPathPrefix, uuids.repoFileFormatQUuid]|reply_path] -%}
-                        {%- set formatName = repliesMap[formatPathPrefix]|reply_str_value -%}
-                          {{ formatName }}.
-                        {# {%- if formatNameReply %} #}
-                          {{ macros.integrationValue(formatName, uuids.repoFileFormatQUuid) }}.
-                        {# {%- endif -%} #}
+                        {%- set formatPathPrefix = [publishedRepoFormatPath, nFormats,uuids.repoFileFormatAUuid]|reply_path -%}
+                        {%- set formatNameReply = repliesMap[formatPathPrefix] -%}
+                        {%- if formatNameReply %}
+                          <li>{{ macros.integrationValue(formatNameReply, uuids.repoFileFormatAUuid) }} </li>
+                        {%- endif -%}
                       {%- endfor -%}
+                    </ul>
                     {%- endif -%}
                   </li>
                 {%- endif -%}

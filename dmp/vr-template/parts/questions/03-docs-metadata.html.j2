@@ -46,7 +46,7 @@
     {%- set nMetadataStandardPath = [uuids.documentationCUuid, uuids.nonMetadataStandardQUuid]|reply_path -%}
     {%- set nMetadataStandardAUuid = repliesMap[nMetadataStandardPath]|reply_str_value -%}
     {%- if nMetadataStandardAUuid == uuids.nonMetadataStandardYesAUuid -%}
-      {%- set nMetadataStandardWhichPath = [nMetadataStandardPath, uuids.nonMetadataStandardYesAUuid, uuids.nMetadataStandardYesWhichQUuid]|reply_path -%}
+      {%- set nMetadataStandardWhichPath = [nMetadataStandardPath, uuids.nonMetadataStandardYesAUuid, uuids.nonMetadataStandardYesWhichQUuid]|reply_path -%}
       {%- set nMetadataStandardWhichAUuid = repliesMap[nMetadataStandardWhichPath]|reply_str_value -%}
       {%- if nMetadataStandardWhichAUuid -%}
         <p> In addition, the following metadata will be provided as documentation: {{ nMetadataStandardWhichAUuid }} </p>

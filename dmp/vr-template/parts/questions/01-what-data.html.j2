@@ -239,72 +239,31 @@
       {%- for formatIndex in range(formatsCount) -%}
         {%- set formatPrefix = [formatsPath, formatIndex]|reply_path -%}
         {%- set formatNameReply = repliesMap[[formatPrefix, uuids.formatsNameQUuid]|reply_path] -%}
-        {%- set formatsIsStandardPath = [formatPrefix, uuids.formatsIsStandardQUuid]|reply_path -%}
-        {%- set formatsIsStandardAUuid = repliesMap[formatsIsStandardPath]|reply_str_value -%}
-        {%- set formatsIsLTSuitablePath = [formatPrefix, uuids.formatsIsLTSuitableQUuid]|reply_path -%}
-        {%- set formatsIsLTSuitableAUuid = repliesMap[formatsIsLTSuitablePath]|reply_str_value -%}
         {%- set formatsVolumePath = [formatPrefix, uuids.formatsVolumeQUuid]|reply_path -%}
         {%- set formatsVolumeAUuid = repliesMap[formatsVolumePath]|reply_str_value -%}
         <li>
           {# identification #}
           <strong>{{ macros.integrationValue(formatNameReply, uuids.formatsNameQUuid) }}</strong>
-          {%- if formatsIsStandardAUuid or formatsIsLTSuitableAUuid or formatsVolumeAUuid -%}
-            <p>
-            {# standard? #}
-            {%- if formatsIsStandardAUuid == uuids.formatsIsStandardYesAUuid %}
-              It is a standardized format.
-            {%- elif formatsIsStandardAUuid == uuids.formatsIsStandardNoAUuid -%}
-              {%- set formatsWhyNonStandardPath = [formatsIsStandardPath, uuids.formatsIsStandardNoAUuid, uuids.formatsWhyNonStandardQUuid]|reply_path -%}
-              {%- set formatsWhyNonStandardAUuid = repliesMap[formatsWhyNonStandardPath]|reply_str_value -%}
-              {%- if formatsWhyNonStandardAUuid == uuids.formatsWhyNSThereIsNoStandardAUuid %}
-                It is not a standardized format because there is no standardized format for this data type.
-              {%- elif formatsWhyNonStandardAUuid == uuids.formatsWhyNSItIsOptimizedAUuid %}
-                It is not a standardized format but it is optimized for processing speed and/or volume.
-              {%- elif formatsWhyNonStandardAUuid == uuids.formatsWhyNSAnotherReasonAUuid -%}
-                {%- set formatsWhyNSAnotherReasonPath = [formatsWhyNonStandardPath, uuids.formatsWhyNSAnotherReasonAUuid, uuids.formatsWhyNSAnotherReasonQUuid]|reply_path -%}
-                {%- set formatsWhyNSAnotherReason = repliesMap[formatsWhyNSAnotherReasonPath]|reply_str_value -%}
-                It is not a standardized format.
-                {%- if formatsWhyNSAnotherReason %}
-                  {{ formatsWhyNSAnotherReason|capitalize|dot }}
-                {%- endif -%}
-              {%- endif -%}
+          {# volume #}
+          {%- if formatsVolumeAUuid == uuids.formatsVolumeSmallAUuid %}
+            We will have only a small amount of data stored in this format.
+          {%- elif formatsVolumeAUuid == uuids.formatsVolumeTotalAUuid %}
+            {%- set formatsVolumeTotalTB = repliesMap[[formatsVolumePath, uuids.formatsVolumeTotalAUuid, uuids.formatsVolumeTotalTBQUuid]|reply_path]|reply_str_value -%}
+            {%- if formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQLess10AUuid %}
+              We expect to have between 1 TB and 10 TB of data in this format.
+            {%- elif formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQLess50AUuid %}
+              We expect to have between 10 TB and 50 TB of data in this format.
+            {%- elif formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQLess100AUuid %}
+              We expect to have between 50 TB and 100 TB of data in this format.
+            {%- elif formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQMore100AUuid %}
+                We expect to have more than 100 TB of data in this format.
             {%- endif -%}
-            {# long-term suitable? #}
-            {%- if formatsIsLTSuitableAUuid == uuids.formatsIsLTSuitableYesAUuid %}
-              This is a suitable format for long-term archiving.
-            {%- elif formatsIsLTSuitableAUuid == uuids.formatsIsLTSuitableNoAUuid -%}
-              {%- set formatsConvertLTSuitablePath = [formatsIsLTSuitablePath, uuids.formatsIsLTSuitableNoAUuid, uuids.formatsConvertLTSuitableQUuid]|reply_path -%}
-              {%- set formatsConvertLTSuitableAUuid = repliesMap[formatsConvertLTSuitablePath]|reply_str_value -%}
-              {%- if formatsConvertLTSuitableAUuid == uuids.formatsConvertLTSuitableYesAUuid %}
-                This is not a suitable format for long-term archiving; however, we plan to convert it to a suitable format before the end of the project.
-              {%- elif formatsConvertLTSuitableAUuid == uuids.formatsConvertLTSuitableNoAUuid %}
-                We are aware that this is not a suitable format for long-term archiving.
-              {%- endif -%}
+          {%- elif formatsVolumeAUuid == uuids.formatsVolumeFileSizeAUuid -%}
+            {%- set formatsVolumeFiles = repliesMap[[formatsVolumePath, uuids.formatsVolumeFileSizeAUuid, uuids.formatsVolumeFilesQUuid]|reply_path]|reply_str_value -%}
+            {%- set formatsVolumeFileGB = repliesMap[[formatsVolumePath, uuids.formatsVolumeFileSizeAUuid, uuids.formatsVolumeFileGBQUuid]|reply_path]|reply_str_value -%}
+            {%- if formatsVolumeFiles and formatsVolumeFileGB %}
+              We expect to have {{ formatsVolumeFiles }} files of average size {{ formatsVolumeFileGB }} GB (i.e. approximately {{ (formatsVolumeFiles|int * formatsVolumeFileGB|float)|round(2) }} GB in total).
             {%- endif -%}
-            {# volume #}
-            {%- if formatsVolumeAUuid == uuids.formatsVolumeSmallAUuid %}
-              We will have only a small amount of data stored in this format.
-            {%- elif formatsVolumeAUuid == uuids.formatsVolumeTotalAUuid %}
-            {# changed to read the options under formatsVolumeTotalTBQUuid
-               think this works #}
-              {%- set formatsVolumeTotalTB = repliesMap[[formatsVolumePath, uuids.formatsVolumeTotalAUuid, uuids.formatsVolumeTotalTBQUuid]|reply_path]|reply_str_value -%}
-              {%- if formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQLess10AUuid %}
-                We expect to have between 1 TB and 10 TB of data in this format.
-              {%- elif formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQLess50AUuid %}
-                We expect to have between 10 TB and 50 TB of data in this format.
-              {%- elif formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQLess100AUuid %}
-                We expect to have between 50 TB and 100 TB of data in this format.
-              {%- elif formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQMore100AUuid %}
-                  We expect to have more than 100 TB of data in this format.
-              {%- endif -%}
-            {%- elif formatsVolumeAUuid == uuids.formatsVolumeFileSizeAUuid -%}
-              {%- set formatsVolumeFiles = repliesMap[[formatsVolumePath, uuids.formatsVolumeFileSizeAUuid, uuids.formatsVolumeFilesQUuid]|reply_path]|reply_str_value -%}
-              {%- set formatsVolumeFileGB = repliesMap[[formatsVolumePath, uuids.formatsVolumeFileSizeAUuid, uuids.formatsVolumeFileGBQUuid]|reply_path]|reply_str_value -%}
-              {%- if formatsVolumeFiles and formatsVolumeFileGB %}
-                We expect to have {{ formatsVolumeFiles }} files of average size {{ formatsVolumeFileGB }} GB (i.e. approximately {{ (formatsVolumeFiles|int * formatsVolumeFileGB|float)|round(2) }} GB in total).
-              {%- endif -%}
-            {%- endif -%}
-            </p>
           {%- endif -%}
         </li>
       {%- endfor -%}

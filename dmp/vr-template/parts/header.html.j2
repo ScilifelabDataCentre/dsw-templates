@@ -3,6 +3,69 @@
   <h1>
     {{ ctx.questionnaireName }}
   </h1>
+  {%- set projectsPath = [uuids.adminDetailsCUuid, uuids.projectsQUuid]|reply_path -%}
+  {%- set projectsCount = repliesMap[projectsPath]|reply_int_value -%}
+  <div id="dmp-projects">
+    <h2>Projects</h2>
+
+    <p>We will be working on the following projects and for those are the data and work described in this DMP.</p>
+
+    {% for projectIndex in range(projectsCount) %}
+      <div class="project">
+      {%- set projectNamePath = [projectsPath, projectIndex, uuids.projectNameQUuid]|reply_path -%}
+      {%- set projectName = repliesMap[projectNamePath]|reply_str_value -%}
+      {%- if projectName -%}
+        <h3>{{ projectName }}</h3>
+      {%- else -%}
+        <h3 class="empty-value">(project name not given)</h3>
+      {%- endif -%}
+
+      {%- set projectAbstractPath = [projectsPath, projectIndex, uuids.projectAbstractQUuid]|reply_path -%}
+      {%- set projectAbstract = repliesMap[projectAbstractPath]|reply_str_value -%}
+      {%- if projectAbstract %}
+        <section class="abstract">
+          {%- set paragraphs = projectAbstract.split('\n') -%}
+          {% for paragraph in paragraphs %}
+          <p>{{ paragraph }}</p>
+          {% endfor %}
+        </section>
+      {%- endif -%}
+
+      {%- set projectStartPath = [projectsPath, projectIndex, uuids.projectStartQUuid]|reply_path -%}
+      {%- set projectStart = repliesMap[projectStartPath]|reply_str_value -%}
+      {%- set projectEndPath = [projectsPath, projectIndex, uuids.projectEndQUuid]|reply_path -%}
+      {%- set projectEnd = repliesMap[projectEndPath]|reply_str_value -%}
+      {%- set fundersPath = [projectsPath, projectIndex, uuids.fundersQUuid]|reply_path -%}
+      {%- set fundersCount = repliesMap[fundersPath]|reply_int_value -%}
+        <p><strong>Start date: </strong> {{ projectStart if projectStart else "N/A" }}</br>
+          <strong>End date: </strong> {{ projectEnd if projectEnd else "N/A" }}
+        </p>
+        <dl>
+          <dt>Funding</dt>
+          <dd>
+            {%- if fundersCount > 0 %}
+              <ul>
+              {%- for funderIndex in range(fundersCount) %}
+                {%- set funderNamePath = [fundersPath, funderIndex, uuids.funderNameQUuid]|reply_path -%}
+                {%- set funderNameReply = repliesMap[funderNamePath] -%}
+                {%- set grantNumberPath = [fundersPath, funderIndex, uuids.grantNumberQUuid]|reply_path -%}
+                {%- set grantNumber = repliesMap[grantNumberPath]|reply_str_value -%}
+                {%- set funderStatusPath = [fundersPath, funderIndex, uuids.funderStatusQUuid]|reply_path -%}
+                {%- set funderStatus = repliesMap[funderStatusPath]|reply_str_value %}
+                <li>{{ macros.integrationValue(funderNameReply, uuids.funderNameQUuid) }}: {{ grantNumber if grantNumber else "grant number not yet given" }} {% if funderStatus == uuids.funderStatusPlannedAUuid %}(planned){% elif funderStatus == uuids.funderStatusAppliedAUuid %}(applied){% elif funderStatus == uuids.funderStatusGrantedAUuid %}(granted){% elif funderStatus == uuids.funderStatusRejectedAUuid %}(rejected){% endif %}</li>
+              {%- endfor %}
+              </ul>
+            {%- else -%}
+              Did not apply for any funding yet.
+            {%- endif -%}
+          </dd>
+        </dl>
+      </div>
+    {% else %}
+      <div style="font-style:italic;">There are no projects described for this DMP.</div>
+    {% endfor %}
+  </div>
+
   <div>
     <dl>
       {%- set contributorsPath = [uuids.adminDetailsCUuid, uuids.contributorsQUuid]|reply_path -%}
@@ -93,11 +156,17 @@
             {%- endif -%}
           </li>
         {%- endfor -%}
-      </ul>
-    </dd>
-    {%- endif -%}
-
-      <dt>Based on</dt>
+        </ul>
+        </dd>
+      {%- endif -%}
+    </dl>
+    <p>
+      This DMP was created by <span class="contact-name">{{ ctx.createdBy.firstName }} {{ ctx.createdBy.lastName }}</span>
+      ({{ macros.formatEmail(ctx.createdBy.email) }}){% if ctx.createdBy.affiliation %}<br>{{ ctx.createdBy.affiliation }}{% endif %}
+      on {{ ctx.createdAt|datetime_format("%d %b %Y") }} using Data Stewardship Wizard &laquo;<a href="https://dsw.scilifelab.se" target="_blank">https://dsw.scilifelab.se</a>&raquo;
+      , {{ ctx.package.name }}, {{ ctx.package.version }} (<span class="package-id"><span class="organization-id">{{ ctx.package.organizationId }}</span>:<span class="km-id">{{ ctx.package.kmId }}</span>:<span class="version">{{ ctx.package.version }}</span></span>).
+    </p>
+    {#}  <dt>Based on</dt>
       <dd>{{ ctx.package.name }}, {{ ctx.package.version }} (<span class="package-id"><span class="organization-id">{{ ctx.package.organizationId }}</span>:<span class="km-id">{{ ctx.package.kmId }}</span>:<span class="version">{{ ctx.package.version }}</span></span>)</dd>
       {%- if ctx.config.levelsEnabled.levelsEnabled -%}
         <dt>Project phase</dt>
@@ -114,6 +183,6 @@
     </dl>
     <p class="dsw">
       Data Management Plan created in Data Stewardship Wizard &laquo;<a href="https://dsw.scilifelab.se" target="_blank">https://dsw.scilifelab.se</a>&raquo;
-    </p>
+    </p>#}
   </div>
 </header>

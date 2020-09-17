@@ -1,5 +1,5 @@
 <div id="q-what-data" class="question">
-  <h3>1. What data will you collect or create?</h3>
+  <h3>1. How will data be collected, created or reused?</h3>
   <div class="answer">
 
   {%- set measuredDataPath = [uuids.creatingCUuid, uuids.measuredDataQUuid]|reply_path -%}
@@ -66,6 +66,29 @@
                 {%- endif -%}
               {%- endif -%}
             </p>
+          {%- endif -%}
+          {# Instruments #}
+          {%- set measuredDataInstrPath = [pathPrefix, uuids.measuredDataInstrQUuid]|reply_path -%}
+          {%- set measuredDataInstrCount = repliesMap[measuredDataInstrPath]|reply_int_value -%}
+          {%- if measuredDataInstrCount > 0 -%}
+            <p>For this dataset, we are using the following instruments:
+            <ul>
+              {%- for instrIndex in range(measuredDataInstrCount) -%}
+                {%- set instrPathPrefix = [measuredDataInstrPath, instrIndex]|reply_path -%}
+                <li>
+                  {%- set measuredDataInstrNamePath = [instrPathPrefix, uuids.measuredDataInstrNameQUuid]|reply_path -%}
+                  {%- set measuredDataInstrName = repliesMap[measuredDataInstrNamePath]|reply_str_value -%}
+                  {%- set measuredDataInstrDescPath = [instrPathPrefix, uuids.measuredDataInstrDescQUuid]|reply_path -%}
+                  {%- set measuredDataInstrDesc = repliesMap[measuredDataInstrDescPath]|reply_str_value -%}
+                  <strong>{{ measuredDataInstrName.value if (measuredDataInstrName and measuredDataInstrName.value)  else "(no name given)" }}</strong>
+                  {% if measuredDataInstrName and measuredDataInstrDesc -%}<span class="separator">&ndash;</span>{%- endif %}
+                  {{ measuredDataInstrDesc }}
+                </li>
+              {%- endfor -%}
+            </ul>
+            </p>
+          {%- else -%}
+            <p>No instruments for this dataset have been specified.</p>
           {%- endif -%}
           {# Equipment standard? #}
           {% if measuredDataEquipAUuid == uuids.measuredDataEquipDescribedAUuid -%}
@@ -227,48 +250,6 @@
         {%- endif -%}
       </div>
     {%- endif -%}
-  {%- endif -%}
-  {# Format/Type with volume #}
-  {%- set formatsPath = [uuids.creatingCUuid, uuids.formatsQUuid]|reply_path -%}
-  {%- set formatsCountReply = repliesMap[formatsPath] -%}
-  {%- set formatsCount = formatsCountReply.value.value if formatsCountReply else 0 -%}
-  {%- if formatsCount > 0 -%}
-    <h4>Data formats and types</h4>
-    <div>We will be using the following data formats and types:
-    <ul>
-      {%- for formatIndex in range(formatsCount) -%}
-        {%- set formatPrefix = [formatsPath, formatIndex]|reply_path -%}
-        {%- set formatNameReply = repliesMap[[formatPrefix, uuids.formatsNameQUuid]|reply_path] -%}
-        {%- set formatsVolumePath = [formatPrefix, uuids.formatsVolumeQUuid]|reply_path -%}
-        {%- set formatsVolumeAUuid = repliesMap[formatsVolumePath]|reply_str_value -%}
-        <li>
-          {# identification #}
-          <strong>{{ macros.integrationValue(formatNameReply, uuids.formatsNameQUuid) }}</strong>
-          {# volume #}
-          {%- if formatsVolumeAUuid == uuids.formatsVolumeSmallAUuid %}
-            We will have only a small amount of data stored in this format.
-          {%- elif formatsVolumeAUuid == uuids.formatsVolumeTotalAUuid %}
-            {%- set formatsVolumeTotalTB = repliesMap[[formatsVolumePath, uuids.formatsVolumeTotalAUuid, uuids.formatsVolumeTotalTBQUuid]|reply_path]|reply_str_value -%}
-            {%- if formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQLess10AUuid %}
-              We expect to have between 1 TB and 10 TB of data in this format.
-            {%- elif formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQLess50AUuid %}
-              We expect to have between 10 TB and 50 TB of data in this format.
-            {%- elif formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQLess100AUuid %}
-              We expect to have between 50 TB and 100 TB of data in this format.
-            {%- elif formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQMore100AUuid %}
-                We expect to have more than 100 TB of data in this format.
-            {%- endif -%}
-          {%- elif formatsVolumeAUuid == uuids.formatsVolumeFileSizeAUuid -%}
-            {%- set formatsVolumeFiles = repliesMap[[formatsVolumePath, uuids.formatsVolumeFileSizeAUuid, uuids.formatsVolumeFilesQUuid]|reply_path]|reply_str_value -%}
-            {%- set formatsVolumeFileGB = repliesMap[[formatsVolumePath, uuids.formatsVolumeFileSizeAUuid, uuids.formatsVolumeFileGBQUuid]|reply_path]|reply_str_value -%}
-            {%- if formatsVolumeFiles and formatsVolumeFileGB %}
-              We expect to have {{ formatsVolumeFiles }} files of average size {{ formatsVolumeFileGB }} GB (i.e. approximately {{ (formatsVolumeFiles|int * formatsVolumeFileGB|float)|round(2) }} GB in total).
-            {%- endif -%}
-          {%- endif -%}
-        </li>
-      {%- endfor -%}
-    </ul>
-    </div>
   {%- endif -%}
   </div>
 </div>

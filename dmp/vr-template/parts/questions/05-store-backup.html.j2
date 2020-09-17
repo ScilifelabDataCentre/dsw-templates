@@ -1,5 +1,5 @@
 <div id="q-store-backup" class="question">
-  <h3>5. How will the data be stored and backed up during the research?</h3>
+  <h3>5. How is storage and backup of data and metadata safeguarded during the research process?</h3>
   <div class="answer">
     {# Data stored by members (no shared workspace) #}
     {%- set sharedWorkspacePath = [uuids.storageCUuid, uuids.sharedWorkspaceQUuid]|reply_path -%}
@@ -54,7 +54,7 @@
         {%- elif sharedWhereSNICApplyAUuid == uuids.sharedWhereSNICApplyWillAUuid %}
            An application for project time will be made.
         {%- endif -%}
-        </p> 
+        </p>
       {%- elif sharedWhereAUuid == uuids.sharedWhereOwnAUuid -%}
         <p> The project will be stored at our own backed-up network system. </p>
       {%- elif sharedWhereAUuid == uuids.sharedWhereOtherAUuid -%}

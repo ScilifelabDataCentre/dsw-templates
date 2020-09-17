@@ -1,0 +1,52 @@
+<div id="q-persisten-identifier" class="question">
+  <h3>12.	How will the use of unique and persistent identifiers be safeguarded?</h3>
+
+  <div class="answer">
+    {# Produced datasets #}
+    {%- set producedDataPath = [uuids.preservingCUuid, uuids.producedDataQUuid]|reply_path -%}
+    {%- set producedDataCount = repliesMap[producedDataPath]|reply_int_value -%}
+    {%- if producedDataCount > 0 -%}
+      <p> The published datasets will have the following persistent identifiers: </p>
+      <ul>
+        {%- for i in range(producedDataCount) -%}
+        {%- set pathPrefix = [producedDataPath, i]|reply_path -%}
+        {%- set producedDataName = repliesMap[[pathPrefix, uuids.producedDataNameQUuid]|reply_path]|reply_str_value -%}
+        {# Only published #}
+        {%- set isPublishedDataPath = [pathPrefix, uuids.isPublishedDataQUuid]|reply_path -%}
+        {%- set isPublishedDataAUuid = repliesMap[isPublishedDataPath]|reply_str_value -%}
+        {% if isPublishedDataAUuid == uuids.isPublishedDataYesAUuid %}
+          <li>
+            <strong>{{ producedDataName if producedDataName else "(no name given)" }}</strong>
+            {# Identifiers #}
+            {% set identifiersPath = [pathPrefix, uuids.producedDataIdentifiersQUuid]|reply_path -%}
+            {%- set identifiersCount = repliesMap[identifiersPath]|reply_int_value -%}
+            {%- if identifiersCount > 0 -%}
+              <ul>
+                {%- for j in range(identifiersCount) -%}
+                {%- set identifierPrefix = [identifiersPath, j]|reply_path -%}
+                {%- set identifierTypePath = [identifierPrefix, uuids.dataIdentifierTypeQUuid]|reply_path -%}
+                {%- set identifierTypeAUuid = repliesMap[identifierTypePath]|reply_str_value -%}
+                {%- set identifierValuePath = [identifierPrefix, uuids.dataIdentifierIdentifierQUuid]|reply_path -%}
+                {%- set identifierValue = repliesMap[identifierValuePath]|reply_str_value -%}
+                {%- if identifierTypeAUuid == uuids.dataIdentifierTypeHandleAUuid -%}
+                  <li>Handle: <strong>{{ identifierValue }}</strong></li>
+                {%- elif identifierTypeAUuid == uuids.dataIdentifierTypeDoiAUuid -%}
+                  <li>DOI: <strong><a href="https://doi.org/{{ identifierValue }}">{{ identifierValue }}</a></strong></li>
+                {%- elif identifierTypeAUuid == uuids.dataIdentifierTypeArkAUuid -%}
+                  <li>ARK: <strong>{{ identifierValue }}</strong></li>
+                {%- elif identifierTypeAUuid == uuids.dataIdentifierTypeUrlAUuid -%}
+                  <li>URL: <strong><a href="{{ identifierValue }}">{{ identifierValue }}</a></strong></li>
+                {%- elif identifierTypeAUuid == uuids.dataIdentifierTypeOtherAUuid -%}
+                  {%- set identifierType = repliesMap[[identifierTypePath, uuids.dataIdentifierTypeOtherAUuid, uuids.dataIdentifierTypeOtherTypeQUuid]|reply_path]|reply_str_value -%}
+                  <li>{{ identifierType }}: <strong>{{ identifierValue }}</strong></li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- endif %}
+        </li>
+        {%- endif %}
+      {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</div>

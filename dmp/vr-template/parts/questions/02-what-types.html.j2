@@ -1,0 +1,88 @@
+<div id="q-how-data" class="question">
+  <h3>2. What types of data will be created and/or collected, in terms of data format and amount/volume of data? </h3>
+  <div>
+  {# Format/Type with volume #}
+  {%- set formatsPath = [uuids.creatingCUuid, uuids.formatsQUuid]|reply_path -%}
+  {%- set formatsCountReply = repliesMap[formatsPath] -%}
+  {%- set formatsCount = formatsCountReply.value.value if formatsCountReply else 0 -%}
+  {%- if formatsCount > 0 -%}
+    <h4>Data formats and types</h4>
+    <div>We will be using the following data formats and types:
+    <ul>
+      {%- for formatIndex in range(formatsCount) -%}
+        {%- set formatPrefix = [formatsPath, formatIndex]|reply_path -%}
+        {%- set formatNameReply = repliesMap[[formatPrefix, uuids.formatsNameQUuid]|reply_path] -%}
+        {%- set formatsVolumePath = [formatPrefix, uuids.formatsVolumeQUuid]|reply_path -%}
+        {%- set formatsVolumeAUuid = repliesMap[formatsVolumePath]|reply_str_value -%}
+        <li>
+          {# identification #}
+          <strong>{{ macros.integrationValue(formatNameReply, uuids.formatsNameQUuid) }}</strong>
+          {# volume #}
+          {%- if formatsVolumeAUuid == uuids.formatsVolumeSmallAUuid %}
+            - We will have only a small amount of data stored in this format.
+          {%- elif formatsVolumeAUuid == uuids.formatsVolumeTotalAUuid %}
+            {%- set formatsVolumeTotalTB = repliesMap[[formatsVolumePath, uuids.formatsVolumeTotalAUuid, uuids.formatsVolumeTotalTBQUuid]|reply_path]|reply_str_value -%}
+            {%- if formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQLess10AUuid %}
+              - We expect to have between 1 TB and 10 TB of data in this format.
+            {%- elif formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQLess50AUuid %}
+              - We expect to have between 10 TB and 50 TB of data in this format.
+            {%- elif formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQLess100AUuid %}
+              - We expect to have between 50 TB and 100 TB of data in this format.
+            {%- elif formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQMore100AUuid %}
+                - We expect to have more than 100 TB of data in this format.
+            {%- endif -%}
+          {%- elif formatsVolumeAUuid == uuids.formatsVolumeFileSizeAUuid -%}
+            {%- set formatsVolumeFiles = repliesMap[[formatsVolumePath, uuids.formatsVolumeFileSizeAUuid, uuids.formatsVolumeFilesQUuid]|reply_path]|reply_str_value -%}
+            {%- set formatsVolumeFileGB = repliesMap[[formatsVolumePath, uuids.formatsVolumeFileSizeAUuid, uuids.formatsVolumeFileGBQUuid]|reply_path]|reply_str_value -%}
+            {%- if formatsVolumeFiles and formatsVolumeFileGB %}
+              - We expect to have {{ formatsVolumeFiles }} files of average size {{ formatsVolumeFileGB }} GB (i.e. approximately {{ (formatsVolumeFiles|int * formatsVolumeFileGB|float)|round(2) }} GB in total).
+            {%- endif -%}
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+    </div>
+  {%- endif -%}
+
+  {# Storage and file conventions #}
+  {%- set storageOrganizePath = [uuids.storageCUuid, uuids.storageOrganizeQUuid]|reply_path -%}
+  {%- set storageOrganizeAUuid = repliesMap[storageOrganizePath]|reply_str_value -%}
+  {%- if storageOrganizeAUuid -%}
+    <h4>Storage and file conventions</h4>
+    <p>
+      {%- if storageOrganizeAUuid == uuids.storOrgSubjFoldersAUuid -%}
+        {%- set storOrgSubjFoldersPath = [storageOrganizePath, uuids.storOrgSubjFoldersAUuid]|reply_path -%}
+        {%- set storOrgSubjFoldersConvs = repliesMap[[storOrgSubjFoldersPath, uuids.storOrgSubjFoldersConvsQUuid]|reply_path]|reply_str_value -%}
+          There will be a <strong>folder for each sample/subject</strong>.
+          {% if storOrgSubjFoldersConvs %}
+            Each of those will use the following naming conventions: {{ storOrgSubjFoldersConvs|dot }}
+          {%- endif -%}
+      {%- elif storageOrganizeAUuid == uuids.storOrgAnalysisFoldersAUuid -%}
+        {%- set storOrgAnalysisFoldersPath = [storageOrganizePath, uuids.storOrgAnalysisFoldersAUuid]|reply_path -%}
+        {%- set storOrgAnalysisFoldersConvs = repliesMap[[storOrgAnalysisFoldersPath, uuids.storOrgAnalysisFoldersConvsQUuid]|reply_path]|reply_str_value -%}
+          There will be a <strong>folder for each sample/subject</strong>.
+          {% if storOrgAnalysisFoldersConvs %}
+            Each of those will use the following naming conventions: {{ storOrgAnalysisFoldersConvs|dot }}
+          {%- endif -%}
+      {%- elif storageOrganizeAUuid == uuids.storOrgWorkflowStepFoldersAUuid -%}
+        {%- set storOrgWorkflowStepFoldersPath = [storageOrganizePath, uuids.storOrgWorkflowStepFoldersAUuid]|reply_path -%}
+        {%- set storOrgWorkflowStepFoldersConvs = repliesMap[[storOrgWorkflowStepFoldersPath, uuids.storOrgWorkflowStepFoldersConvsQUuid]|reply_path]|reply_str_value -%}
+          There will be a <strong>folder for each sample/subject</strong>.
+          {% if storOrgWorkflowStepFoldersConvs %}
+            Each of those will use the following naming conventions: {{ storOrgWorkflowStepFoldersConvs|dot }}
+          {%- endif -%}
+      {%- endif -%}
+    </p>
+    {# File naming conventions #}
+    {#   {%- set storageOrganizePath = [uuids.storageCUuid, uuids.storageOrganizeQUuid]|reply_path -%}
+      {%- set storageOrganizeAUuid = repliesMap[storageOrganizePath]|reply_str_value -%} #}
+    {%- set storOrgFileConvsPath = [uuids.storageCUuid, uuids.storOrgFilesConvsQUuid]|reply_path -%}
+    {%- set storOrgFileConvs = repliesMap[storOrgFileConvsPath]|reply_str_value -%}
+    {%- if storOrgFileConvs %}
+    <p>
+      We have made the following decisions about naming the files: {{ storOrgFileConvs }}
+    </p>
+    {%- endif -%}
+  {%- endif -%}
+  </div>
+</div>

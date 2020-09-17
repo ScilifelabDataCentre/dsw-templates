@@ -6,7 +6,7 @@
     {%- if ctx.createdBy %}
       <p>{{ctx.createdBy.firstName}} {{ctx.createdBy.lastName}} is responsible for implementing the DMP, and ensuring it is reviewed and revised.</p>
     {%- endif -%}
-
+{# This will not work since we have roles as item list. Check header.html.j2 on how #}
     {%- set contributorsPath = [uuids.adminDetailsCUuid, uuids.contributorsQUuid]|reply_path -%}
     {%- set contributorsReply = repliesMap[contributorsPath] -%}
     {%- if contributorsReply -%}

@@ -123,9 +123,9 @@
     <h4>Answers</h4>
     {% set itemPathPrefix = path ~ "." %}
     {% set hiPrefix = humanIdentifier ~ "." %}
-    {% for aswerPath in reply.value %}
+    {% for answerPath in reply.value %}
       {% set i = loop.index0 %}
-      {% set itemPath = itemPathPrefix ~ aswerPath %}
+      {% set itemPath = itemPathPrefix ~ answerPath %}
       {% set itemHumanIdenfifier = hiPrefix ~ i|of_alphabet %}
       <div class="answer-item" id="{{itemPath}}">
         <div class="followups">

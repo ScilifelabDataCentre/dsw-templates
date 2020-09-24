@@ -1,6 +1,6 @@
 {
-  "uuid": "f2ec0d93-66cd-4810-b35b-471ebb1271e0",
-  "id": "SciLifeLab:minimal:1.1.0",
+  "metamodelVersion": 2,
+  "id": "SciLifeLab:minimal:1.2.0",
   "organizationId": "SciLifeLab",
   "templateId": "minimal",
   "version": "1.1.0",

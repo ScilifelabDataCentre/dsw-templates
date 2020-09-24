@@ -3,7 +3,7 @@
   "id": "SciLifeLab:minimal:1.2.0",
   "organizationId": "SciLifeLab",
   "templateId": "minimal",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "name": "SciLifeLab Minimal",
   "description": "Template intended for the SciLifeLab DMP, with minimal help text",
   "readme": "# SciLifeLab Minimal",

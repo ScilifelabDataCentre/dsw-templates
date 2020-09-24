@@ -77,13 +77,13 @@
 {#  ANSWERS MACROS                                                                      #}
 {# ------------------------------------------------------------------------------------ #}
 {%- macro renderAnswerValue(question, reply, path, humanIdentifier) -%}
-  <div class="answer-block answer-simple" id="{{path}}" data-path="{{reply.path}}" data-type="answer">
+  <div class="answer-block answer-simple" id="{{path}}" data-path="{{path}}" data-type="answer">
     <p class="answer">
-      {% if reply.value.type == "StringReply" %}
+      {% if reply.type == "StringReply" %}
         <span>{{reply.value}}</span>
       {% else %}
-        <span>{{reply.value}}</span>
-        {% if reply.value.type == "IntegrationValue" and reply.value.id %}
+        <span>{{reply.value.value}}</span>
+        {% if reply.type == "IntegrationReply" and reply.value.id %}
           {# Integration #}
           {% set integration = km.entities.integrations[question.integrationUuid] %}
           <div class="integration-link">
@@ -102,7 +102,7 @@
   {% set answer = km.entities.answers[reply.value] %}
   {% set path = path ~ "." ~ answer.uuid %}
   {% set humanIdentifier = humanIdentifier ~ "." ~ hi|of_alphabet %}
-  <div class="answer-block answer-option" id="{{path}}" data-path="{{reply.path}}" data-uuid="{{answer.uuid}}" data-type="answer">
+  <div class="answer-block answer-option" id="{{path}}" data-path="{{path}}" data-uuid="{{answer.uuid}}" data-type="answer">
     <p class="answer">
       <span>{{ hi|of_alphabet }}. {{answer.label}}</span>
     </p>
@@ -119,14 +119,15 @@
   </div>
 {%- endmacro -%}
 {%- macro renderAnswerList(question, reply, path, humanIdentifier) -%}
-  <div class="answer-block answer-items" id="{{path}}" data-path="{{reply.path}}" data-type="answer">
+  <div class="answer-block answer-items" id="{{path}}" data-path="{{path}}" data-type="answer">
     <h4>Answers</h4>
     {% set itemPathPrefix = path ~ "." %}
     {% set hiPrefix = humanIdentifier ~ "." %}
-    {% for i in range(0, reply.value) %}
-      {% set itemPath = itemPathPrefix ~ i %}
+    {% for answerPath in reply.value %}
+      {% set i = loop.index0 %}
+      {% set itemPath = itemPathPrefix ~ answerPath %}
       {% set itemHumanIdenfifier = hiPrefix ~ i|of_alphabet %}
-      <div class="answer-item" id="{{reply.path}}-{{reply.value}}">
+      <div class="answer-item" id="{{itemPath}}">
         <div class="followups">
           {% for questionUuid in question.itemTemplateQuestionUuids %}
             {% set x = loop.index %}
@@ -161,13 +162,13 @@
   {# Question - Answers #}
   {% set reply = repliesMap[path] %}
   {% if reply %}
-    {% if question.questionType == "ValueQuestion" and reply.value.type == "StringReply" %}
+    {% if question.questionType == "ValueQuestion" and reply.type == "StringReply" %}
       {{ renderAnswerValue(question, reply, path, humanIdentifier) }}
-    {% elif question.questionType == "OptionsQuestion" and reply.value.type == "AnswerReply" %}
+    {% elif question.questionType == "OptionsQuestion" and reply.type == "AnswerReply" %}
       {{ renderAnswerOption(question, reply, path, humanIdentifier) }}
-    {% elif question.questionType == "ListQuestion" and reply.value.type == "ItemListReply" %}
+    {% elif question.questionType == "ListQuestion" and reply.type == "ItemListReply" %}
       {{ renderAnswerList(question, reply, path, humanIdentifier) }}
-    {% elif question.questionType == "IntegrationQuestion" and reply.value.type == "IntegrationReply" %}
+    {% elif question.questionType == "IntegrationQuestion" and reply.type == "IntegrationReply" %}
       {{ renderAnswerValue(question, reply, path, humanIdentifier) }}
     {% endif %}
   {% else %}

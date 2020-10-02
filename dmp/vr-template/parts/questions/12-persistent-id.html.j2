@@ -62,7 +62,7 @@
           {%- set publishedSWDOI = repliesMap[[publishedSWDOIPath,uuids.publishedSWDOIYesAUuid, uuids.publishedSWDOIYesQUuid]|reply_path]|reply_str_value -%}
           {%- if publishedSWDOI -%}
             <li>
-              Code {{ publishedSWName if publishedSWName else "(no name given)" }} will have identifier
+              Code <strong>{{ publishedSWName if publishedSWName else "(no name given)" }} </strong>will have identifier
               <strong><a href="https://doi.org/{{ publishedSWDOI }}">{{ publishedSWDOI }}</a></strong>
             </li>
           {%- endif %}

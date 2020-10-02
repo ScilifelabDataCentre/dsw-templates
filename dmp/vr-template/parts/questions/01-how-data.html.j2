@@ -218,7 +218,7 @@
             {%- for nrefDataIndex in range(nrefDataCount) -%}
               {%- set nrefDataNamePath = [nrefDataPath, nrefDataIndex, uuids.nrefDataNameQUuid]|reply_path -%}
               {%- set nrefDataNameReply = repliesMap[nrefDataNamePath] -%}
-              {%- set nrefDataWhere = repliesMap[[nrefDataPrefix, uuids.nrefDataWhereQUuid]|reply_path]|reply_str_value -%}
+              {%- set nrefDataWhere = repliesMap[[nrefDataPath, nrefDataIndex, uuids.nrefDataWhereQUuid]|reply_path]|reply_str_value -%}
               <li>
                 {# identification #}
                 <strong>{{ macros.integrationValue(nrefDataNameReply, uuids.nrefDataNameQUuid) }}</strong>

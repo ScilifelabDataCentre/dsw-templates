@@ -121,7 +121,7 @@
     {%- endif -%}
 
     {# Published software #}
-    {%- set publishedSWPath = [uuids.preservingCUuid, uuids.publishedSWQUuid]|reply_path -%}
+    {%- set publishedSWPath = [uuids.preservingCUuid, uuids.publishSWQUuid, uuids.publishSWYesAUuid, uuids.publishedSWQUuid]|reply_path -%}
     {%- set publishedSWCount = repliesMap[publishedSWPath]|reply_int_value -%}
     {%- if publishedSWCount > 0 -%}
     <p> We will also publish the following code: </p>

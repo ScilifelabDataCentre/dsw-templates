@@ -48,5 +48,27 @@
       {%- endfor -%}
       </ul>
     {%- endif -%}
+    {# Published software #}
+    {%- set publishedSWPath = [uuids.preservingCUuid, uuids.publishedSWQUuid]|reply_path -%}
+    {%- set publishedSWCount = repliesMap[publishedSWPath]|reply_int_value -%}
+    {%- if publishedSWCount > 0 -%}
+      <ul>
+      {%- for i in range(publishedSWCount) -%}
+        {%- set pathPrefix = [publishedSWPath, i]|reply_path -%}
+        {%- set publishedSWName = repliesMap[[pathPrefix, uuids.publishedSWNameQUuid]|reply_path]|reply_str_value -%}
+        {%- set publishedSWDOIPath = [pathPrefix, uuids.publishedSWDOIQUuid]|reply_path -%}
+        {%- set publishedSWDOIAUuid = repliesMap[publishedSWDOIPath]|reply_str_value -%}
+        {%- if publishedSWDOIAUuid == uuids.publishedSWDOIYesAUuid -%}
+          {%- set publishedSWDOI = repliesMap[[publishedSWDOIPath,uuids.publishedSWDOIYesAUuid, uuids.publishedSWDOIYesQUuid]|reply_path]|reply_str_value -%}
+          {%- if publishedSWDOI -%}
+            <li>
+              <strong>Code {{ publishedSWName if publishedSWName else "(no name given)" }}</strong> will have the following identifier:
+              <strong><a href="https://doi.org/{{ publishedSWDOI }}">{{ publishedSWDOI }}</a></strong>
+            </li>
+          {%- endif %}
+        {%- endif %}
+      {%- endfor -%}
+      </ul>
+    {%- endif %}
   </div>
 </div>

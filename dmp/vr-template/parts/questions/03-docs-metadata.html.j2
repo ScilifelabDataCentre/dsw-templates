@@ -50,5 +50,46 @@
         <p> In addition, the following metadata will be provided as documentation: {{ nMetadataStandardWhichAUuid }} </p>
       {%- endif -%}
     {%- endif -%}
+
+    {# Storage and file conventions #}
+    {%- set storageOrganizePath = [uuids.storageCUuid, uuids.storageOrganizeQUuid]|reply_path -%}
+    {%- set storageOrganizeAUuid = repliesMap[storageOrganizePath]|reply_str_value -%}
+    {%- if storageOrganizeAUuid -%}
+      <h4>Storage and file conventions</h4>
+      <p>
+        {%- if storageOrganizeAUuid == uuids.storOrgSubjFoldersAUuid -%}
+          {%- set storOrgSubjFoldersPath = [storageOrganizePath, uuids.storOrgSubjFoldersAUuid]|reply_path -%}
+          {%- set storOrgSubjFoldersConvs = repliesMap[[storOrgSubjFoldersPath, uuids.storOrgSubjFoldersConvsQUuid]|reply_path]|reply_str_value -%}
+            There will be a <strong>folder for each sample/subject</strong>.
+            {% if storOrgSubjFoldersConvs %}
+              Each of those will use the following naming conventions: {{ storOrgSubjFoldersConvs|dot }}
+            {%- endif -%}
+        {%- elif storageOrganizeAUuid == uuids.storOrgAnalysisFoldersAUuid -%}
+          {%- set storOrgAnalysisFoldersPath = [storageOrganizePath, uuids.storOrgAnalysisFoldersAUuid]|reply_path -%}
+          {%- set storOrgAnalysisFoldersConvs = repliesMap[[storOrgAnalysisFoldersPath, uuids.storOrgAnalysisFoldersConvsQUuid]|reply_path]|reply_str_value -%}
+            There will be a <strong>folder for each sample/subject</strong>.
+            {% if storOrgAnalysisFoldersConvs %}
+              Each of those will use the following naming conventions: {{ storOrgAnalysisFoldersConvs|dot }}
+            {%- endif -%}
+        {%- elif storageOrganizeAUuid == uuids.storOrgWorkflowStepFoldersAUuid -%}
+          {%- set storOrgWorkflowStepFoldersPath = [storageOrganizePath, uuids.storOrgWorkflowStepFoldersAUuid]|reply_path -%}
+          {%- set storOrgWorkflowStepFoldersConvs = repliesMap[[storOrgWorkflowStepFoldersPath, uuids.storOrgWorkflowStepFoldersConvsQUuid]|reply_path]|reply_str_value -%}
+            There will be a <strong>folder for each sample/subject</strong>.
+            {% if storOrgWorkflowStepFoldersConvs %}
+              Each of those will use the following naming conventions: {{ storOrgWorkflowStepFoldersConvs|dot }}
+            {%- endif -%}
+        {%- endif -%}
+      </p>
+      {# File naming conventions #}
+      {#   {%- set storageOrganizePath = [uuids.storageCUuid, uuids.storageOrganizeQUuid]|reply_path -%}
+        {%- set storageOrganizeAUuid = repliesMap[storageOrganizePath]|reply_str_value -%} #}
+      {%- set storOrgFileConvsPath = [uuids.storageCUuid, uuids.storOrgFilesConvsQUuid]|reply_path -%}
+      {%- set storOrgFileConvs = repliesMap[storOrgFileConvsPath]|reply_str_value -%}
+      {%- if storOrgFileConvs %}
+      <p>
+        We have made the following decisions about naming the files: {{ storOrgFileConvs }}
+      </p>
+      {%- endif -%}
+    {%- endif -%}
   </div>
 </div>

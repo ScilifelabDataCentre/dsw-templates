@@ -4,10 +4,10 @@
   <div class="answer">
     {# Produced datasets #}
     {%- set producedDataPath = [uuids.preservingCUuid, uuids.producedDataQUuid]|reply_path -%}
-    {%- set producedDataCount = repliesMap[producedDataPath]|reply_int_value -%}
-    {%- if producedDataCount > 0 -%}
+    {%- set producedDataCount = repliesMap[producedDataPath]|reply_items -%}
+    {%- if producedDataCount|length > 0 -%}
       <ul>
-      {%- for i in range(producedDataCount) -%}
+      {%- for i in producedDataCount -%}
         {%- set pathPrefix = [producedDataPath, i]|reply_path -%}
         {%- set producedDataName = repliesMap[[pathPrefix, uuids.producedDataNameQUuid]|reply_path]|reply_str_value -%}
         <li>
@@ -21,11 +21,11 @@
             (published)
             {# Distributions #}
             {% set distrosPath = [isPublishedDataPath, uuids.isPublishedDataYesAUuid, uuids.publishedDistrosQUuid]|reply_path -%}
-            {%- set distrosCount = repliesMap[distrosPath]|reply_int_value -%}
-            {%- if distrosCount > 0 -%}
+            {%- set distrosCount = repliesMap[distrosPath]|reply_items -%}
+            {%- if distrosCount|length > 0 -%}
               <br>The distributions will be stored in:
               <ul>
-              {%- for j in range(distrosCount) -%}
+              {%- for j in distrosCount -%}
                 {%- set distroPrefix = [distrosPath, j]|reply_path -%}
                 {%- set distroRepositoryKindPath = [distroPrefix, uuids.publishedDataRepositoryKindQUuid]|reply_path -%}
                 {%- set distroRepositoryKindAUuid = repliesMap[distroRepositoryKindPath]|reply_str_value -%}
@@ -79,11 +79,11 @@
 
                     {# File format #}
                     {%- set publishedRepoFormatPath = [pathPrefix, uuids.repoFileFormatQUuid]|reply_path -%}
-                    {%- set publishedRepoFormatCount = repliesMap[publishedRepoFormatPath]|reply_int_value -%}
-                    {%- if publishedRepoFormatCount > 0 -%}
+                    {%- set publishedRepoFormatCount = repliesMap[publishedRepoFormatPath]|reply_items -%}
+                    {%- if publishedRepoFormatCount|length > 0 -%}
                       {{ " File formats will be: " if (publishedRepoFormatCount>1) else " File format will be: " }}
                       <ul>
-                      {%- for nFormats in range(publishedRepoFormatCount) -%}
+                      {%- for nFormats in publishedRepoFormatCount -%}
                         {%- set formatPathPrefix = [publishedRepoFormatPath, nFormats,uuids.repoFileFormatAUuid]|reply_path -%}
                         {%- set formatNameReply = repliesMap[formatPathPrefix] -%}
                         {%- set formatsIsStandardPath = [publishedRepoFormatPath, nFormats, uuids.formatsIsStandardQUuid]|reply_path -%}

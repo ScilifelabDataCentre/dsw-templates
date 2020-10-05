@@ -3,13 +3,12 @@
   <div>
   {# Format/Type with volume #}
   {%- set formatsPath = [uuids.creatingCUuid, uuids.formatsQUuid]|reply_path -%}
-  {%- set formatsCountReply = repliesMap[formatsPath] -%}
-  {%- set formatsCount = formatsCountReply.value.value if formatsCountReply else 0 -%}
-  {%- if formatsCount > 0 -%}
+  {%- set formatsCount = repliesMap[formatsPath]|reply_items -%}
+  {%- if formatsCount|length > 0 -%}
     <h4>Data formats and types</h4>
     <div>We will be using the following data formats and types:
     <ul>
-      {%- for formatIndex in range(formatsCount) -%}
+      {%- for formatIndex in formatsCount -%}
         {%- set formatPrefix = [formatsPath, formatIndex]|reply_path -%}
         {%- set formatNameReply = repliesMap[[formatPrefix, uuids.formatsNameQUuid]|reply_path] -%}
         {%- set formatsVolumePath = [formatPrefix, uuids.formatsVolumeQUuid]|reply_path -%}

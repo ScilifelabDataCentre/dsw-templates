@@ -3,11 +3,11 @@
   <div class="answer">
     {# Measured datasets #}
     {%- set measuredDataPath = [uuids.creatingCUuid, uuids.measuredDataQUuid]|reply_path -%}
-    {%- set measuredDataCount = repliesMap[measuredDataPath]|reply_int_value -%}
-    {%- if measuredDataCount > 0 -%}
+    {%- set measuredDataCount = repliesMap[measuredDataPath]|reply_items -%}
+    {%- if measuredDataCount|length > 0 -%}
       <h4>Instrument datasets</h4>
       <ul>
-        {%- for datasetIndex in range(measuredDataCount) -%}
+        {%- for datasetIndex in measuredDataCount -%}
           {%- set pathPrefix = [measuredDataPath, datasetIndex]|reply_path -%}
           <li>
             {%- set measuredDataNamePath = [pathPrefix, uuids.measuredDataNameQUuid]|reply_path -%}

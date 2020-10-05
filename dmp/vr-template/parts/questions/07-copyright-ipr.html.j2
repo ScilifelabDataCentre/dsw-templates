@@ -107,17 +107,17 @@
     {%- set usingPreexistingAUuid = repliesMap[usingPreexistingPath]|reply_str_value -%}
     {%- if usingPreexistingAUuid == uuids.usingPreexistingYesAUuid -%}
       {%- set refDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.refDataQUuid]|reply_path -%}
-      {%- set refDataCount = repliesMap[refDataPath]|reply_int_value -%}
+      {%- set refDataCount = repliesMap[refDataPath]|reply_items -%}
       {%- set nrefDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.nrefDataQUuid]|reply_path -%}
-      {%- set nrefDataCount = repliesMap[nrefDataPath]|reply_int_value -%}
+      {%- set nrefDataCount = repliesMap[nrefDataPath]|reply_items -%}
       {%- set answeredRefData = [] -%}
-      {%- for i in range(refDataCount) -%}
+      {%- for i in refDataCount -%}
           {%- if repliesMap[[refDataPath, i, uuids.refDataConditionsQUuid]|reply_path] -%}
             {%- do answeredRefData.append(i) -%}
           {%- endif -%}
       {%- endfor -%}
       {%- set answeredNRefData = [] -%}
-      {%- for i in range(nrefDataCount) -%}
+      {%- for i in nrefDataCount -%}
           {%- if repliesMap[[nrefDataPath, i, uuids.nrefDataConditionsQUuid]|reply_path] -%}
             {%- do answeredNRefData.append(i) -%}
           {%- endif -%}
@@ -189,8 +189,8 @@
       {%- set needDPAAUuid = repliesMap[needDPAPath]|reply_str_value -%}
       {%- if needDPAAUuid == uuids.needDPAYesAUuid -%}
         {%- set needDPAYesListPath = [needDPAPath, uuids.needDPAYesAUuid, uuids.needDPAYesListQUuid]|reply_path -%}
-        {%- set needDPAYesListCount = repliesMap[needDPAYesListPath]|reply_int_value -%}
-        {%- if needDPAYesListCount > 0 -%}
+        {%- set needDPAYesListCount = repliesMap[needDPAYesListPath]|reply_items -%}
+        {%- if needDPAYesListCount|length > 0 -%}
         {# step through the list of Processors and agreements, after checking that
           needDPAYesListQUuid is not null. Not sure if correct but think so #}
           <p>
@@ -201,7 +201,7 @@
           {%- endif -%}
           </p>
           <ul>
-          {%- for i in range(needDPAYesListCount) -%}
+          {%- for i in needDPAYesListCount -%}
             {%- set pathPrefix = [needDPAYesListPath, i]|reply_path -%}
             {%- set DPAProcessorsPath = [pathPrefix, uuids.needDPAYesListProcessorQUuid]|reply_path -%}
             {%- set DPAProcessorsName = repliesMap[DPAProcessorsPath]|reply_str_value -%}

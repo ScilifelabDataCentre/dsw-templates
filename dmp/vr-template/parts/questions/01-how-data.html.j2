@@ -3,14 +3,14 @@
   <div class="answer">
 
   {%- set measuredDataPath = [uuids.creatingCUuid, uuids.measuredDataQUuid]|reply_path -%}
-  {%- set measuredDataCount = repliesMap[measuredDataPath]|reply_int_value -%}
+  {%- set measuredDataCount = repliesMap[measuredDataPath]|reply_items -%}
   {# Measured datasets #}
-  {%- if measuredDataCount > 0 -%}
+  {%- if measuredDataCount|length > 0 -%}
     <div>
     <h4>Instrument datasets</h4>
     The following instrument datasets will be acquired in the project:
     <ul>
-      {%- for datasetIndex in range(measuredDataCount) -%}
+      {%- for datasetIndex in measuredDataCount -%}
         {%- set pathPrefix = [measuredDataPath, datasetIndex]|reply_path -%}
         <li>
           {%- set measuredDataNamePath = [pathPrefix, uuids.measuredDataNameQUuid]|reply_path -%}
@@ -19,7 +19,7 @@
           {%- set measuredDataWhoAUuid = repliesMap[measuredDataWhoPath]|reply_str_value -%}
           {%- set measuredDataEquipPath = [pathPrefix, uuids.measuredDataEquipQUuid]|reply_path -%}
           {%- set measuredDataEquipAUuid = repliesMap[measuredDataEquipPath]|reply_str_value -%}
-          <strong>{{ measuredDataName.value.value if (measuredDataName and measuredDataName.value.value) else "(no name given)" }}</strong>
+          <strong>{{ measuredDataName.value if (measuredDataName and measuredDataName.value) else "(no name given)" }}</strong>
           {# Who will collect #}
           {%- if measuredDataWhoAUuid == uuids.measuredDataWhoExpertsOwnAUuid -%}
             <p>This dataset will be collected by experts in the project, with our own equipment.</p>
@@ -69,11 +69,11 @@
           {%- endif -%}
           {# Instruments #}
           {%- set measuredDataInstrPath = [pathPrefix, uuids.measuredDataInstrQUuid]|reply_path -%}
-          {%- set measuredDataInstrCount = repliesMap[measuredDataInstrPath]|reply_int_value -%}
-          {%- if measuredDataInstrCount > 0 -%}
+          {%- set measuredDataInstrCount = repliesMap[measuredDataInstrPath]|reply_items -%}
+          {%- if measuredDataInstrCount|length > 0 -%}
             <p>For this dataset, we are using the following instruments:
             <ul>
-              {%- for instrIndex in range(measuredDataInstrCount) -%}
+              {%- for instrIndex in measuredDataInstrCount -%}
                 {%- set instrPathPrefix = [measuredDataInstrPath, instrIndex]|reply_path -%}
                 <li>
                   {%- set measuredDataInstrNamePath = [instrPathPrefix, uuids.measuredDataInstrNameQUuid]|reply_path -%}
@@ -113,12 +113,12 @@
     {%- set neqDataERecordsPath = [neqDataPrefix, uuids.neqDataERecordsQUuid]|reply_path -%}
     {%- set neqDataERecordsAUuid = repliesMap[neqDataERecordsPath]|reply_str_value -%}
     {%- set neqDataSetsPath = [neqDataPrefix, uuids.neqDataSetsQUuid]|reply_path -%}
-    {%- set neqDataSetsCount = repliesMap[neqDataSetsPath]|reply_int_value -%}
+    {%- set neqDataSetsCount = repliesMap[neqDataSetsPath]|reply_items -%}
 
     {%- set questionnaires = neqDataQuestAUuid == uuids.neqDataQuestYesAUuid -%}
     {%- set caseReport = neqDataCaseReportAUuid == uuids.neqDataCaseReportYesAUuid -%}
     {%- set eRecords = neqDataERecordsAUuid == uuids.neqDataERecordsYesAUuid -%}
-    {%- if questionnaires or caseReport or eRecords or neqDataSetsCount > 0 -%}
+    {%- if questionnaires or caseReport or eRecords or neqDataSetsCount|length > 0 -%}
       <div>
       <h4>Non-equipment datasets</h4>
       {# Types #}
@@ -128,7 +128,7 @@
       {%- if eRecords -%}{%- do typesNames.append("electronic patient records") -%}{%- endif -%}
       {%- set typesCount = typesNames|length -%}
       <p>
-        {%- if typesCount > 0 -%}
+        {%- if typesCount|length > 0 -%}
           We also collect data from
           {% if typesCount == 1 -%}
               {{ typesNames[0] }}:
@@ -139,9 +139,9 @@
           {%- endif -%}
         {% endif %}
         {# Datasets #}
-        {%- if neqDataSetsCount > 0 -%}
+        {%- if neqDataSetsCount|length > 0 -%}
           <ul>
-          {%- for neqDataSetIndex in range(neqDataSetsCount) -%}
+          {%- for neqDataSetIndex in neqDataSetsCount -%}
             {%- set pathPrefix = [neqDataSetsPath, neqDataSetIndex]|reply_path -%}
             {%- set neqDataSetsName = repliesMap[[pathPrefix, uuids.neqDataSetsNameQUuid]|reply_path]|reply_str_value -%}
             {%- set neqDataSetsDesc = repliesMap[[pathPrefix, uuids.neqDataSetsDescQUuid]|reply_path]|reply_str_value -%}
@@ -161,16 +161,16 @@
   {%- set usingPreexistingAUuid = repliesMap[usingPreexistingPath]|reply_str_value -%}
   {%- if usingPreexistingAUuid == uuids.usingPreexistingYesAUuid -%}
     {%- set refDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.refDataQUuid]|reply_path -%}
-    {%- set refDataCount = repliesMap[refDataPath]|reply_int_value -%}
+    {%- set refDataCount = repliesMap[refDataPath]|reply_items -%}
     {%- set nrefDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.nrefDataQUuid]|reply_path -%}
-    {%- set nrefDataCount = repliesMap[nrefDataPath]|reply_int_value -%}
-    {%- if (refDataCount + nrefDataCount) > 0 -%}
+    {%- set nrefDataCount = repliesMap[nrefDataPath]|reply_items -%}
+    {%- if (refDataCount|length + nrefDataCount|length) > 0 -%}
       <div>
         <h4>Re-used datasets</h4>
-        {%- if refDataCount > 0 -%}
+        {%- if refDataCount|length > 0 -%}
           <div>We will use the following reference datasets:
           <ul>
-            {%- for refDataIndex in range(refDataCount) -%}
+            {%- for refDataIndex in refDataCount -%}
               {%- set refDataPrefix = [refDataPath, refDataIndex]|reply_path -%}
               {%- set refDataNameReply = repliesMap[[refDataPrefix, uuids.refDataNameQUuid]|reply_path] -%}
               {%- set refDataWhere = repliesMap[[refDataPrefix, uuids.refDataWhereQUuid]|reply_path]|reply_str_value -%}
@@ -212,10 +212,10 @@
           </ul>
           </div>
         {%- endif -%}
-        {%- if nrefDataCount > 0 -%}
+        {%- if nrefDataCount|length > 0 -%}
           <div>We will use the following already existing non-reference datasets:
           <ul>
-            {%- for nrefDataIndex in range(nrefDataCount) -%}
+            {%- for nrefDataIndex in nrefDataCount -%}
               {%- set nrefDataNamePath = [nrefDataPath, nrefDataIndex, uuids.nrefDataNameQUuid]|reply_path -%}
               {%- set nrefDataNameReply = repliesMap[nrefDataNamePath] -%}
               {%- set nrefDataWhere = repliesMap[[nrefDataPath, nrefDataIndex, uuids.nrefDataWhereQUuid]|reply_path]|reply_str_value -%}

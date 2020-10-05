@@ -4,11 +4,11 @@
   <div class="answer">
     {# Produced datasets #}
     {%- set producedDataPath = [uuids.preservingCUuid, uuids.producedDataQUuid]|reply_path -%}
-    {%- set producedDataCount = repliesMap[producedDataPath]|reply_int_value -%}
-    {%- if producedDataCount > 0 -%}
+    {%- set producedDataCount = repliesMap[producedDataPath]|reply_items -%}
+    {%- if producedDataCount|length > 0 -%}
       <ul>
       The datasets will be available as follows:
-      {%- for i in range(producedDataCount) -%}
+      {%- for i in producedDataCount -%}
         {%- set pathPrefix = [producedDataPath, i]|reply_path -%}
         {%- set producedDataName = repliesMap[[pathPrefix, uuids.producedDataNameQUuid]|reply_path]|reply_str_value -%}
         {# Only published #}
@@ -19,10 +19,10 @@
             <strong>{{ producedDataName if producedDataName else "(no name given)" }}</strong>
             {# Distributions #}
             {% set distrosPath = [isPublishedDataPath, uuids.isPublishedDataYesAUuid, uuids.publishedDistrosQUuid]|reply_path -%}
-            {%- set distrosCount = repliesMap[distrosPath]|reply_int_value -%}
-            {%- if distrosCount > 0 -%}
+            {%- set distrosCount = repliesMap[distrosPath]|reply_items -%}
+            {%- if distrosCount|length > 0 -%}
               <ul>
-              {%- for j in range(distrosCount) -%}
+              {%- for j in distrosCount -%}
                 {%- set distroPrefix = [distrosPath, j]|reply_path -%}
                 {%- set distroRepositoryKindPath = [distroPrefix, uuids.publishedDataRepositoryKindQUuid]|reply_path -%}
                 {%- set distroRepositoryKindAUuid = repliesMap[distroRepositoryKindPath]|reply_str_value -%}
@@ -54,11 +54,11 @@
                   {%- endif -%}
                   {# Licenses #}
                   {%- set licensesPath = [distroPrefix, uuids.publishedDataLicensesQUuid]|reply_path -%}
-                  {%- set licensesCount = repliesMap[licensesPath]|reply_str_value -%}
-                  {%- if licensesCount > 0 %}
-                    The distribution will be available under the following {{ "licenses" if licensesCount > 1 else "license" }}:
+                  {%- set licensesCount = repliesMap[licensesPath]|reply_items -%}
+                  {%- if licensesCount|length > 0 %}
+                    The distribution will be available under the following {{ "licenses" if licensesCount|length > 1 else "license" }}:
                     <ul>
-                    {%- for k in range(licensesCount) -%}
+                    {%- for k in licensesCount -%}
                       <li>
                       {%- set licensePrefix = [licensesPath, k]|reply_path -%}
                       {%- set licenseStartPath = [licensePrefix, uuids.publishedDataLicenseStartQUuid]|reply_path -%}
@@ -122,11 +122,11 @@
 
     {# Published software #}
     {%- set publishedSWPath = [uuids.preservingCUuid, uuids.publishSWQUuid, uuids.publishSWYesAUuid, uuids.publishedSWQUuid]|reply_path -%}
-    {%- set publishedSWCount = repliesMap[publishedSWPath]|reply_int_value -%}
-    {%- if publishedSWCount > 0 -%}
+    {%- set publishedSWCount = repliesMap[publishedSWPath]|reply_items -%}
+    {%- if publishedSWCount|length > 0 -%}
     <p> We will also publish the following code: </p>
       <ul>
-      {%- for i in range(publishedSWCount) -%}
+      {%- for i in publishedSWCount -%}
         {%- set pathPrefix = [publishedSWPath, i]|reply_path -%}
         {%- set publishedSWName = repliesMap[[pathPrefix, uuids.publishedSWNameQUuid]|reply_path]|reply_str_value -%}
         {%- set publishedSWRepoPath = [pathPrefix, uuids.publishedSWRepoQUuid]|reply_path -%}

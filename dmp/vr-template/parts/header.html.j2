@@ -4,13 +4,13 @@
     {{ ctx.questionnaireName }}
   </h1>
   {%- set projectsPath = [uuids.adminDetailsCUuid, uuids.projectsQUuid]|reply_path -%}
-  {%- set projectsCount = repliesMap[projectsPath]|reply_int_value -%}
+  {%- set projectsCount = repliesMap[projectsPath]|reply_items -%}
   <div id="dmp-projects">
     <h2>Projects</h2>
 
     <p>We will be working on the following projects and for those are the data and work described in this DMP.</p>
 
-    {% for projectIndex in range(projectsCount) %}
+    {%- for projectIndex in projectsCount -%}
       <div class="project">
       {%- set projectNamePath = [projectsPath, projectIndex, uuids.projectNameQUuid]|reply_path -%}
       {%- set projectName = repliesMap[projectNamePath]|reply_str_value -%}
@@ -36,16 +36,16 @@
       {%- set projectEndPath = [projectsPath, projectIndex, uuids.projectEndQUuid]|reply_path -%}
       {%- set projectEnd = repliesMap[projectEndPath]|reply_str_value -%}
       {%- set fundersPath = [projectsPath, projectIndex, uuids.fundersQUuid]|reply_path -%}
-      {%- set fundersCount = repliesMap[fundersPath]|reply_int_value -%}
+      {%- set fundersCount = repliesMap[fundersPath]|reply_items -%}
         <p><strong>Start date: </strong> {{ projectStart if projectStart else "N/A" }}</br>
           <strong>End date: </strong> {{ projectEnd if projectEnd else "N/A" }}
         </p>
         <dl>
           <dt>Funding</dt>
           <dd>
-            {%- if fundersCount > 0 %}
+            {%- if fundersCount|length > 0 %} {# funkar fortf? eller ta bort >0 #}
               <ul>
-              {%- for funderIndex in range(fundersCount) %}
+              {%- for funderIndex in fundersCount %}
                 {%- set funderNamePath = [fundersPath, funderIndex, uuids.funderNameQUuid]|reply_path -%}
                 {%- set funderNameReply = repliesMap[funderNamePath] -%}
                 {%- set grantNumberPath = [fundersPath, funderIndex, uuids.grantNumberQUuid]|reply_path -%}
@@ -69,12 +69,12 @@
   <div>
     <dl>
       {%- set contributorsPath = [uuids.adminDetailsCUuid, uuids.contributorsQUuid]|reply_path -%}
-      {%- set nContributors = repliesMap[contributorsPath]|reply_int_value -%}
-      {%- if nContributors > 0 -%}
+      {%- set nContributors = repliesMap[contributorsPath]|reply_items -%}
+      {%- if nContributors|length > 0 -%}
         <dt>{{ "Contributors" if (nContributors > 1) else "Contributor" }}</dt>
         <dd>
         <ul>
-        {%- for i in range(nContributors) -%}
+        {%- for i in nContributors -%}
           {%- set pathPrefix = [contributorsPath, i]|reply_path -%}
           <li>
             {%- set contributorName = repliesMap[[pathPrefix, uuids.contributorNameQUuid]|reply_path]|reply_str_value -%}
@@ -125,10 +125,10 @@
             {%- endif -%}
              {# Roles #}
             {%- set rolePath = [pathPrefix, uuids.contributorAddRoleQUuid]|reply_path -%}
-            {%- set nRoles = repliesMap[rolePath]|reply_int_value -%}
-            {%- if nRoles > 0 %}
+            {%- set nRoles = repliesMap[rolePath]|reply_items -%}
+            {%- if nRoles|length > 0 %}
               (
-              {%- for roleIndex in range(nRoles) -%}
+              {%- for roleIndex in nRoles -%}
                 {%- set roleNamePath = [rolePath, roleIndex, uuids.contributorRoleQUuid]|reply_path -%}
                 {%- set roleName = repliesMap[roleNamePath]|reply_str_value -%}
                 {%- if roleName == uuids.contributorRolePIAUuid -%}

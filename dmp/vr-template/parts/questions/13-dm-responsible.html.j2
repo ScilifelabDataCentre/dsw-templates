@@ -1,0 +1,73 @@
+<div id="q-dm-responsible" class="question">
+  <h3>13. Who will be responsible for data management?</h3>
+
+  <div class="answer">
+    {# NOTE: Public questionnaires does not have "ctx.createdBy" filled #}
+    {#{%- if ctx.createdBy %}
+      <p>{{ctx.createdBy.firstName}} {{ctx.createdBy.lastName}} is responsible for implementing the DMP, and ensuring it is reviewed and revised.</p>
+    {%- endif -%} #}
+
+    {%- set contributorsPath = [uuids.adminDetailsCUuid, uuids.contributorsQUuid]|reply_path -%}
+    {%- set contributorsItems = repliesMap[contributorsPath]|reply_items -%}
+    {%- if contributorsItems|length > 0 -%}
+      {%- macro contributorsResponsibility(contributors, contributorRoleAUuid, responsibility) -%}
+        {%- set names = [] -%}
+        {%- for i in contributors -%}
+          {%- set name = repliesMap[[contributorsPath, i, uuids.contributorNameQUuid]|reply_path]|reply_str_value -%}
+          {%- set rolePath = [contributorsPath, i, uuids.contributorAddRoleQUuid]|reply_path -%}
+          {%- set nRoles = repliesMap[rolePath]|reply_items -%}
+          {%- for roleIndex in nRoles -%}
+            {%- set role = repliesMap[[rolePath, roleIndex, uuids.contributorRoleQUuid]|reply_path]|reply_str_value -%}
+            {%- if role == contributorRoleAUuid and name -%}
+              {%- do names.append(name) -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+        {%- set nNames = names|length -%}
+        {%- if nNames > 0 -%}
+          <p>
+            {%- if nNames > 2 -%}
+              {{ names[0:-1]|join(", ") }}, and {{ names[-1] }} are {{ responsibility }}
+            {%- elif nNames == 2 -%}
+              {{ names[0] }} and {{ names[1] }} are {{ responsibility }}
+            {%- else -%}
+              {{ names[0] }} is {{ responsibility }}
+            {%- endif %}
+          </p>
+        {%- endif -%}
+      {%- endmacro -%}
+
+      {# Contact person #}
+      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleContactPersonAUuid, "responsible for overall data management including implementing the DMP, and ensuring it is reviewed and revised.") }}    
+      {# Data curators #}
+      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDataCuratorAUuid, "responsible for reviewing, enhancing, cleaning, or standardizing metadata and the associated data submitted for storage, use and maintenance within a data centre or repository.") }}
+      {# Data collectors #}
+      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDataCollectorAUuid, "responsible for finding, gathering, and collecting data.") }}
+      {# Data managers #}
+      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDataManagerAUuid, "responsible for maintaining the finished resource.") }}
+    {%- endif -%}
+  </div>
+</div>
+{#      {%- macro contributorsResponsibility(contributors, contributorRoleAUuid, responsibility) -%}
+        {%- set names = [] -%}
+        {%- for i in contributors -%}
+          {%- set role = repliesMap[[contributorsPath, i, uuids.contributorRoleQUuid]|reply_path]|reply_str_value -%}
+          {%- set name = repliesMap[[contributorsPath, i, uuids.contributorNameQUuid]|reply_path]|reply_str_value -%}
+          {%- if role == contributorRoleAUuid and name -%}
+            {%- do names.append(name) -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- set nNames = names|length -%}
+        {%- if nNames > 0 -%}
+          <p>
+            {%- if nNames > 2 -%}
+              {{ names[0:-1]|join(", ") }}, and {{ names[-1] }} are {{ responsibility }}
+            {%- elif nNames == 2 -%}
+              {{ names[0] }} and {{ names[1] }} are {{ responsibility }}
+            {%- else -%}
+              {{ names[0] }} is {{ responsibility }}
+            {%- endif %}
+          </p>
+        {%- endif -%}
+      {%- endmacro -%}
+#}

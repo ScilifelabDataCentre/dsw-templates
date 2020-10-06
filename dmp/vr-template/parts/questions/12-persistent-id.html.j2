@@ -1,0 +1,74 @@
+<div id="q-persisten-identifier" class="question">
+  <h3>12.	How will the use of unique and persistent identifiers be safeguarded?</h3>
+
+  <div class="answer">
+    {# Produced datasets #}
+    {%- set producedDataPath = [uuids.preservingCUuid, uuids.producedDataQUuid]|reply_path -%}
+    {%- set producedDataCount = repliesMap[producedDataPath]|reply_items -%}
+    {%- if producedDataCount|length > 0 -%}
+      <p> The published datasets will have the following persistent identifiers: </p>
+      <ul>
+        {%- for i in producedDataCount -%}
+        {%- set pathPrefix = [producedDataPath, i]|reply_path -%}
+        {%- set producedDataName = repliesMap[[pathPrefix, uuids.producedDataNameQUuid]|reply_path]|reply_str_value -%}
+        {# Only published #}
+        {%- set isPublishedDataPath = [pathPrefix, uuids.isPublishedDataQUuid]|reply_path -%}
+        {%- set isPublishedDataAUuid = repliesMap[isPublishedDataPath]|reply_str_value -%}
+        {% if isPublishedDataAUuid == uuids.isPublishedDataYesAUuid %}
+          <li>
+            <strong>{{ producedDataName if producedDataName else "(no name given)" }}</strong>
+            {# Identifiers #}
+            {% set identifiersPath = [pathPrefix, uuids.producedDataIdentifiersQUuid]|reply_path -%}
+            {%- set identifiersCount = repliesMap[identifiersPath]|reply_items -%}
+            {%- if identifiersCount|length > 0 -%}
+              <ul>
+                {%- for j in identifiersCount -%}
+                {%- set identifierPrefix = [identifiersPath, j]|reply_path -%}
+                {%- set identifierTypePath = [identifierPrefix, uuids.dataIdentifierTypeQUuid]|reply_path -%}
+                {%- set identifierTypeAUuid = repliesMap[identifierTypePath]|reply_str_value -%}
+                {%- set identifierValuePath = [identifierPrefix, uuids.dataIdentifierIdentifierQUuid]|reply_path -%}
+                {%- set identifierValue = repliesMap[identifierValuePath]|reply_str_value -%}
+                {%- if identifierTypeAUuid == uuids.dataIdentifierTypeHandleAUuid -%}
+                  <li>Handle: <strong>{{ identifierValue }}</strong></li>
+                {%- elif identifierTypeAUuid == uuids.dataIdentifierTypeDoiAUuid -%}
+                  <li>DOI: <strong><a href="https://doi.org/{{ identifierValue }}">{{ identifierValue }}</a></strong></li>
+                {%- elif identifierTypeAUuid == uuids.dataIdentifierTypeArkAUuid -%}
+                  <li>ARK: <strong>{{ identifierValue }}</strong></li>
+                {%- elif identifierTypeAUuid == uuids.dataIdentifierTypeUrlAUuid -%}
+                  <li>URL: <strong><a href="{{ identifierValue }}">{{ identifierValue }}</a></strong></li>
+                {%- elif identifierTypeAUuid == uuids.dataIdentifierTypeOtherAUuid -%}
+                  {%- set identifierType = repliesMap[[identifierTypePath, uuids.dataIdentifierTypeOtherAUuid, uuids.dataIdentifierTypeOtherTypeQUuid]|reply_path]|reply_str_value -%}
+                  <li>{{ identifierType }}: <strong>{{ identifierValue }}</strong></li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </li>
+        {%- endif -%}
+      {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    {# Published software #}
+    {%- set publishedSWPath = [uuids.preservingCUuid, uuids.publishSWQUuid, uuids.publishSWYesAUuid, uuids.publishedSWQUuid]|reply_path -%}
+    {%- set publishedSWCount = repliesMap[publishedSWPath]|reply_items -%}
+    {%- if publishedSWCount|length > 0 -%}
+      <ul>
+      {%- for i in publishedSWCount -%}
+        {%- set pathPrefix = [publishedSWPath, i]|reply_path -%}
+        {%- set publishedSWName = repliesMap[[pathPrefix, uuids.publishedSWNameQUuid]|reply_path]|reply_str_value -%}
+        {%- set publishedSWDOIPath = [pathPrefix, uuids.publishedSWDOIQUuid]|reply_path -%}
+        {%- set publishedSWDOIAUuid = repliesMap[publishedSWDOIPath]|reply_str_value -%}
+        {%- if publishedSWDOIAUuid == uuids.publishedSWDOIYesAUuid -%}
+          {%- set publishedSWDOI = repliesMap[[publishedSWDOIPath,uuids.publishedSWDOIYesAUuid, uuids.publishedSWDOIYesQUuid]|reply_path]|reply_str_value -%}
+          {%- if publishedSWDOI -%}
+            <li>
+              Code <strong>{{ publishedSWName if publishedSWName else "(no name given)" }} </strong>will have identifier
+              <strong><a href="https://doi.org/{{ publishedSWDOI }}">{{ publishedSWDOI }}</a></strong>
+            </li>
+          {%- endif %}
+        {%- endif %}
+      {%- endfor -%}
+      </ul>
+    {%- endif %}
+  </div>
+</div>

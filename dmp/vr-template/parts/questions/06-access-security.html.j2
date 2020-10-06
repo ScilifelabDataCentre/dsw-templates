@@ -1,5 +1,5 @@
 <div id="q-access-security" class="question">
-  <h3>6. How will you manage access and security?</h3>
+  <h3>6. How is data security and controlled access to data safeguarded?</h3>
 
   <div class="answer">
     {%- set risksPathPrefix = [uuids.storageCUuid, uuids.risksQUuid, uuids.risksExploreAUuid]|reply_path -%}
@@ -23,15 +23,15 @@
           Project members will not store data or software on computers in the lab or external hard drives connected to those computers.
         {%- endif -%}
         {%- if risksCarryHomeAUuid == uuids.risksCarryHomeNoAUuid %}
-          {%- if risksStoreLabAUuid == uuids.risksStoreLabNoAUuid -%}They{%- else -%}Project members{%- endif %} will not carry data with them (e.g. on laptops, USB sticks, or other external media).
+          {%- if risksStoreLabAUuid == uuids.risksStoreLabNoAUuid %} They{%- else %}Project members{%- endif %} will not carry data with them (e.g. on laptops, USB sticks, or other external media).
         {%- elif risksCarryHomeEncAUuid == uuids.risksCarryHomeEncYesAUuid %}
-          {%- if risksStoreLabAUuid == uuids.risksStoreLabNoAUuid -%}They{%- else -%}Project members{%- endif %} can carry data with them on encrypted data carriers and password-protected laptops.
+          {%- if risksStoreLabAUuid == uuids.risksStoreLabNoAUuid %} They{%- else %}Project members{%- endif %} can carry data with them on encrypted data carriers and password-protected laptops.
         {%- endif -%}
         {%- if risksCertificationsAUuid == uuids.risksCertificationsYesAUuid %}
           All data centers where project data is stored carry sufficient certifications.
         {%- endif -%}
         {%- if risksHttpsAUuid == uuids.risksHttpsYesAUuid %}
-          All project web services addressed via secure http (https://...).
+          All project web services are addressed via secure http (https://...).
         {%- endif -%}
         {%- if risksInstructedAUuid == uuids.risksInstructedYesAUuid %}
           Project members have been instructed about both generic and specific risks to the project.

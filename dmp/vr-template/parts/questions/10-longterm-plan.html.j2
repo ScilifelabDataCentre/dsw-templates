@@ -1,15 +1,15 @@
 <div id="q-which-longterm" class="question">
-  <h3>11. Which data are of long-term value and should be retained, shared, and/or preserved?</h3>
+  <h3>10. In what way is long-term storage safeguarded, and by whom?</h3>
 
   <div class="answer">
     {# Produced datasets #}
     {%- set producedDataPath = [uuids.preservingCUuid, uuids.producedDataQUuid]|reply_path -%}
-    {%- set producedDataCount = repliesMap[producedDataPath]|reply_int_value -%}
-    {%- if producedDataCount > 0 -%}
+    {%- set producedDataCount = repliesMap[producedDataPath]|reply_items -%}
+    {%- if producedDataCount|length > 0 -%}
       <p>
         We plan to produce the following datasets:
       <ul>
-        {%- for i in range(producedDataCount) -%}
+        {%- for i in producedDataCount -%}
           {%- set pathPrefix = [producedDataPath, i]|reply_path -%}
           {%- set producedDataName = repliesMap[[pathPrefix, uuids.producedDataNameQUuid]|reply_path]|reply_str_value -%}
           <li>
@@ -28,7 +28,7 @@
             {%- set publishedDataMetadataPersistentPath = [pathPrefix, uuids.publishedDataMetadataPersistentQUuid]|reply_path -%}
             {%- set publishedDataMetadataPersistentAUuid = repliesMap[publishedDataMetadataPersistentPath]|reply_str_value -%}
             {%- if publishedDataHowLongAUuid or (publishedDataMetadataPersistentAUuid == uuids.publishedDataMetadataPersistentYesAUuid) %}
-              {% if publishedDataHowLongAUuid == uuids.publishedDataHowLongTechnicalAUuid -%}
+              {%- if publishedDataHowLongAUuid == uuids.publishedDataHowLongTechnicalAUuid -%}
                   This data set will be kept available as long as technically possible.
                 {%- elif publishedDataHowLongAUuid == uuids.publishedDataHowLongLegalAUuid -%}
                   This data set will be kept available until it needs to be deleted for legal reasons.

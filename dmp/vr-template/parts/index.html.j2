@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 {%- set km = ctx.knowledgeModel -%}
-{%- set replies = ctx.questionnaireReplies -%}
-{%- set repliesMap = ctx.questionnaireRepliesMap -%}
+{%- set repliesMap = ctx.questionnaireReplies -%}
+{# {%- set repliesMap = ctx.questionnaireReplies -%} for 2.6 #}
 {%- set report = ctx.report -%}
 {%- set metricDefinitions = ctx.metrics -%}
 {%- set levelDefinitions = ctx.levels -%}
@@ -17,8 +17,8 @@
   </head>
   <body>
     <article class="dmp">
+      {# {% include "parts/projects.html.j2" with context %} #}
       {% include "parts/header.html.j2" with context %}
-      {% include "parts/projects.html.j2" with context %}
       {% include "parts/content.html.j2" with context %}
     </article>
   </body>

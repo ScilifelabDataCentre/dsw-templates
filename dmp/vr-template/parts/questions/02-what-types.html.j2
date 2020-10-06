@@ -1,0 +1,46 @@
+<div id="q-how-data" class="question">
+  <h3>2. What types of data will be created and/or collected, in terms of data format and amount/volume of data? </h3>
+  <div>
+  {# Format/Type with volume #}
+  {%- set formatsPath = [uuids.creatingCUuid, uuids.formatsQUuid]|reply_path -%}
+  {%- set formatsCount = repliesMap[formatsPath]|reply_items -%}
+  {%- if formatsCount|length > 0 -%}
+    <h4>Data formats and types</h4>
+    <div>We will be using the following data formats and types:
+    <ul>
+      {%- for formatIndex in formatsCount -%}
+        {%- set formatPrefix = [formatsPath, formatIndex]|reply_path -%}
+        {%- set formatNameReply = repliesMap[[formatPrefix, uuids.formatsNameQUuid]|reply_path] -%}
+        {%- set formatsVolumePath = [formatPrefix, uuids.formatsVolumeQUuid]|reply_path -%}
+        {%- set formatsVolumeAUuid = repliesMap[formatsVolumePath]|reply_str_value -%}
+        <li>
+          {# identification #}
+          <strong>{{ macros.integrationValue(formatNameReply, uuids.formatsNameQUuid) }}</strong>
+          {# volume #}
+          {%- if formatsVolumeAUuid == uuids.formatsVolumeSmallAUuid %}
+            - We will have only a small amount of data stored in this format.
+          {%- elif formatsVolumeAUuid == uuids.formatsVolumeTotalAUuid %}
+            {%- set formatsVolumeTotalTB = repliesMap[[formatsVolumePath, uuids.formatsVolumeTotalAUuid, uuids.formatsVolumeTotalTBQUuid]|reply_path]|reply_str_value -%}
+            {%- if formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQLess10AUuid %}
+              - We expect to have between 1 TB and 10 TB of data in this format.
+            {%- elif formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQLess50AUuid %}
+              - We expect to have between 10 TB and 50 TB of data in this format.
+            {%- elif formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQLess100AUuid %}
+              - We expect to have between 50 TB and 100 TB of data in this format.
+            {%- elif formatsVolumeTotalTB == uuids.formatsVolumeTotalTBQMore100AUuid %}
+                - We expect to have more than 100 TB of data in this format.
+            {%- endif -%}
+          {%- elif formatsVolumeAUuid == uuids.formatsVolumeFileSizeAUuid -%}
+            {%- set formatsVolumeFiles = repliesMap[[formatsVolumePath, uuids.formatsVolumeFileSizeAUuid, uuids.formatsVolumeFilesQUuid]|reply_path]|reply_str_value -%}
+            {%- set formatsVolumeFileGB = repliesMap[[formatsVolumePath, uuids.formatsVolumeFileSizeAUuid, uuids.formatsVolumeFileGBQUuid]|reply_path]|reply_str_value -%}
+            {%- if formatsVolumeFiles and formatsVolumeFileGB %}
+              - We expect to have {{ formatsVolumeFiles }} files of average size {{ formatsVolumeFileGB }} GB (i.e. approximately {{ (formatsVolumeFiles|int * formatsVolumeFileGB|float)|round(2) }} GB in total).
+            {%- endif -%}
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+    </div>
+  {%- endif -%}
+  </div>
+</div>

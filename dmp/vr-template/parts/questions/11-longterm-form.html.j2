@@ -1,13 +1,13 @@
 <div id="q-longterm-plan" class="question">
-  <h3>12. What is the longterm preservation plan for the dataset?</h3>
-
+  <h3>11. Will specific systems, software, source code or other types of services be necessary in order to understand, partake of or use/analyse data in the long term?</h3>
+{# I have no idea what to put here, there is no questions about this? #}
   <div class="answer">
     {# Produced datasets #}
     {%- set producedDataPath = [uuids.preservingCUuid, uuids.producedDataQUuid]|reply_path -%}
-    {%- set producedDataCount = repliesMap[producedDataPath]|reply_int_value -%}
-    {%- if producedDataCount > 0 -%}
+    {%- set producedDataCount = repliesMap[producedDataPath]|reply_items -%}
+    {%- if producedDataCount|length > 0 -%}
       <ul>
-      {%- for i in range(producedDataCount) -%}
+      {%- for i in producedDataCount -%}
         {%- set pathPrefix = [producedDataPath, i]|reply_path -%}
         {%- set producedDataName = repliesMap[[pathPrefix, uuids.producedDataNameQUuid]|reply_path]|reply_str_value -%}
         <li>
@@ -21,11 +21,11 @@
             (published)
             {# Distributions #}
             {% set distrosPath = [isPublishedDataPath, uuids.isPublishedDataYesAUuid, uuids.publishedDistrosQUuid]|reply_path -%}
-            {%- set distrosCount = repliesMap[distrosPath]|reply_int_value -%}
-            {%- if distrosCount > 0 -%}
+            {%- set distrosCount = repliesMap[distrosPath]|reply_items -%}
+            {%- if distrosCount|length > 0 -%}
               <br>The distributions will be stored in:
               <ul>
-              {%- for j in range(distrosCount) -%}
+              {%- for j in distrosCount -%}
                 {%- set distroPrefix = [distrosPath, j]|reply_path -%}
                 {%- set distroRepositoryKindPath = [distroPrefix, uuids.publishedDataRepositoryKindQUuid]|reply_path -%}
                 {%- set distroRepositoryKindAUuid = repliesMap[distroRepositoryKindPath]|reply_str_value -%}
@@ -78,18 +78,60 @@
                     {%- endif -%}
 
                     {# File format #}
-                    {# might not work #}
-                    {%- set publishedRepoFormatPath = [isPublishedDataPath, uuids.isPublishedDataYesAUuid, uuids.repoFileFormatQUuid]|reply_path -%}
-                    {%- set publishedRepoFormatCount = repliesMap[publishedRepoFormatPath]|reply_int_value -%}
-                    {%- if publishedRepoFormatCount > 0 -%}
-                      {{ "File formats will be: " if (publishedRepoFormatCount>1) else "File format will be: " }}
-                      {%- for nFormats in range(publishedRepoFormatCount) -%}
-                        {%- set formatPathPrefix = [publishedRepoFormatPath, nFormats]|reply_path -%}
-                        {%- set formatName = repliesMap[formatPathPrefix]|reply_str_value -%]
-                        {%- if formatName %}
-                          {{ macros.integrationValue(formatName, uuids.repoFileFormatQUuid) }}.
+                    {%- set publishedRepoFormatPath = [pathPrefix, uuids.repoFileFormatQUuid]|reply_path -%}
+                    {%- set publishedRepoFormatCount = repliesMap[publishedRepoFormatPath]|reply_items -%}
+                    {%- if publishedRepoFormatCount|length > 0 -%}
+                      {{ " File formats will be: " if (publishedRepoFormatCount|length>1) else " File format will be: " }}
+                      <ul>
+                      {%- for nFormats in publishedRepoFormatCount -%}
+                        {%- set formatPathPrefix = [publishedRepoFormatPath, nFormats,uuids.repoFileFormatAUuid]|reply_path -%}
+                        {%- set formatNameReply = repliesMap[formatPathPrefix] -%}
+                        {%- set formatsIsStandardPath = [publishedRepoFormatPath, nFormats, uuids.formatsIsStandardQUuid]|reply_path -%}
+                        {%- set formatsIsStandardAUuid = repliesMap[formatsIsStandardPath]|reply_str_value -%}
+                        {%- set formatsIsLTSuitablePath = [publishedRepoFormatPath, nFormats, uuids.formatsIsLTSuitableQUuid]|reply_path -%}
+                        {%- set formatsIsLTSuitableAUuid = repliesMap[formatsIsLTSuitablePath]|reply_str_value -%}
+                        {%- if formatNameReply %}
+                          <li>
+                            {{ macros.integrationValue(formatNameReply, uuids.repoFileFormatAUuid) }}
+                            {%- if formatsIsStandardAUuid or formatsIsLTSuitableAUuid -%}
+                              <p>
+                              {# standard? #}
+                              {%- if formatsIsStandardAUuid == uuids.formatsIsStandardYesAUuid %}
+                                It is a standardized format.
+                              {%- elif formatsIsStandardAUuid == uuids.formatsIsStandardNoAUuid -%}
+                                {%- set formatsWhyNonStandardPath = [formatsIsStandardPath, uuids.formatsIsStandardNoAUuid, uuids.formatsWhyNonStandardQUuid]|reply_path -%}
+                                {%- set formatsWhyNonStandardAUuid = repliesMap[formatsWhyNonStandardPath]|reply_str_value -%}
+                                {%- if formatsWhyNonStandardAUuid == uuids.formatsWhyNSThereIsNoStandardAUuid %}
+                                  It is not a standardized format because there is no standardized format for this data type.
+                                {%- elif formatsWhyNonStandardAUuid == uuids.formatsWhyNSItIsOptimizedAUuid %}
+                                  It is not a standardized format but it is optimized for processing speed and/or volume.
+                                {%- elif formatsWhyNonStandardAUuid == uuids.formatsWhyNSAnotherReasonAUuid -%}
+                                  {%- set formatsWhyNSAnotherReasonPath = [formatsWhyNonStandardPath, uuids.formatsWhyNSAnotherReasonAUuid, uuids.formatsWhyNSAnotherReasonQUuid]|reply_path -%}
+                                  {%- set formatsWhyNSAnotherReason = repliesMap[formatsWhyNSAnotherReasonPath]|reply_str_value -%}
+                                    It is not a standardized format.
+                                  {%- if formatsWhyNSAnotherReason %}
+                                    {{ formatsWhyNSAnotherReason|capitalize|dot }}
+                                  {%- endif -%}
+                                {%- endif -%}
+                              {%- endif -%}
+                              {# long-term suitable? #}
+                              {%- if formatsIsLTSuitableAUuid == uuids.formatsIsLTSuitableYesAUuid %}
+                                This is a suitable format for long-term archiving.
+                              {%- elif formatsIsLTSuitableAUuid == uuids.formatsIsLTSuitableNoAUuid -%}
+                                {%- set formatsConvertLTSuitablePath = [formatsIsLTSuitablePath, uuids.formatsIsLTSuitableNoAUuid, uuids.formatsConvertLTSuitableQUuid]|reply_path -%}
+                                {%- set formatsConvertLTSuitableAUuid = repliesMap[formatsConvertLTSuitablePath]|reply_str_value -%}
+                                {%- if formatsConvertLTSuitableAUuid == uuids.formatsConvertLTSuitableYesAUuid %}
+                                  This is not a suitable format for long-term archiving; however, we plan to convert it to a suitable format before the end of the project.
+                                {%- elif formatsConvertLTSuitableAUuid == uuids.formatsConvertLTSuitableNoAUuid %}
+                                  We are aware that this is not a suitable format for long-term archiving.
+                                {%- endif -%}
+                              {%- endif -%}
+                              </p>
+                            {%- endif -%}
+                          </li>
                         {%- endif -%}
                       {%- endfor -%}
+                    </ul>
                     {%- endif -%}
                   </li>
                 {%- endif -%}
@@ -107,79 +149,6 @@
       {%- endfor -%}
       </ul>
     {%- endif -%}
-    {# Published software #}
-    {%- set publishedSWPath = [uuids.preservingCUuid, uuids.publishedSWQUuid]|reply_path -%}
-    {%- set publishedSWCount = repliesMap[publishedSWPath]|reply_int_value -%}
-    {%- if publishedSWCount > 0 -%}
-      <ul>
-      {%- for i in range(publishedSWCount) -%}
-        {%- set pathPrefix = [publishedSWPath, i]|reply_path -%}
-        {%- set publishedSWName = repliesMap[[pathPrefix, uuids.publishedSWNameQUuid]|reply_path]|reply_str_value -%}
-        {%- set publishedSWRepoPath = [pathPrefix, uuids.publishedSWRepoQUuid]|reply_path -%}
-        {%- set publishedSWRepoAUuid = repliesMap[publishedSWRepoPath]|reply_str_value -%}
-        {%- set publishedSWCataloguePath = [pathPrefix, uuids.publishedSWCatalogueQUuid]|reply_path -%}
-        {%- set publishedSWCatalogueAUuid = repliesMap[publishedSWCataloguePath]|reply_str_value -%}
-        {%- if publishedSWRepoAUuid or publishedSWCatalogueAUuid -%}
-          <li>
-            <strong>{{ publishedSWName if publishedSWName else "(no name given)" }}</strong>
-            {# the chosen repo is not written so I tried adding - to %} #}
-            {%- if publishedSWRepoAUuid %}
-              will be stored in
-              {%- if publishedSWRepoAUuid == uuids.publishedSWRepoGitAUuid %}
-                GitHub.
-              {%- elif publishedSWRepoAUuid == uuids.publishedSWRepoBitbucketAUuid %}
-                BitBucket.
-              {%- elif publishedSWRepoAUuid == uuids.publishedSWRepoOtherAUuid -%}
-                {%- set publishedSWRepoOtherPath = [publishedSWRepoPath, uuids.publishedSWRepoOtherAUuid, uuids.publishedSWRepoOtherWhichQUuid]|reply_path -%}
-                {%- set publishedSWRepoOtherWhichAUuid = repliesMap[publishedSWRepoOtherPath]|reply_str_value -%}
-                {%- if publishedSWRepoOtherWhichAUuid %}
-                  : {{ publishedSWRepoOtherWhichAUuid|dot }}
-                {%- else %}
-                  another, not specified, repository.
-                {%- endif -%}
 
-              {%- endif -%}
-            {%- endif -%}
-            {%- if publishedSWCatalogueAUuid == uuids.publishedSWCatalogueYesAUuid -%}
-              {%- if publishedSWRepoAUuid %}
-                We
-              {%- else %}
-                <span class="separator">&ndash;</span> we
-              {%- endif %}
-              will be adding a reference to the published software to at least one catalogue.
-            {%- endif -%}
-          </li>
-        {%- endif -%}
-      {%- endfor -%}
-      </ul>
-    {%- endif -%}
-    {# Repository charges
-    {%- set repoChargesPath = [uuids.preservingCUuid, uuids.repoChargesQUuid]|reply_path -%}
-    {%- set repoChargesAUuid = repliesMap[repoChargesPath]|reply_str_value -%}
-    {%- if repoChargesAUuid == uuids.repoChargesNoAUuid -%}
-      <p>None of the used repositories charge for their services.</p>
-    {%- elif repoChargesAUuid == uuids.repoChargesYesAUuid -%}
-      {%- set repoChargesHowPayPath = [repoChargesPath, uuids.repoChargesYesAUuid, uuids.repoChargesHowPayQUuid]|reply_path -%}
-      {%- set repoChargesHowPayAUuid = repliesMap[repoChargesHowPayPath]|reply_str_value -%}
-      {%- if repoChargesHowPayAUuid == uuids.repoChargesHowPayBudgetedAUuid -%}
-        <p>We have budgeted for the costs in the project to pay charges of the used repositories.</p>
-      {%- elif repoChargesHowPayAUuid == uuids.repoChargesHowPayDepartmentAUuid -%}
-        <p>The costs related to the used repositories will be carried by (one of) the departments involved in the project.</p>
-      {%- elif repoChargesHowPayAUuid == uuids.repoChargesHowPayInstituteAUuid -%}
-        <p>The costs related to the used repositories will be carried by (one of) the institutes involved in the project.</p>
-      {%- elif repoChargesHowPayAUuid == uuids.repoChargesHowPayOtherAUuid -%}
-        {%- set repoChargesHowPayOtherPath = [repoChargesHowPayPath, uuids.repoChargesHowPayOtherAUuid, uuids.repoChargesHowPayOtherQUuid]|reply_path -%}
-        {%- set repoChargesHowPayOther = repliesMap[repoChargesHowPayOtherPath]|reply_str_value -%}
-        {%- if repoChargesHowPayOther -%}
-          <p>We will carry the costs related to the used repositories by: {{ repoChargesHowPayOther|dot }}</p>
-        {%- endif -%}
-      {%- endif -%}
-    {%- endif -%} #}
-    {# Budget time and effort
-    {%- set budgetTimeEffortPath = [uuids.preservingCUuid, uuids.budgetTimeEffortQUuid]|reply_path -%}
-    {%- set budgetTimeEffortAUuid = repliesMap[budgetTimeEffortPath]|reply_str_value -%}
-    {%- if budgetTimeEffortAUuid == uuids.budgetTimeEffortYesAUuid -%}
-      <p>We have a reserved budget for the time and effort it will take to prepare the data for publication.</p>
-    {%- endif -%} #}
   </div>
 </div>

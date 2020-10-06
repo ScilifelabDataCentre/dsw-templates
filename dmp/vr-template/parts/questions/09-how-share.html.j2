@@ -11,12 +11,16 @@
       {%- for i in producedDataCount -%}
         {%- set pathPrefix = [producedDataPath, i]|reply_path -%}
         {%- set producedDataName = repliesMap[[pathPrefix, uuids.producedDataNameQUuid]|reply_path]|reply_str_value -%}
+        {%- set producedDataDesc = repliesMap[[pathPrefix, uuids.producedDataDescQUuid]|reply_path]|reply_str_value -%}
         {# Only published #}
         {%- set isPublishedDataPath = [pathPrefix, uuids.isPublishedDataQUuid]|reply_path -%}
         {%- set isPublishedDataAUuid = repliesMap[isPublishedDataPath]|reply_str_value -%}
         {% if isPublishedDataAUuid == uuids.isPublishedDataYesAUuid %}
           <li>
             <strong>{{ producedDataName if producedDataName else "(no name given)" }}</strong>
+            {%- if producedDataDesc -%}
+              <p>{{ producedDataDesc|dot }}</p>
+            {%- endif -%}
             {# Distributions #}
             {% set distrosPath = [isPublishedDataPath, uuids.isPublishedDataYesAUuid, uuids.publishedDistrosQUuid]|reply_path -%}
             {%- set distrosCount = repliesMap[distrosPath]|reply_items -%}

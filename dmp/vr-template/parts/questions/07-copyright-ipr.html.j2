@@ -194,7 +194,7 @@
         {# step through the list of Processors and agreements, after checking that
           needDPAYesListQUuid is not null. Not sure if correct but think so #}
           <p>
-          {%- if needDPAYesListCount > 1 -%}
+          {%- if needDPAYesListCount|length > 1 -%}
             The following Data Processing Agreements have been established:
           {%- else -%}
             The following Data Processing Agreement has been established:

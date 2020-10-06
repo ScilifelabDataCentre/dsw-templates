@@ -128,7 +128,7 @@
       {%- if eRecords -%}{%- do typesNames.append("electronic patient records") -%}{%- endif -%}
       {%- set typesCount = typesNames|length -%}
       <p>
-        {%- if typesCount|length > 0 -%}
+        {%- if typesCount > 0 -%}
           We also collect data from
           {% if typesCount == 1 -%}
               {{ typesNames[0] }}:

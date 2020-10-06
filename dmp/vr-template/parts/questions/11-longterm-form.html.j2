@@ -81,7 +81,7 @@
                     {%- set publishedRepoFormatPath = [pathPrefix, uuids.repoFileFormatQUuid]|reply_path -%}
                     {%- set publishedRepoFormatCount = repliesMap[publishedRepoFormatPath]|reply_items -%}
                     {%- if publishedRepoFormatCount|length > 0 -%}
-                      {{ " File formats will be: " if (publishedRepoFormatCount>1) else " File format will be: " }}
+                      {{ " File formats will be: " if (publishedRepoFormatCount|length>1) else " File format will be: " }}
                       <ul>
                       {%- for nFormats in publishedRepoFormatCount -%}
                         {%- set formatPathPrefix = [publishedRepoFormatPath, nFormats,uuids.repoFileFormatAUuid]|reply_path -%}

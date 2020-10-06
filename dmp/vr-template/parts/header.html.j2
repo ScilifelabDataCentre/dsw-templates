@@ -43,7 +43,7 @@
         <dl>
           <dt>Funding</dt>
           <dd>
-            {%- if fundersCount|length > 0 %} {# funkar fortf? eller ta bort >0 #}
+            {%- if fundersCount|length > 0 %}
               <ul>
               {%- for funderIndex in fundersCount %}
                 {%- set funderNamePath = [fundersPath, funderIndex, uuids.funderNameQUuid]|reply_path -%}
@@ -71,7 +71,7 @@
       {%- set contributorsPath = [uuids.adminDetailsCUuid, uuids.contributorsQUuid]|reply_path -%}
       {%- set nContributors = repliesMap[contributorsPath]|reply_items -%}
       {%- if nContributors|length > 0 -%}
-        <dt>{{ "Contributors" if (nContributors > 1) else "Contributor" }}</dt>
+        <dt>{{ "Contributors" if (nContributors|length > 1) else "Contributor" }}</dt>
         <dd>
         <ul>
         {%- for i in nContributors -%}
@@ -132,24 +132,24 @@
                 {%- set roleNamePath = [rolePath, roleIndex, uuids.contributorRoleQUuid]|reply_path -%}
                 {%- set roleName = repliesMap[roleNamePath]|reply_str_value -%}
                 {%- if roleName == uuids.contributorRolePIAUuid -%}
-                  {{ "PI, " if (roleIndex < (nRoles-1)) else "PI)" }}
+                  {{ "PI, " if not loop.last else "PI)" }}
                 {%- elif roleName == uuids.contributorRoleResearcherAUuid -%}
-                  {{ "researcher, " if (roleIndex < (nRoles-1)) else "researcher)" }}
+                  {{ "researcher, " if not loop.last else "researcher)" }}
                 {%- elif roleName == uuids.contributorRoleContactPersonAUuid -%}
-                  {{ "<strong>contact person</strong>, " if (roleIndex < (nRoles-1)) else "<strong>contact person</strong>)" }}
+                  {{ "<strong>contact person</strong>, " if not loop.last else "<strong>contact person</strong>)" }}
                 {%- elif roleName == uuids.contributorRoleDataProducerAUuid -%}
-                  {{ "data producer, " if (roleIndex < (nRoles-1)) else "data producer)" }}
+                  {{ "data producer, " if not loop.last else "data producer)" }}
                 {%- elif roleName == uuids.contributorRoleDataCollectorAUuid -%}
-                  {{ "data collector, " if (roleIndex < (nRoles-1)) else "data collector)" }}
+                  {{ "data collector, " if not loop.last else "data collector)" }}
                 {%- elif roleName == uuids.contributorRoleDataCuratorAUuid -%}
-                  {{ "data curator, " if (roleIndex < (nRoles-1)) else "data curator)" }}
+                  {{ "data curator, " if not loop.last else "data curator)" }}
                 {%- elif roleName == uuids.contributorRoleDataManagerAUuid -%}
-                  {{ "data manager, " if (roleIndex < (nRoles-1)) else "data manager)" }}
+                  {{ "data manager, " if not loop.last else "data manager)" }}
                 {%- elif roleName == uuids.contributorRoleOtherAUuid -%}
                   {%- set roleOtherPath = [roleNamePath, uuids.contributorRoleOtherAUuid, uuids.contributorRoleOtherQUuid]|reply_path -%}
                   {%- set roleOtherWhichAUuid = repliesMap[roleOtherPath]|reply_str_value -%}
                   {%- if roleOtherWhichAUuid -%}
-                    {{ roleOtherWhichAUuid ~", " if (roleIndex < (nRoles-1)) else roleOtherWhichAUuid ~")" }}
+                    {{ roleOtherWhichAUuid ~", " if not loop.last else roleOtherWhichAUuid ~")" }}
                   {%- endif -%}
                 {%- endif -%}
               {%- endfor -%}
